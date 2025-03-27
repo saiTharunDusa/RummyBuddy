@@ -1,5 +1,3 @@
-
-
 import React from 'react';
 import {
   ScrollView,
@@ -7,17 +5,17 @@ import {
 } from 'react-native';
 
 
-const App = () => {
-  
+import Title from './components/Title/Title.js';
+import Button from './components/Button/Button.js';
+import Home from './screens/Home/Home.js';
 
+const App = () => {
   return (
     <SafeAreaView>
-      <Text>
-        Rummy ScoreBoard!
-      </Text>
+      <Title/>
+      <Home/>
     </SafeAreaView>
   );
 }
-
 
 export default App;
