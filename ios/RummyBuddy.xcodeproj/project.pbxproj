@@ -11,7 +11,7 @@
 		505C39F0EECCB90303D68191 /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB81A68108700A75B9A /* PrivacyInfo.xcprivacy */; };
 		761780ED2CA45674006654EE /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 761780EC2CA45674006654EE /* AppDelegate.swift */; };
 		81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */; };
-		CEC5908D2D9CC5CF006E1B26 /* GoogleService-Info (2).plist in Resources */ = {isa = PBXBuildFile; fileRef = CEC5908C2D9CC5CF006E1B26 /* GoogleService-Info (2).plist */; };
+		CEB744DF2D9CF97B00D3509C /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = CEB744DE2D9CF97B00D3509C /* GoogleService-Info.plist */; };
 		D84ADEABE191211DED894177 /* Pods_RummyBuddy.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = EF10422C3137ECF11392D807 /* Pods_RummyBuddy.framework */; };
 /* End PBXBuildFile section */
 
@@ -24,7 +24,7 @@
 		5709B34CF0A7D63546082F79 /* Pods-RummyBuddy.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-RummyBuddy.release.xcconfig"; path = "Target Support Files/Pods-RummyBuddy/Pods-RummyBuddy.release.xcconfig"; sourceTree = "<group>"; };
 		761780EC2CA45674006654EE /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = AppDelegate.swift; path = RummyBuddy/AppDelegate.swift; sourceTree = "<group>"; };
 		81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = LaunchScreen.storyboard; path = RummyBuddy/LaunchScreen.storyboard; sourceTree = "<group>"; };
-		CEC5908C2D9CC5CF006E1B26 /* GoogleService-Info (2).plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "GoogleService-Info (2).plist"; sourceTree = "<group>"; };
+		CEB744DE2D9CF97B00D3509C /* GoogleService-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		ED297162215061F000B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
 		EF10422C3137ECF11392D807 /* Pods_RummyBuddy.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_RummyBuddy.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
@@ -72,7 +72,7 @@
 		83CBB9F61A601CBA00E9B192 = {
 			isa = PBXGroup;
 			children = (
-				CEC5908C2D9CC5CF006E1B26 /* GoogleService-Info (2).plist */,
+				CEB744DE2D9CF97B00D3509C /* GoogleService-Info.plist */,
 				13B07FAE1A68108700A75B9A /* RummyBuddy */,
 				832341AE1AAA6A7D00B99B32 /* Libraries */,
 				83CBBA001A601CBA00E9B192 /* Products */,
@@ -162,7 +162,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				CEC5908D2D9CC5CF006E1B26 /* GoogleService-Info (2).plist in Resources */,
+				CEB744DF2D9CF97B00D3509C /* GoogleService-Info.plist in Resources */,
 				81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */,
 				13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */,
 				505C39F0EECCB90303D68191 /* PrivacyInfo.xcprivacy in Resources */,
