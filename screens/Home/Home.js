@@ -57,7 +57,7 @@ const Home = ({navigation})=>{
                             navigation.navigate(Routes.AllPlayers);
                         }}
                     />
-                    <Button icon={faPlus} text={"Start Game"}
+                    <Button icon={faPlus} text={"New Game"}
                         onPress={() => {
                             dispatch(resetAllSelectedPlayers())
                             navigation.navigate(Routes.StartGame)
