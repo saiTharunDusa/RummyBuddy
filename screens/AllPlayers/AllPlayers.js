@@ -10,7 +10,7 @@ import {
 import { useSelector, useDispatch } from 'react-redux';
 import firestore from '@react-native-firebase/firestore';
 import auth from '@react-native-firebase/auth';
-import { addPlayer, removePlayer, setPlayers, editPlayer } from '../../redux/reducers/allPlayers';
+import { addPlayer, removePlayer, editPlayer } from '../../redux/reducers/allPlayers';
 import Style from './Style';
 import BackButton from '../../components/BackButton/BackButton';
 
@@ -21,34 +21,7 @@ const AllPlayers = ({navigation}) => {
   const dispatch = useDispatch();
   const playersData = useSelector((store) => store.allPlayers.list);
 
-  useEffect(() => {
-    const unsubscribe = auth().onAuthStateChanged(async (user) => {
-      if (user) {
-        await fetchPlayers(user.uid);
-      }
-    });
-
-    return () => unsubscribe();
-  }, []);
-
-  const fetchPlayers = async (userId) => {
-    try {
-      const snapshot = await firestore()
-        .collection('users')
-        .doc(userId)
-        .collection('allPlayers')
-        .get();
-
-      const allPlayers = snapshot.docs.map(doc => ({
-        id: doc.id,
-        name: doc.data().name
-      }));
-
-      dispatch(setPlayers(allPlayers));
-    } catch (err) {
-      console.log('ERROR', err);
-    }
-  };
+  
 
   const handleAddPlayer = async () => {
     const userId = auth().currentUser?.uid;
@@ -156,7 +129,7 @@ const AllPlayers = ({navigation}) => {
 
   return (
     <SafeAreaView style={Style.container}>
-      <View style={Style.backButton}>
+      <View>
         <BackButton onPress={() => navigation.goBack()} />
       </View>
       <View style={Style.inputContainer}>

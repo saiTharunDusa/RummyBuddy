@@ -2,5 +2,7 @@ export const Routes = {
     Home : 'Home',
     AllPlayers : 'AllPlayers',
     Login : 'Login',
-    Register : 'Register'
+    Register : 'Register',
+    StartGame : 'StartGame',
+    selectPlayers : 'selectPlayers'
 }

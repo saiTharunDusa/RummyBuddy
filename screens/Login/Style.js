@@ -14,7 +14,6 @@ const Style = StyleSheet.create({
     marginBottom: 32,
   },
   input: {
-
     borderWidth: 1,
     borderColor: '#3498db',
     padding: 12,

@@ -1,5 +1,9 @@
 import {createSlice} from "@reduxjs/toolkit"
 
+const initialState = {
+    list : []
+}
+
 const allPlayers = createSlice({
     name : 'allPlayers',
     initialState : {

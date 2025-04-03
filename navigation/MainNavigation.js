@@ -2,6 +2,8 @@ import AllPlayers from "../screens/AllPlayers/AllPlayers";
 import Home from "../screens/Home/Home";
 import Login from "../screens/Login/Login";
 import Register from "../screens/Register/Register";
+import SelectPlayers from "../screens/selectPlayers/SelectPlayers";
+import StartGame from "../screens/StartGame/StartGame";
 import { Routes } from "./Routes";
 import { createStackNavigator } from "@react-navigation/stack";
 
@@ -22,6 +24,8 @@ export const Authenticated = () => {
         <Stack.Navigator initialRouteName={Routes.Home} screenOptions={{header : () => null, headerShown : false}}>
             <Stack.Screen name={Routes.Home} component={Home} />
             <Stack.Screen name={Routes.AllPlayers} component={AllPlayers}/>
+            <Stack.Screen name={Routes.StartGame} component={StartGame}/>
+            <Stack.Screen name={Routes.selectPlayers} component={SelectPlayers} />
         </Stack.Navigator>
     )
 }
