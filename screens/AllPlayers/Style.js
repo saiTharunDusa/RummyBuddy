@@ -37,6 +37,7 @@ const Style = StyleSheet.create({
         flexDirection: 'row',
         alignItems: 'center',
         marginBottom: verticalScale(12),
+        marginLeft : horizontalScale(10)
       },
       playerName: {
         flex: 1,

@@ -22,10 +22,13 @@ const allPlayers = createSlice({
             {
                 existing.name = newName
             }
+        },
+        resetAllPlayers : (state, action) => {
+            return initialState
         }
     }
 });
 
-export const {setPlayers, addPlayer, removePlayer, editPlayer} = allPlayers.actions;
+export const {setPlayers, addPlayer, removePlayer, editPlayer, resetAllPlayers} = allPlayers.actions;
 
 export default allPlayers.reducer;

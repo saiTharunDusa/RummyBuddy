@@ -1,16 +1,28 @@
 import AllPlayers from "../screens/AllPlayers/AllPlayers";
 import Home from "../screens/Home/Home";
+import Login from "../screens/Login/Login";
+import Register from "../screens/Register/Register";
 import { Routes } from "./Routes";
 import { createStackNavigator } from "@react-navigation/stack";
 
 const Stack = createStackNavigator();
 
-export const MainNavigation = () => {
+
+export const NonAuthenticated = () => {
+    return (
+        <Stack.Navigator initialRouteName={Routes.Login} screenOptions={{header : () => null, headerShown : false}}>
+            <Stack.Screen name={Routes.Login} component={Login} />
+            <Stack.Screen name={Routes.Register} component={Register} />
+        </Stack.Navigator>
+    )
+}
+
+export const Authenticated = () => {
     return(
-        <Stack.Navigator initialRouteName={Routes.Home} 
-        screenOptions={{header: () => null, headerShown: false}}>
+        <Stack.Navigator initialRouteName={Routes.Home} screenOptions={{header : () => null, headerShown : false}}>
             <Stack.Screen name={Routes.Home} component={Home} />
             <Stack.Screen name={Routes.AllPlayers} component={AllPlayers}/>
         </Stack.Navigator>
     )
 }
+

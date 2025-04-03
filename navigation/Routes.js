@@ -1,4 +1,6 @@
 export const Routes = {
     Home : 'Home',
-    AllPlayers : 'AllPlayers'
+    AllPlayers : 'AllPlayers',
+    Login : 'Login',
+    Register : 'Register'
 }
