@@ -7,7 +7,7 @@ import { useDispatch } from "react-redux";
 import { initializeGame } from "../../redux/reducers/gameState";
 import { useNavigation } from '@react-navigation/native';
 import { selectPlayer } from "../../redux/reducers/selectedPlayers";
-
+import BackButton from "../../components/BackButton/BackButton";
 
 const ContinueGame = () => {
     const userId = auth().currentUser?.uid;
@@ -46,13 +46,17 @@ const ContinueGame = () => {
         try{
            
             const roundsSnap = await firestore()
-                                            .collection("users")
-                                            .doc(userId)
-                                            .collection("games")
-                                            .doc(item.id)
-                                            .collection("rounds")
-                                            .get();
+                                    .collection("users")
+                                    .doc(userId)
+                                    .collection("games")
+                                    .doc(item.id)
+                                    .collection("rounds")
+                                    .orderBy("createdAt", "asc")
+                                    .get();
             const currentGameRounds = roundsSnap.docs.map(doc=>({...doc.data()}))
+
+            const scoresArray = currentGameRounds.map(round=>round.scores);
+        
             dispatch(initializeGame({
                 gameId: item.id,
                 drop: item.drop,
@@ -61,7 +65,7 @@ const ContinueGame = () => {
                 totalGameScore: item.totalGameScore,
                 totalGameAmount: item.totalGameAmount,
                 players: item.players,
-                rounds: currentGameRounds,
+                rounds: scoresArray,
                 totalScore : item.totalScore
             }));
             dispatch(selectPlayer(item.players));
@@ -92,6 +96,7 @@ const ContinueGame = () => {
             shadowRadius: 6,
             elevation: 4,
           }}>
+
             <TouchableOpacity onPress={()=>handleContinueGame(item)} >
                 <Text style={{ fontSize: 18, color: '#fff', fontWeight: 'bold' }}>
                 Game {index + 1}
@@ -108,15 +113,26 @@ const ContinueGame = () => {
 
     return(
         <SafeAreaView>
-            <Text
+            
+            <View style={{
+                flexDirection: 'row',
+                alignItems: 'center',
+                justifyContent: 'center',
+                position: 'relative',
+                padding: 10,
+                }} >
+                <BackButton onPress={() => navigation.goBack()} />
+                <Text
                 style={{
-                    fontWeight : "bold",
-                    textAlign : 'center',
-                    fontSize : '24',
-                    color : '#3498db',
+                    color: '#3498db',
+                    fontSize: 30,
+                    fontWeight: 'bold',
+                    textAlign: 'center',
+                    flex: 1,
 
                 }}
             >Continue Game</Text>
+            </View>
             <FlatList
                 data= {continueGames}
                 key={(item) => item.id.toString()}

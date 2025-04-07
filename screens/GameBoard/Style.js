@@ -1,10 +1,26 @@
 import { StyleSheet } from 'react-native';
+import { horizontalScale,scaleFontSize,verticalScale } from '../../assets/Scaling';
 
 const Style = StyleSheet.create({
   container: {
     flex: 1,
     padding: 10,
   },
+  back: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    position: 'relative',
+    padding: 10,
+  },
+  mainHeading: {
+    color: '#3498db',
+    fontSize: 30,
+    fontWeight: 'bold',
+    textAlign: 'center',
+    flex: 1,
+  },
+  
   headerRow: {
     flexDirection: 'row',
     alignItems: 'center',
@@ -21,12 +37,12 @@ const Style = StyleSheet.create({
   },
   cell: {
     borderWidth: 1,
-    borderRadius: 20,
+    borderRadius: 10,
     borderColor: '#3498db',
     textAlign: 'center',
     paddingVertical: 6,
     marginHorizontal: 6,
-    backgroundColor: '#3498db',
+    backgroundColor: '#AED6F1',
   },
   totalRow: {
     backgroundColor: '#B3E5FC',
@@ -78,6 +94,7 @@ const Style = StyleSheet.create({
     borderWidth: 1,
     borderColor: '#3498db',
     borderRadius: 6,
+    textAlign : 'center',
     paddingHorizontal: 10,
     marginLeft: 10,
     height: 40,
