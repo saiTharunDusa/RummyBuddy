@@ -1,4 +1,6 @@
 import AllPlayers from "../screens/AllPlayers/AllPlayers";
+import ContinueGame from "../screens/ContinueGame/ContinueGame";
+import GameBoard from "../screens/GameBoard/GameBoard";
 import Home from "../screens/Home/Home";
 import Login from "../screens/Login/Login";
 import Register from "../screens/Register/Register";
@@ -26,6 +28,8 @@ export const Authenticated = () => {
             <Stack.Screen name={Routes.AllPlayers} component={AllPlayers}/>
             <Stack.Screen name={Routes.StartGame} component={StartGame}/>
             <Stack.Screen name={Routes.selectPlayers} component={SelectPlayers} />
+            <Stack.Screen name={Routes.GameBoard} component={GameBoard}/>
+            <Stack.Screen name={Routes.ContinueGame} component={ContinueGame} />
         </Stack.Navigator>
     )
 }

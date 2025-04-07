@@ -63,7 +63,11 @@ const Home = ({navigation})=>{
                             navigation.navigate(Routes.StartGame)
                         }}
                     /> 
-                    <Button icon={faPlay} text={"Continue Game"} />
+                    <Button icon={faPlay} text={"Continue Game"}
+                        onPress={()=>{
+                          navigation.navigate(Routes.ContinueGame)
+                        }}
+                    />
             </ScrollView>
         </SafeAreaView>
     )

@@ -1,16 +1,74 @@
-import { TouchableOpacity, SafeAreaView, Text, View, TextInput } from 'react-native'
+import { TouchableOpacity, SafeAreaView, Text, View, TextInput, Alert } from 'react-native'
 import Style from './Style'
 import BackButton from '../../components/BackButton/BackButton'
 import { useState } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
+import auth from '@react-native-firebase/auth';
+import { initializeGame } from '../../redux/reducers/gameState'
+import firestore from '@react-native-firebase/firestore';
+import { resetAllSelectedPlayers } from '../../redux/reducers/selectedPlayers'
+
+
+
 const StartGame = ({navigation}) => {
 
-    const [totalScore, setTotalScore] = useState('100');
+    const [totalGameScore, setTotalGameScore] = useState('100');
     const [dropScore, setDropScore] = useState('25');
     const [middleDropScore, setMiddleDropScore] = useState('40');
     const [fullCountScore, setFullCountScore] = useState('80');
     const [totalGameAmount, setTotalGameAmount] = useState('');
 
+    const selectedPlayersList = useSelector((store) => store.selectedPlayers.list);
+    const dispatch = useDispatch();
 
+    const handleBtn = async () => {
+        try {
+          if (
+            totalGameScore <= 0 ||
+            dropScore <= 0 ||
+            middleDropScore <= 0 ||
+            fullCountScore <= 0 ||
+            totalGameAmount <= 0
+          ) {
+            return Alert.alert("Please check the game scores and total amount!");
+          } else if (selectedPlayersList.length <= 1) {
+            return Alert.alert("Please select at least 2 players!");
+          }
+      
+          const userId = auth().currentUser?.uid;
+          const gameRef = await firestore()
+            .collection('users')
+            .doc(userId)
+            .collection('games')
+            .add({
+              drop: dropScore,
+              middleDrop: middleDropScore,
+              fullCount: fullCountScore,
+              totalGameScore: totalGameScore,
+              totalGameAmount: totalGameAmount,
+              players: selectedPlayersList,
+              status: 'continue',
+              totalScore : [],
+              createdAt: firestore.FieldValue.serverTimestamp()
+            });
+      
+            dispatch(initializeGame({
+                gameId : gameRef.id,
+                drop : dropScore,
+                middleDrop: middleDropScore,
+                fullCount: fullCountScore,
+                totalGameScore: totalGameScore,
+                totalGameAmount: totalGameAmount,
+                players: selectedPlayersList,
+                rounds: [],
+                totalScore : [],
+            }))
+            dispatch(resetAllSelectedPlayers());
+            navigation.navigate('GameBoard');
+        } catch (error) {
+            console.log(error);
+        }
+      };
 
 
     return (
@@ -49,8 +107,8 @@ const StartGame = ({navigation}) => {
                 <View style={Style.row}>
                     <Text style={Style.label}>Total</Text>
                     <TextInput keyboardType='numeric' 
-                        value={totalScore}
-                        onChangeText={setTotalScore}
+                        value={totalGameScore}
+                        onChangeText={setTotalGameScore}
                      style={Style.textInput} />
                 </View>
 
@@ -94,7 +152,7 @@ const StartGame = ({navigation}) => {
              * Start Game Container.
              */}
             <View>
-                <TouchableOpacity>
+                <TouchableOpacity onPress={()=>handleBtn()}>
                     <Text style={Style.startGameButton}>Start Game</Text>
                 </TouchableOpacity>
             </View>

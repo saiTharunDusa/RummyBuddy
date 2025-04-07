@@ -4,5 +4,7 @@ export const Routes = {
     Login : 'Login',
     Register : 'Register',
     StartGame : 'StartGame',
-    selectPlayers : 'selectPlayers'
+    selectPlayers : 'selectPlayers',
+    GameBoard : 'GameBoard',
+    ContinueGame : 'ContinueGame'
 }

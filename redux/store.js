@@ -3,12 +3,14 @@ import { configureStore } from "@reduxjs/toolkit";
 import allPlayers from "./reducers/allPlayers";
 import user from "./reducers/user";
 import selectedPlayers from "./reducers/selectedPlayers";
+import gameState from "./reducers/gameState";
 
 
 const rootReducer = combineReducers({
     allPlayers : allPlayers,
     user : user,
-    selectedPlayers : selectedPlayers
+    selectedPlayers : selectedPlayers,
+    gameState : gameState
 })
 
 const store = configureStore({
