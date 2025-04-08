@@ -11,7 +11,7 @@ import { useNavigation } from "@react-navigation/native";
 import BackButton from "../../components/BackButton/BackButton";
 import { useFocusEffect } from '@react-navigation/native';
 import { Routes } from "../../navigation/Routes";
-
+import { useGoToHome } from "../../navigation/GoToHome";
 
 const GameBoard = () => {
   const currentGame = useSelector((store) => store.gameState);
@@ -38,6 +38,7 @@ const GameBoard = () => {
   const [reEntryPlayerIndices, setReEntryPlayerIndices] = useState({});
 
   const navigation = useNavigation();
+  const goToHome = useGoToHome();
 
   const userId = auth().currentUser?.uid;
   const gameId = currentGame.gameId;
@@ -407,7 +408,7 @@ const GameBoard = () => {
     <SafeAreaView style={{ flex: 1 }}>
       {/** Title */}
       <View style={Style.back} >
-        <BackButton onPress={() => navigation.navigate(Routes.Home)} />
+        <BackButton onPress={goToHome} />
         <Text style={Style.mainHeading}>
           Rummy Scoreboard
         </Text>
