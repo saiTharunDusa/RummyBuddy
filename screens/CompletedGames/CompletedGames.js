@@ -9,12 +9,12 @@ import { useNavigation } from '@react-navigation/native';
 import { selectPlayer } from "../../redux/reducers/selectedPlayers";
 import BackButton from "../../components/BackButton/BackButton";
 
-const ContinueGame = () => {
+const CompletedGames = () => {
     const userId = auth().currentUser?.uid;
     const dispatch = useDispatch();
     const navigation = useNavigation();
 
-    const [continueGames, setContinueGames] = useState();
+    const [completedGames, setCompletedGames] = useState();
     
 
     useEffect(()=>{
@@ -24,15 +24,15 @@ const ContinueGame = () => {
                 .collection("users")
                 .doc(userId)
                 .collection("games")
-                .where("status","==","continue")
-                .orderBy("createdAt", "desc")
+                .where("status","==","completed")
+                .orderBy("createdAt","desc")
                 .get();
             
                 const gamesData = gamesSnap.docs.map(doc=>({
                     id : doc.id,
                     ...doc.data()
                 }))
-                setContinueGames(gamesData);
+                setCompletedGames(gamesData);
             }
             catch(err)
             {
@@ -132,10 +132,10 @@ const ContinueGame = () => {
                     flex: 1,
 
                 }}
-            >Continue Game</Text>
+            >Completed Games</Text>
             </View>
             <FlatList
-                data= {continueGames}
+                data= {completedGames}
                 key={(item) => item.id.toString()}
                 renderItem={renderItem}
             />
@@ -143,4 +143,4 @@ const ContinueGame = () => {
     )
 }
 
-export default ContinueGame;
+export default CompletedGames;

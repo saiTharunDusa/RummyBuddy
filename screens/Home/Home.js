@@ -48,27 +48,30 @@ const Home = ({navigation})=>{
     
     return (
         <SafeAreaView>
-            <ScrollView>
-                    <Title/>
-                    <Button
-                        icon={faPersonCirclePlus}
-                        text="All Players"
-                        onPress={() => {
-                            navigation.navigate(Routes.AllPlayers);
-                        }}
-                    />
-                    <Button icon={faPlus} text={"New Game"}
-                        onPress={() => {
-                            dispatch(resetAllSelectedPlayers())
-                            navigation.navigate(Routes.StartGame)
-                        }}
-                    /> 
-                    <Button icon={faPlay} text={"Continue Game"}
-                        onPress={()=>{
-                          navigation.navigate(Routes.ContinueGame)
-                        }}
-                    />
-            </ScrollView>
+            <Title/>
+            <Button
+                icon={faPersonCirclePlus}
+                text="All Players"
+                onPress={() => {
+                    navigation.navigate(Routes.AllPlayers);
+                }}
+            />
+            <Button icon={faPlus} text={"New Game"}
+                onPress={() => {
+                    dispatch(resetAllSelectedPlayers())
+                    navigation.navigate(Routes.StartGame)
+                }}
+            /> 
+            <Button icon={faPlay} text={"Continue Game"}
+                onPress={()=>{
+                  navigation.navigate(Routes.ContinueGame)
+                }}
+            />
+            <Button icon={faPlay} text={"Completed Games"}
+                onPress={()=>{
+                  navigation.navigate(Routes.CompletedGames)
+                }}
+            />
         </SafeAreaView>
     )
 }

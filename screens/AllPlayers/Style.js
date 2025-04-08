@@ -20,13 +20,13 @@ const Style = StyleSheet.create({
         paddingVertical: verticalScale(8),
         paddingHorizontal: horizontalScale(8),
         marginRight: horizontalScale(8),
-        borderRadius: 20,
+        borderRadius: 10,
       },
       button: {
         backgroundColor: '#3498db',
         paddingHorizontal: horizontalScale(16),
         paddingVertical: verticalScale(10),
-        borderRadius: 20,
+        borderRadius: 10,
         justifyContent: 'center',
       },
       buttonText: {
@@ -49,7 +49,7 @@ const Style = StyleSheet.create({
         borderColor: '#3498db',
         paddingHorizontal: horizontalScale(8),
         paddingVertical : verticalScale(8),
-        borderRadius: 20,
+        borderRadius: 10,
       },
       editButton: {
         marginLeft: horizontalScale(8),

@@ -6,5 +6,6 @@ export const Routes = {
     StartGame : 'StartGame',
     selectPlayers : 'selectPlayers',
     GameBoard : 'GameBoard',
-    ContinueGame : 'ContinueGame'
+    ContinueGame : 'ContinueGame',
+    CompletedGames : 'CompletedGames'
 }

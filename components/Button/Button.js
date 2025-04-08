@@ -13,7 +13,7 @@ const Button = ({ icon, text, onPress }) => {
         style={Style.buttonContainer} 
         onPress={onPress}
       >
-        <FontAwesomeIcon icon={icon} size={scaleFontSize(24)} style={Style.icon} />
+        <FontAwesomeIcon icon={icon} size={scaleFontSize(15)} style={Style.icon} />
         <Text style={Style.buttonText}>{text}</Text>
       </TouchableOpacity>
     </View>

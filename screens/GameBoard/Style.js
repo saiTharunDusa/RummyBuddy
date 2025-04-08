@@ -37,7 +37,7 @@ const Style = StyleSheet.create({
   },
   cell: {
     borderWidth: 1,
-    borderRadius: 10,
+    borderRadius: 5,
     borderColor: '#3498db',
     textAlign: 'center',
     paddingVertical: 6,
@@ -45,7 +45,7 @@ const Style = StyleSheet.create({
     backgroundColor: '#AED6F1',
   },
   totalRow: {
-    backgroundColor: '#B3E5FC',
+    backgroundColor: '#3fc934',
   },
   modalBackground: {
     flex: 1,
@@ -66,6 +66,7 @@ const Style = StyleSheet.create({
     textAlign: 'center',
   },
   mappingText: {
+    textAlign : 'center',
     fontSize: 15,
     marginBottom: 6,
   },
@@ -99,11 +100,7 @@ const Style = StyleSheet.create({
     marginLeft: 10,
     height: 40,
   },
-  // No need for padding at the bottom since buttons will scroll with content
-  scrollContent: {
-    // No paddingBottom needed anymore
-  },
-  // Button row that scrolls with content
+
   fabRow: {
     flexDirection: 'row',
     justifyContent: 'space-evenly',
@@ -113,7 +110,7 @@ const Style = StyleSheet.create({
     width: '100%',
   
   },
-  // Button style within the fab row
+
   fab: {
     backgroundColor: '#2980b9',
     padding: 14,
@@ -137,6 +134,36 @@ const Style = StyleSheet.create({
     fontSize: 16,
     color: '#555',
   },
+  checkboxRow: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginVertical: 8,
+  },
+  
+  checkbox: {
+    width: 22,
+    height: 22,
+    borderRadius: 5,
+    borderWidth: 2,
+    borderColor: '#3498db',
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginRight: 12,
+  },
+  
+  checkboxTick: {
+    color: '#fff',
+    fontSize: 14,
+    fontWeight: 'bold',
+  },
+  
+  checkboxLabel: {
+    fontSize: 16,
+    color: '#333',
+    fontWeight: '600',
+  },
+  
+  
 });
 
 export default Style;
