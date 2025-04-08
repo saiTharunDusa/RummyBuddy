@@ -7,6 +7,7 @@ const initialState = {
     fullCount: 0,
     totalGameScore: 0,
     totalGameAmount: 0,
+    totalGameAmountFixed : 0,
     players: [],
     rounds: [],
     totalScore : []

@@ -10,6 +10,7 @@ import auth from "@react-native-firebase/auth";
 import { useNavigation } from "@react-navigation/native";
 import BackButton from "../../components/BackButton/BackButton";
 import { useFocusEffect } from '@react-navigation/native';
+import { Routes } from "../../navigation/Routes";
 
 
 const GameBoard = () => {
@@ -26,6 +27,7 @@ const GameBoard = () => {
   const [totalGameScore, setTotalGameScore] = useState('');
   const [fullCountScore, setFullCountScore] = useState('');
   const [totalGameAmount, setTotalGameAmount] = useState('');
+  const [totalGameAmountFixed, setTotalGameAmountFixed] = useState('');
   const [showEditModal, setShowEditModal] = useState(false);
   const [showWinnerModal, setShowWinnerModal] = useState(false);
   const [showWinnerName, setShowWinnerName] = useState('');
@@ -94,6 +96,7 @@ const GameBoard = () => {
           setFullCountScore(gameData.fullCount || 0);
           setTotalGameScore(gameData.totalGameScore || 0);
           setTotalGameAmount(gameData.totalGameAmount || 0);
+          setTotalGameAmountFixed(gameData.totalGameAmountFixed || 0);
           setInGameRounds(scoresArray);
           setLastRoundScores(scoresArray[scoresArray.length - 1] || {});
 
@@ -298,6 +301,8 @@ const GameBoard = () => {
   
   const handleReentry = async () => {
     try {
+      const singlePlayerAmount = totalGameAmountFixed / inGamePlayers.length;
+  
       const newRound = {
         scores: {},
         createdAt: firestore.FieldValue.serverTimestamp(),
@@ -306,43 +311,30 @@ const GameBoard = () => {
       const updatedReEntryScores = {};
       inGamePlayers.forEach((p) => {
         if (outPlayerIds.has(p.id) && reEntryScores[p.id] !== undefined) {
-          updatedReEntryScores[p.id] = 0; 
+          updatedReEntryScores[p.id] = 0;
         }
       });
   
       const validPlayers = inGamePlayers.filter((p) => !outPlayerIds.has(p.id));
-      const notValidPlayers = inGamePlayers.filter((p)=>outPlayerIds.has(p.id));
-
       const totalScoreRow = currentGame.totalScore ?? {};
   
-      notValidPlayers.forEach((p) => {
-        const score = totalScoreRow[p.id] || 0;
-        newRound.scores[p.id] = score;
-      });
-
       let maxScore = 0;
-  
       validPlayers.forEach((p) => {
         const score = totalScoreRow[p.id] || 0;
         newRound.scores[p.id] = score;
         maxScore = Math.max(maxScore, score);
       });
-
+  
       Object.keys(updatedReEntryScores).forEach((id) => {
         newRound.scores[id] = maxScore + 1;
       });
   
-      
-
       const updatedRounds = [...(inGameRounds || []), newRound.scores];
-      setReEntryPlayerIndices(prev => ({
+      setReEntryPlayerIndices((prev) => ({
         ...prev,
-        [updatedRounds.length - 1]: true
+        [updatedRounds.length - 1]: true,
       }));
-      
-      
-      console.log(reEntryPlayerIndices);
-
+  
       setInGameRounds(updatedRounds);
       setShowReentryModal(false);
       dispatch(addRounds(newRound.scores));
@@ -356,43 +348,66 @@ const GameBoard = () => {
         .add(newRound);
   
       setLastRoundScores(newRound.scores);
-
-      dispatch(addTotals(newRound.scores));
-      
-      console.log(newRound.scores);
-
+  
+      const updatedTotals = { ...(currentGame.totalScore || {}) };
+      Object.keys(newRound.scores).forEach((id) => {
+        updatedTotals[id] = newRound.scores[id];
+      });
+  
+      const previousAmount = Number(currentGame.totalGameAmount ?? 0);
+      const reentryIncrement = Object.keys(updatedReEntryScores).length * singlePlayerAmount;
+      const updatedGameAmount = previousAmount + reentryIncrement;
+  
+      dispatch(addTotals(updatedTotals));
+      dispatch(
+        initializeGame({
+          ...currentGame,
+          totalGameAmount: updatedGameAmount,
+          totalScore: updatedTotals,
+        })
+      );
+  
       await firestore()
         .collection("users")
         .doc(userId)
         .collection("games")
         .doc(gameId)
-        .update({ totalScore: newRound.scores });
+        .update({
+          totalScore: updatedTotals,
+          totalGameAmount: updatedGameAmount,
+          status: "continue",
+        });
   
-      const alivePlayers = inGamePlayers.filter(p => newRound.scores[p.id] < totalGameScore);
+      const alivePlayers = inGamePlayers.filter(
+        (p) => newRound.scores[p.id] < totalGameScore
+      );
       if (alivePlayers.length === 1) {
         setShowWinnerName(alivePlayers[0].name);
         setShowWinnerModal(true);
       }
   
-      const playersOut = inGamePlayers.filter(p => newRound.scores[p.id] >= totalGameScore);
+      const playersOut = inGamePlayers.filter(
+        (p) => newRound.scores[p.id] >= totalGameScore
+      );
       setInGamePlayersOut(playersOut);
-
+  
       const playersInDanger = inGamePlayers.filter(
-        p => newRound.scores[p.id] >= (totalGameScore - dropScore)
+        (p) => newRound.scores[p.id] >= totalGameScore - dropScore
       );
       setInGamePlayersDanger(playersInDanger);
-
-
     } catch (err) {
       console.log("ERROR : ", err);
     }
   };
   
+  
+  
+  
   return (
     <SafeAreaView style={{ flex: 1 }}>
       {/** Title */}
       <View style={Style.back} >
-        <BackButton onPress={() => navigation.goBack()} />
+        <BackButton onPress={() => navigation.navigate(Routes.Home)} />
         <Text style={Style.mainHeading}>
           Rummy Scoreboard
         </Text>
@@ -572,6 +587,13 @@ const GameBoard = () => {
             ))}
             <TouchableOpacity style={Style.modalClose} onPress={() => setShowSettings(false)}>
               <Text style={{ color: '#fff' }}>Close</Text>
+            </TouchableOpacity>
+            <TouchableOpacity style={Style.modalClose} onPress={() =>
+              {
+                navigation.navigate(Routes.Compromise),
+                setShowSettings(false)
+              } }>
+              <Text style={{ color: '#fff' }}>Compromise</Text>
             </TouchableOpacity>
           </View>
         </View>
