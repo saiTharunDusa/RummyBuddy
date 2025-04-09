@@ -36,6 +36,8 @@ const GameBoard = () => {
   const [showReentryModal, setShowReentryModal] = useState(false);
   const [reEntryScores, setReEntryScores] = useState({});
   const [reEntryPlayerIndices, setReEntryPlayerIndices] = useState({});
+  const [showInfo, setShowInfo] = useState(false);
+  const [reEntryPlayersData, setReEntryPlayersData] = useState([]);
 
   const navigation = useNavigation();
   const goToHome = useGoToHome();
@@ -54,11 +56,6 @@ const GameBoard = () => {
     const temp = new Set(inGamePlayersOut.map(p=>p.id));
     return temp;
   }, [inGamePlayersOut])
-
-  const reentryIndicesSet = useMemo(() => {
-    return new Set(Object.keys(reEntryPlayerIndices).map(Number));
-  }, [reEntryPlayerIndices]);
-
   
 
   const dispatch = useDispatch();
@@ -91,19 +88,21 @@ const GameBoard = () => {
           dispatch(initializeGame({ ...gameData, gameId }));
           dispatch(setRounds(scoresArray));
 
-          setInGamePlayers(gameData.players || []);
-          setDropScore(gameData.drop || 0);
-          setMiddleDropScore(gameData.middleDrop || 0);
-          setFullCountScore(gameData.fullCount || 0);
-          setTotalGameScore(gameData.totalGameScore || 0);
-          setTotalGameAmount(gameData.totalGameAmount || 0);
-          setTotalGameAmountFixed(gameData.totalGameAmountFixed || 0);
+          setInGamePlayers(gameData?.players || []);
+          setDropScore(gameData?.drop || 0);
+          setMiddleDropScore(gameData?.middleDrop || 0);
+          setFullCountScore(gameData?.fullCount || 0);
+          setTotalGameScore(gameData?.totalGameScore || 0);
+          setTotalGameAmount(gameData?.totalGameAmount || 0);
+          setTotalGameAmountFixed(gameData?.totalGameAmountFixed || 0);
           setInGameRounds(scoresArray);
           setLastRoundScores(scoresArray[scoresArray.length - 1] || {});
+		  setReEntryPlayersData(gameData?.reEntryPlayersData || []); 
 
-          const totals = gameData.totalScore || {};
 
-          const alivePlayers = gameData.players.filter(p => totals[p.id] < gameData.totalGameScore);
+          const totals = gameData?.totalScore || {};
+
+          const alivePlayers = gameData?.players.filter(p => totals[p.id] < gameData.totalGameScore);
           if (alivePlayers.length === 1) {
             setShowWinnerName(alivePlayers[0].name);
             setShowWinnerModal(true);
@@ -115,11 +114,11 @@ const GameBoard = () => {
                   .update({status : 'completed'});
           }
 
-          const playersOut = gameData.players.filter(p => totals[p.id] >= gameData.totalGameScore);
+          const playersOut = gameData?.players.filter(p => totals[p.id] >= gameData?.totalGameScore);
           setInGamePlayersOut(playersOut);
 
-          const playersInDanger = gameData.players.filter(
-            p => totals[p.id] >= (gameData.totalGameScore - gameData.drop)
+          const playersInDanger = gameData?.players.filter(
+            p => totals[p.id] >= (gameData?.totalGameScore - gameData?.drop)
           );
           setInGamePlayersDanger(playersInDanger);
 
@@ -133,6 +132,38 @@ const GameBoard = () => {
       }
     }, [userId, gameId, dispatch])
   );
+
+  const getCurrentDistributorId = () => {
+	const activePlayers = inGamePlayers.filter(p => !outPlayerIds.has(p.id));
+	if (activePlayers.length === 0) return null;
+
+
+	let distributorId = null;
+  
+	// Track previous distributor
+	const allRounds = [...inGameRounds];
+  
+	for (let i = 0, distIndex = 0; i <= allRounds.length; i++) {
+	  if (i === allRounds.length) {
+		// We reached the current round
+		return activePlayers[distIndex % activePlayers.length].id;
+	  }
+  
+	  const previousRound = allRounds[i];
+	  const previousDistributorId = activePlayers[distIndex % activePlayers.length].id;
+  
+	  if (outPlayerIds.has(previousDistributorId)) {
+		// Skip distributor who is now out
+		distIndex++;
+		i--; // retry this round with next distributor
+	  } else {
+		distIndex++;
+	  }
+	}
+  
+	return distributorId;
+  };
+  
 
   const handleAddRound = async () => {
     try {
@@ -330,12 +361,22 @@ const GameBoard = () => {
         newRound.scores[id] = maxScore + 1;
       });
   
-      const updatedRounds = [...(inGameRounds || []), newRound.scores];
-      setReEntryPlayerIndices((prev) => ({
-        ...prev,
-        [updatedRounds.length - 1]: true,
-      }));
-  
+      const reenteredPlayerIds = Object.keys(updatedReEntryScores);
+
+	  const updatedRounds = [...(inGameRounds || []), newRound.scores];
+
+      const newReentryIndex = updatedRounds.length - 1;
+
+	  const updatedReEntryPlayerIndices = {
+		...reEntryPlayerIndices,
+		[newReentryIndex]: {
+			reentry: true,
+			players: reenteredPlayerIds,
+		},
+	  };
+
+	  setReEntryPlayerIndices(updatedReEntryPlayerIndices);
+	  
       setInGameRounds(updatedRounds);
       setShowReentryModal(false);
       dispatch(addRounds(newRound.scores));
@@ -359,15 +400,21 @@ const GameBoard = () => {
       const reentryIncrement = Object.keys(updatedReEntryScores).length * singlePlayerAmount;
       const updatedGameAmount = previousAmount + reentryIncrement;
   
+	  const reEntryPlayersArray = Object.entries(updatedReEntryPlayerIndices).map(([index, data]) => ({
+		[index]: data
+	  }));
+
       dispatch(addTotals(updatedTotals));
       dispatch(
         initializeGame({
           ...currentGame,
           totalGameAmount: updatedGameAmount,
           totalScore: updatedTotals,
-        })
+		  reEntryPlayersData : reEntryPlayersArray
+	})
       );
-  
+	  
+	  console.log(reEntryPlayerIndices);
       await firestore()
         .collection("users")
         .doc(userId)
@@ -377,8 +424,14 @@ const GameBoard = () => {
           totalScore: updatedTotals,
           totalGameAmount: updatedGameAmount,
           status: "continue",
+		  reEntryPlayersData : reEntryPlayersArray,
         });
   
+
+		setReEntryPlayersData(Object.entries(updatedReEntryPlayerIndices).map(([key, value]) => ({
+			[key]: value,
+		  })));
+		  
       const alivePlayers = inGamePlayers.filter(
         (p) => newRound.scores[p.id] < totalGameScore
       );
@@ -406,67 +459,136 @@ const GameBoard = () => {
   
   return (
     <SafeAreaView style={{ flex: 1 }}>
-      {/** Title */}
-      <View style={Style.back} >
-        <BackButton onPress={goToHome} />
-        <Text style={Style.mainHeading}>
-          Rummy Scoreboard
-        </Text>
+      {/* Title and Game Info Toggle */}
+      <View style={{ paddingHorizontal: 16, paddingTop: 10, marginBottom : 5 }}>
+        {/* Top Row: Back + Title */}
+        <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'center' }}>
+          <View style={{ position: 'absolute', left: 0 }}>
+            <BackButton onPress={goToHome} />
+          </View>
+          <Text style={[Style.mainHeading, { textAlign: 'center' }]}>Rummy Scoreboard</Text>
+        </View>
+
+        {/* Game Info Toggle */}
+        <View style={{ alignItems: 'center', marginTop: 6 }}>
+          <TouchableOpacity
+            style={{
+              backgroundColor: '#3498db',
+              paddingVertical: 4,
+              paddingHorizontal: 12,
+              borderRadius: 6,
+            }}
+            onPress={() => setShowInfo(!showInfo)}
+          >
+            <Text style={{ color: '#fff', fontWeight: 'bold', fontSize: 12 }}>
+              {showInfo ? 'Hide Game Info ▲' : 'Show Game Info ▼'}
+            </Text>
+          </TouchableOpacity>
+        </View>
+
+        {/* Game Info Panel */}
+        {showInfo && (
+          <View
+            style={{
+              backgroundColor: '#AED6F1',
+              marginTop: 6,
+              padding: 12,
+              borderRadius: 10,
+            }}
+          >
+            <Text style={{ lineHeight: 20 }}>
+            🟧 – Tells that the player has no drops left.{"\n"}
+            🔴 – Tells that the player is out of the game.{"\n"}
+            🔷 – Reentry round.
+            
+            
+            </Text>
+          </View>
+        )}
       </View>
 
+
         {/** Players Row. */}
-        <View style={Style.headerRow}>
-          <Text style={Style.roundLabel}>#</Text>
-          {inGamePlayers.map((player, index) => {
-            const isDanger = dangerPlayerIds.has(player.id);
-            const isOut = outPlayerIds.has(player.id);
-            return (
-              <Text
-                key={index}
-                style={{
-                  borderWidth: 1,
-                  borderRadius: 10,
-                  borderColor: isOut ? '#ff0505': isDanger ? '#ff8f00' : '#3498db',
-                  textAlign: 'center',
-                  color: '#FFFFFF',
-                  paddingVertical: 6,
-                  marginHorizontal: 6,
-                  backgroundColor: isOut ? '#ff0505': isDanger ? '#ff8f00' : '#3498db',
-                  flex: 1,
-                  fontWeight: 'bold',
-                }}
-              >
-                {index + 1}
-              </Text>
-            );
-          })}
-        </View>
+		<View style={Style.headerRow}>
+		<Text style={Style.roundLabel}>#</Text>
+		{inGamePlayers.map((player, index) => {
+			const isDanger = dangerPlayerIds.has(player.id);
+			const isOut = outPlayerIds.has(player.id);
+
+			const currentDistributorId = getCurrentDistributorId();
+
+			const isDistributor = player.id === currentDistributorId;
+
+			return (
+			<Text
+				key={index}
+				style={{
+				borderWidth: 1,
+				borderRadius: 10,
+				borderColor: isOut ? '#ff0505' : isDanger ? '#ff8f00' : '#3498db',
+				textAlign: 'center',
+				color: '#FFFFFF',
+				paddingVertical: 6,
+				marginHorizontal: 6,
+				backgroundColor: isDistributor ? '#1ABC9C' : isOut ? '#ff0505' : isDanger ? '#ff8f00' : '#3498db',
+				flex: 1,
+				fontWeight: 'bold',
+				}}
+			>
+				{index + 1}
+			</Text>
+			);
+		})}
+		</View>
+
 
       <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={Style.scrollContent}>
         {/** Each Round Row. */}
-        {inGameRounds.map((round, index) => {
-          const isReentryRow = reentryIndicesSet.has(index);
-          return (
-            <View
-              key={index}
-              style={[
-                Style.row,
-                {
-                  backgroundColor: isReentryRow ? '#B3E5FC' : 'transparent', // Light green for reentry
-                  borderRadius: 10,
-                  paddingVertical: 4,
-                },
-              ]}
-            >
-              <Text style={Style.roundLabel}>{index + 1}</Text>
-              {inGamePlayers.map((p) => (
-                <Text key={p.id} style={[Style.cell, { flex: 1 }]}>
-                  {round[p.id]}
-                </Text>
-              ))}
-            </View>
-          );
-        })}
+				{inGameRounds.map((round, index) => {
+		const currentReentryEntry = Array.isArray(reEntryPlayersData)
+			? reEntryPlayersData.find(entry => Number(Object.keys(entry)[0]) === index)
+			: null;
+
+		const reentryPlayers = currentReentryEntry?.[index]?.players || [];
+		const isReentryRound = currentReentryEntry?.[index]?.reentry === true;
+
+		return (
+			<View
+			key={index}
+			style={[
+				Style.row,
+				{
+				backgroundColor: isReentryRound ? '#B3E5FC' : 'transparent',
+				borderRadius: 10,
+				paddingVertical: 4,
+				},
+			]}
+			>
+			<Text style={Style.roundLabel}>{index + 1}</Text>
+			{inGamePlayers.map((p) => {
+				const isReenteredPlayer = reentryPlayers.includes(p.id);
+				return (
+				<Text
+					key={p.id}
+					style={[
+					Style.cell,
+					{
+						flex: 1,
+						backgroundColor: isReenteredPlayer ? '#008000' : '#3498db',
+						color: '#fff',
+						borderWidth: 1,
+						borderColor: '#fff',
+						borderRadius: 8,
+					},
+					]}
+				>
+					{round[p.id]}
+				</Text>
+				);
+			})}
+			</View>
+		);
+		})}
 
 
         {/** Total Row */}
@@ -645,65 +767,66 @@ const GameBoard = () => {
         </Modal>
 
         {/* Reentry Modal */}
-    <Modal visible={showReentryModal} transparent animationType="fade">
-      <View style={Style.modalBackground}>
-        <View style={Style.modalBox}>
-          <Text style={Style.modalTitle}>Re Entry</Text>
+		<Modal visible={showReentryModal} transparent animationType="fade">
+			<View style={Style.modalBackground}>
+				<View style={Style.modalBox}>
+				<Text style={Style.modalTitle}>Re Entry</Text>
 
-          {inGamePlayersOut.map((p, index) => {
-            const isSelected = reEntryScores[p.id] !== undefined;
-            return (
-              <TouchableOpacity
-                key={p.id}
-                style={Style.checkboxRow}
-                onPress={() => {
-                  setReEntryScores((prev) => {
-                    const updated = { ...prev };
-                    if (isSelected) {
-                      delete updated[p.id];
-                    } else {
-                      updated[p.id] = 0;
-                    }
-                    return updated;
-                  });
-                }}
-              >
-                <View
-                  style={[
-                    Style.checkbox,
-                    { backgroundColor: isSelected ? '#3498db' : '#fff' },
-                  ]}
-                >
-                  {isSelected && (
-                    <Text style={Style.checkboxTick}>✓</Text>
-                  )}
-                </View>
-                <Text style={Style.checkboxLabel}>
-                  {index + 1}. {p.name}
-                </Text>
-              </TouchableOpacity>
-            );
-          })}
+				{inGamePlayersOut.map((p, index) => {
+					const isSelected = reEntryScores[p.id] !== undefined;
+					return (
+					<TouchableOpacity
+						key={p.id}
+						style={Style.checkboxRow}
+						onPress={() => {
+						setReEntryScores((prev) => {
+							const updated = { ...prev };
+							if (isSelected) {
+							delete updated[p.id];
+							} else {
+							updated[p.id] = 0;
+							}
+							return updated;
+						});
+						}}
+					>
+						<View
+						style={[
+							Style.checkbox,
+							{ backgroundColor: isSelected ? '#3498db' : '#fff' },
+						]}
+						>
+						{isSelected && (
+							<Text style={Style.checkboxTick}>✓</Text>
+						)}
+						</View>
+						<Text style={Style.checkboxLabel}>
+						{index + 1}. {p.name}
+						</Text>
+					</TouchableOpacity>
+					);
+				})}
 
-          {inGamePlayersDanger.length > 0 ? (
-            <View>
-              <TouchableOpacity style={Style.modalClose} onPress={handleReentry}>
-                <Text style={{ color: '#fff' }}>Re-entry</Text>
-              </TouchableOpacity>
-              <TouchableOpacity style={Style.modalClose} onPress={handleCancel}>
-                <Text style={{ color: '#fff' }}>Cancel</Text>
-              </TouchableOpacity>
-            </View>
-          ) : (
-            <View>
-              <TouchableOpacity style={Style.modalClose} onPress={handleCancel}>
-                <Text style={{ color: '#fff' }}>No Re-entry Available!</Text>
-              </TouchableOpacity>
-            </View>
-          )}
-        </View>
-      </View>
-    </Modal>
+				{inGamePlayersOut.length > 0 && inGamePlayersDanger.length <= inGamePlayersOut.length ? (
+				<View>
+					<TouchableOpacity style={Style.modalClose} onPress={handleReentry}>
+					<Text style={{ color: '#fff' }}>Re-entry</Text>
+					</TouchableOpacity>
+					<TouchableOpacity style={Style.modalClose} onPress={handleCancel}>
+					<Text style={{ color: '#fff' }}>Cancel</Text>
+					</TouchableOpacity>
+				</View>
+				) : (
+				<View>
+					<TouchableOpacity style={Style.modalClose} onPress={handleCancel}>
+					<Text style={{ color: '#fff' }}>No Re-entry Available!</Text>
+					</TouchableOpacity>
+				</View>
+				)}
+
+				</View>
+			</View>
+		</Modal>
 
 
     </SafeAreaView>

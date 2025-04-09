@@ -10,7 +10,8 @@ const initialState = {
     totalGameAmountFixed : 0,
     players: [],
     rounds: [],
-    totalScore : []
+    totalScore : [],
+    reEntryPlayerIndices : [],
 }
 
 const gameState = createSlice({
