@@ -8,5 +8,6 @@ export const Routes = {
     GameBoard : 'GameBoard',
     ContinueGame : 'ContinueGame',
     CompletedGames : 'CompletedGames',
-    Compromise : 'Compromise'
+    Compromise : 'Compromise',
+    GameBoardTemp : 'GameBoardTemp',
 }

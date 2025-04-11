@@ -18,6 +18,8 @@ const Compromise = () => {
 
   const validPlayers = players.filter(p => totalScore[p.id] < totalGameScore);
   const outPlayers = players.filter(p => totalScore[p.id] >= totalGameScore);
+  const eligibleProfitPlayers = players.filter(p => totalScore[p.id] < (totalGameScore - dropValue));
+  const singlePlayerAmount = totalGameAmountFixed / players.length;
 
   const playerReturns = {};
 
@@ -29,21 +31,22 @@ const Compromise = () => {
 
 
   validPlayers.forEach(player=>{
-    playerDropMap[player.id] = 1;
+    playerReturns[player.id] = singlePlayerAmount;
+    totalGameAmount = totalGameAmount - singlePlayerAmount;
+    playerDropMap[player.id] = 0;
   })
 
   let totalDrops = 0;
-  validPlayers.forEach(player => {
+  eligibleProfitPlayers.forEach(player => {
     const noOfDrops = Math.floor((totalGameScore - totalScore[player.id] - 1) / dropValue);
     playerDropMap[player.id] += noOfDrops;
     totalDrops += noOfDrops;
   });
 
-  console.log(playerDropMap);
 
-  validPlayers.forEach(p => {
+  eligibleProfitPlayers.forEach(p => {
     const drops = playerDropMap[p.id];
-    playerReturns[p.id] = Math.floor((drops / totalDrops) * totalGameAmount);
+    playerReturns[p.id] += Math.floor((drops / totalDrops) * totalGameAmount);
   });
 
   return (

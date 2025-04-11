@@ -70,7 +70,7 @@ const CompletedGames = () => {
                 totalScore : item.totalScore
             }));
             dispatch(selectPlayer(item.players));
-            navigation.navigate('GameBoard');
+            navigation.navigate('GameBoardTemp');
         }
         catch(err)
         {

@@ -4,7 +4,7 @@ import BackButton from '../../components/BackButton/BackButton'
 import { useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import auth from '@react-native-firebase/auth';
-import { initializeGame } from '../../redux/reducers/gameState'
+import { initializeGame, resetGameBoard } from '../../redux/reducers/gameState'
 import firestore from '@react-native-firebase/firestore';
 import { resetAllSelectedPlayers } from '../../redux/reducers/selectedPlayers'
 
@@ -52,7 +52,7 @@ const StartGame = ({navigation}) => {
               totalScore : [],
               createdAt: firestore.FieldValue.serverTimestamp()
             });
-      
+            dispatch(resetGameBoard());
             dispatch(initializeGame({
                 gameId : gameRef.id,
                 drop : dropScore,
@@ -66,7 +66,7 @@ const StartGame = ({navigation}) => {
                 totalScore : [],
             }))
             dispatch(resetAllSelectedPlayers());
-            navigation.navigate('GameBoard');
+            navigation.navigate('GameBoardTemp');
         } catch (error) {
             console.log(error);
         }

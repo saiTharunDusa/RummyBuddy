@@ -4,7 +4,7 @@ import firestore from "@react-native-firebase/firestore"
 import auth from "@react-native-firebase/auth";
 import moment from 'moment';
 import { useDispatch } from "react-redux";
-import { initializeGame } from "../../redux/reducers/gameState";
+import { initializeGame, resetGameBoard } from "../../redux/reducers/gameState";
 import { useNavigation } from '@react-navigation/native';
 import { selectPlayer } from "../../redux/reducers/selectedPlayers";
 import BackButton from "../../components/BackButton/BackButton";
@@ -57,7 +57,7 @@ const ContinueGame = () => {
             const currentGameRounds = roundsSnap.docs.map(doc=>({...doc.data()}))
 
             const scoresArray = currentGameRounds.map(round=>round.scores);
-        
+            dispatch(resetGameBoard());
             dispatch(initializeGame({
                 gameId: item.id,
                 drop: item.drop,
@@ -67,10 +67,12 @@ const ContinueGame = () => {
                 totalGameAmount: item.totalGameAmount,
                 players: item.players,
                 rounds: scoresArray,
-                totalScore : item.totalScore
+                totalScore : item.totalScore,
+                inGameOutPlayers : item.inGameOutPlayers || [],
+                inGameDangerPlayers : item.inGameDangerPlayers || [],
             }));
             dispatch(selectPlayer(item.players));
-            navigation.navigate('GameBoard');
+            navigation.navigate('GameBoardTemp');
         }
         catch(err)
         {

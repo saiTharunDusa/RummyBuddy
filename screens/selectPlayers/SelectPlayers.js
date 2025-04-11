@@ -28,7 +28,7 @@ const SelectPlayers = ({ navigation }) => {
   };
 
   const handleConfirm = () => {
-    navigation.goBack(); // data already in Redux
+    navigation.goBack(); 
   };
 
   const renderItem = useCallback(({ item }) => {

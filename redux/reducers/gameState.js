@@ -11,7 +11,10 @@ const initialState = {
     players: [],
     rounds: [],
     totalScore : [],
-    reEntryPlayerIndices : [],
+    inGameOutPlayers : [],
+    inGameDangerPlayers : [],
+    reEntryRounds : [],
+    dealerId : 0,
 }
 
 const gameState = createSlice({
@@ -30,10 +33,26 @@ const gameState = createSlice({
         addTotals : (state, action) => {
             state.totalScore = action.payload;
         },
-        resetGameBoard : () => initialState
+        setOutPlayers : (state, action) => {
+            state.inGameOutPlayers = action.payload;
+        },
+        setDangerPlayers : (state, action) => {
+            state.inGameDangerPlayers = action.payload;
+        },
+        setReEntryRounds: (state, action) => {
+            if (!state.reEntryRounds) {
+              state.reEntryRounds = [];
+            }
+            state.reEntryRounds = [...state.reEntryRounds, action.payload];
+          },
+                    
+        resetGameBoard: (state) => {
+            Object.assign(state, initialState);
+        }
+          
     }
 })
 
-export const {initializeGame, addRounds, addTotals, resetGameBoard, setRounds} = gameState.actions;
+export const {initializeGame, addRounds, addTotals, resetGameBoard, setRounds, setOutPlayers, setDangerPlayers, setReEntryRounds} = gameState.actions;
 
 export default gameState.reducer;

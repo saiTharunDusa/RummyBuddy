@@ -5,7 +5,7 @@ import Style from "./Style";
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 import { faPlus, faUsers, faGear, faPen} from "@fortawesome/free-solid-svg-icons";
 import { addRounds, addTotals, initializeGame, setRounds } from "../../redux/reducers/gameState";
-import firestore, { startAfter } from "@react-native-firebase/firestore";
+import firestore from "@react-native-firebase/firestore";
 import auth from "@react-native-firebase/auth";
 import { useNavigation } from "@react-navigation/native";
 import BackButton from "../../components/BackButton/BackButton";
@@ -17,7 +17,7 @@ const GameBoard = () => {
   const currentGame = useSelector((store) => store.gameState);
   const [inGamePlayers, setInGamePlayers] = useState([]);
   const [currentScores, setCurrentScores] = useState({});
-  const [lastRoundScores, setLastRoundScores] = useState({});
+  // const [lastRoundScores, setLastRoundScores] = useState({});
   const [showScoreModal, setShowScoreModal] = useState(false);
   const [showMapping, setShowMapping] = useState(false);
   const [showSettings, setShowSettings] = useState(false);
@@ -97,7 +97,7 @@ const GameBoard = () => {
           setTotalGameAmountFixed(gameData?.totalGameAmountFixed || 0);
           setInGameRounds(scoresArray);
           setLastRoundScores(scoresArray[scoresArray.length - 1] || {});
-		  setReEntryPlayersData(gameData?.reEntryPlayersData || []); 
+		      setReEntryPlayersData(gameData?.reEntryPlayersData || []);
 
 
           const totals = gameData?.totalScore || {};
@@ -134,35 +134,35 @@ const GameBoard = () => {
   );
 
   const getCurrentDistributorId = () => {
-	const activePlayers = inGamePlayers.filter(p => !outPlayerIds.has(p.id));
-	if (activePlayers.length === 0) return null;
-
-
-	let distributorId = null;
+    const activePlayers = inGamePlayers.filter(p => !outPlayerIds.has(p.id));
+    if (activePlayers.length === 0) return null;
   
-	// Track previous distributor
-	const allRounds = [...inGameRounds];
+    let lastDealerIndex = 0;
   
-	for (let i = 0, distIndex = 0; i <= allRounds.length; i++) {
-	  if (i === allRounds.length) {
-		// We reached the current round
-		return activePlayers[distIndex % activePlayers.length].id;
-	  }
+    for (let i = 0; i < inGameRounds.length; i++) {
+      const nextIndex = (lastDealerIndex + 1) % inGamePlayers.length;
+      let nextDealerId = null;
   
-	  const previousRound = allRounds[i];
-	  const previousDistributorId = activePlayers[distIndex % activePlayers.length].id;
+      // Find the next valid dealer in cycle
+      for (let j = 0; j < inGamePlayers.length; j++) {
+        const checkIndex = (nextIndex + j) % inGamePlayers.length;
+        const candidate = inGamePlayers[checkIndex];
   
-	  if (outPlayerIds.has(previousDistributorId)) {
-		// Skip distributor who is now out
-		distIndex++;
-		i--; // retry this round with next distributor
-	  } else {
-		distIndex++;
-	  }
-	}
+        const wasOut = outPlayerIds.has(candidate.id);
+        const isStillIn = !wasOut;
   
-	return distributorId;
+        if (isStillIn) {
+          nextDealerId = candidate.id;
+          lastDealerIndex = checkIndex;
+          break;
+        }
+      }
+    }
+  
+    return inGamePlayers[lastDealerIndex]?.id || null;
   };
+  
+  
   
 
   const handleAddRound = async () => {
@@ -196,7 +196,7 @@ const GameBoard = () => {
         .collection("rounds")
         .add(newRound);
   
-      setLastRoundScores(newRound.scores);
+      // setLastRoundScores(newRound.scores);
   
       const totals = { ...(currentGame.totalScore || {}) };
       inGamePlayers.forEach(p => {
@@ -363,19 +363,19 @@ const GameBoard = () => {
   
       const reenteredPlayerIds = Object.keys(updatedReEntryScores);
 
-	  const updatedRounds = [...(inGameRounds || []), newRound.scores];
+	    const updatedRounds = [...(inGameRounds || []), newRound.scores];
 
       const newReentryIndex = updatedRounds.length - 1;
 
-	  const updatedReEntryPlayerIndices = {
-		...reEntryPlayerIndices,
-		[newReentryIndex]: {
-			reentry: true,
-			players: reenteredPlayerIds,
-		},
-	  };
+      const updatedReEntryPlayerIndices = {
+      ...reEntryPlayerIndices,
+      [newReentryIndex]: {
+        reentry: true,
+        players: reenteredPlayerIds,
+      },
+      };
 
-	  setReEntryPlayerIndices(updatedReEntryPlayerIndices);
+	    setReEntryPlayerIndices(updatedReEntryPlayerIndices);
 	  
       setInGameRounds(updatedRounds);
       setShowReentryModal(false);
@@ -400,20 +400,20 @@ const GameBoard = () => {
       const reentryIncrement = Object.keys(updatedReEntryScores).length * singlePlayerAmount;
       const updatedGameAmount = previousAmount + reentryIncrement;
   
-	  const reEntryPlayersArray = Object.entries(updatedReEntryPlayerIndices).map(([index, data]) => ({
-		[index]: data
-	  }));
+      const reEntryPlayersArray = Object.entries(updatedReEntryPlayerIndices).map(([index, data]) => ({
+      [index]: data
+      }));
 
-      dispatch(addTotals(updatedTotals));
-      dispatch(
-        initializeGame({
-          ...currentGame,
-          totalGameAmount: updatedGameAmount,
-          totalScore: updatedTotals,
-		  reEntryPlayersData : reEntryPlayersArray
-	})
-      );
-	  
+        dispatch(addTotals(updatedTotals));
+        dispatch(
+          initializeGame({
+            ...currentGame,
+            totalGameAmount: updatedGameAmount,
+            totalScore: updatedTotals,
+            reEntryPlayersData : reEntryPlayersArray
+          })
+        );
+      
 	  console.log(reEntryPlayerIndices);
       await firestore()
         .collection("users")
@@ -424,7 +424,7 @@ const GameBoard = () => {
           totalScore: updatedTotals,
           totalGameAmount: updatedGameAmount,
           status: "continue",
-		  reEntryPlayersData : reEntryPlayersArray,
+		      reEntryPlayersData : reEntryPlayersArray,
         });
   
 
@@ -459,6 +459,33 @@ const GameBoard = () => {
   
   return (
     <SafeAreaView style={{ flex: 1 }}>
+
+        {/** Winner Name Displaying */}
+        <Modal visible={showWinnerModal} transparent animationType="fade">
+          <View style={Style.modalBackground}>
+            <View style={Style.modalBox}>
+              <Text style={Style.modalTitle}>🎉 Congratulations!</Text>
+              <Text style={{ textAlign: 'center', fontSize: 18, marginVertical: 10 }}>
+                {showWinnerName} is the winner!
+              </Text>
+              <TouchableOpacity style={Style.modalClose} onPress={() =>
+              {
+                navigation.navigate(Routes.Compromise),
+                setShowWinnerModal(false)
+              } }>
+              <Text style={{ color: '#fff' }}>Amount Won</Text>
+            </TouchableOpacity>
+              <TouchableOpacity style={Style.modalClose} onPress={() => setShowWinnerModal(false)}>
+                <Text style={{ color: '#fff' }}>Close</Text>
+              </TouchableOpacity>
+            </View>
+          </View>
+        </Modal>
+
+
+        {/** DONE. */}
+
+
       {/* Title and Game Info Toggle */}
       <View style={{ paddingHorizontal: 16, paddingTop: 10, marginBottom : 5 }}>
         {/* Top Row: Back + Title */}
@@ -506,8 +533,6 @@ const GameBoard = () => {
           </View>
         )}
       </View>
-
-
         {/** Players Row. */}
 		<View style={Style.headerRow}>
 		<Text style={Style.roundLabel}>#</Text>
@@ -517,7 +542,7 @@ const GameBoard = () => {
 
 			const currentDistributorId = getCurrentDistributorId();
 
-			const isDistributor = player.id === currentDistributorId;
+			const isDistributor = currentDistributorId == player.id;
 
 			return (
 			<Text
@@ -525,12 +550,13 @@ const GameBoard = () => {
 				style={{
 				borderWidth: 1,
 				borderRadius: 10,
-				borderColor: isOut ? '#ff0505' : isDanger ? '#ff8f00' : '#3498db',
+        borderWidth : isDistributor ? 5 : 2,
+				borderColor: isDistributor ? '#1ABC9C' : isOut ? '#ff0505' : isDanger ? '#ff8f00' : '#3498db',
 				textAlign: 'center',
 				color: '#FFFFFF',
 				paddingVertical: 6,
 				marginHorizontal: 6,
-				backgroundColor: isDistributor ? '#1ABC9C' : isOut ? '#ff0505' : isDanger ? '#ff8f00' : '#3498db',
+				backgroundColor: isOut ? '#ff0505' : isDanger ? '#ff8f00' : '#3498db',
 				flex: 1,
 				fontWeight: 'bold',
 				}}
@@ -540,55 +566,53 @@ const GameBoard = () => {
 			);
 		})}
 		</View>
+        <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={Style.scrollContent}>
+          {/** Each Round Row. */}
+          {inGameRounds.map((round, index) => {
+      const currentReentryEntry = Array.isArray(reEntryPlayersData)
+        ? reEntryPlayersData.find(entry => Number(Object.keys(entry)[0]) === index)
+        : null;
 
+      const reentryPlayers = currentReentryEntry?.[index]?.players || [];
+      const isReentryRound = currentReentryEntry?.[index]?.reentry === true;
 
-      <ScrollView showsVerticalScrollIndicator={false} contentContainerStyle={Style.scrollContent}>
-        {/** Each Round Row. */}
-				{inGameRounds.map((round, index) => {
-		const currentReentryEntry = Array.isArray(reEntryPlayersData)
-			? reEntryPlayersData.find(entry => Number(Object.keys(entry)[0]) === index)
-			: null;
-
-		const reentryPlayers = currentReentryEntry?.[index]?.players || [];
-		const isReentryRound = currentReentryEntry?.[index]?.reentry === true;
-
-		return (
-			<View
-			key={index}
-			style={[
-				Style.row,
-				{
-				backgroundColor: isReentryRound ? '#B3E5FC' : 'transparent',
-				borderRadius: 10,
-				paddingVertical: 4,
-				},
-			]}
-			>
-			<Text style={Style.roundLabel}>{index + 1}</Text>
-			{inGamePlayers.map((p) => {
-				const isReenteredPlayer = reentryPlayers.includes(p.id);
-				return (
-				<Text
-					key={p.id}
-					style={[
-					Style.cell,
-					{
-						flex: 1,
-						backgroundColor: isReenteredPlayer ? '#008000' : '#3498db',
-						color: '#fff',
-						borderWidth: 1,
-						borderColor: '#fff',
-						borderRadius: 8,
-					},
-					]}
-				>
-					{round[p.id]}
-				</Text>
-				);
-			})}
-			</View>
-		);
-		})}
+      return (
+        <View
+        key={index}
+        style={[
+          Style.row,
+          {
+          backgroundColor: isReentryRound ? '#B3E5FC' : 'transparent',
+          borderRadius: 10,
+          paddingVertical: 4,
+          },
+        ]}
+        >
+        <Text style={Style.roundLabel}>{index + 1}</Text>
+        {inGamePlayers.map((p) => {
+          const isReenteredPlayer = reentryPlayers.includes(p.id);
+          return (
+          <Text
+            key={p.id}
+            style={[
+            Style.cell,
+            {
+              flex: 1,
+              backgroundColor: isReenteredPlayer ? '#008000' : '#3498db',
+              color: '#fff',
+              borderWidth: 1,
+              borderColor: '#fff',
+              borderRadius: 8,
+            },
+            ]}
+          >
+            {round[p.id]}
+          </Text>
+          );
+        })}
+        </View>
+      );
+      })}
 
 
         {/** Total Row */}
@@ -618,7 +642,6 @@ const GameBoard = () => {
         </View>
 
       </ScrollView>
-
       {/* Floating Buttons */}
       <View style={Style.fabRow}>
         <TouchableOpacity style={Style.fab} onPress={() => setShowScoreModal(true)}>
@@ -637,7 +660,6 @@ const GameBoard = () => {
           <Text style={{ color: '#fff', fontSize: 19, fontWeight: 'bold' }}>R</Text>
         </TouchableOpacity>
       </View>
-
       {/* Score Modal */}
       <Modal visible={showScoreModal} transparent animationType="fade">
         <View style={Style.modalBackground}>
@@ -672,8 +694,6 @@ const GameBoard = () => {
           </View>
         </View>
       </Modal>
-
-
       {/* Mapping Modal */}
       <Modal visible={showMapping} transparent animationType="fade">
         <View style={Style.modalBackground}>
@@ -690,7 +710,6 @@ const GameBoard = () => {
           </View>
         </View>
       </Modal>
-
       {/* Game Settings */}
       <Modal visible={showSettings} transparent animationType="fade">
         <View style={Style.modalBackground}>
@@ -721,7 +740,6 @@ const GameBoard = () => {
           </View>
         </View>
       </Modal>
-
         {/* Edit Score Modal */}
         <Modal visible={showEditModal} transparent animationType="fade">
             <View style={Style.modalBackground}>
@@ -750,22 +768,6 @@ const GameBoard = () => {
             </View>
             </View>
         </Modal>
-
-        {/** Winner Name Displaying */}
-        <Modal visible={showWinnerModal} transparent animationType="fade">
-          <View style={Style.modalBackground}>
-            <View style={Style.modalBox}>
-              <Text style={Style.modalTitle}>🎉 Congratulations!</Text>
-              <Text style={{ textAlign: 'center', fontSize: 18, marginVertical: 10 }}>
-                {showWinnerName} is the winner!
-              </Text>
-              <TouchableOpacity style={Style.modalClose} onPress={() => setShowWinnerModal(false)}>
-                <Text style={{ color: '#fff' }}>Close</Text>
-              </TouchableOpacity>
-            </View>
-          </View>
-        </Modal>
-
         {/* Reentry Modal */}
 		<Modal visible={showReentryModal} transparent animationType="fade">
 			<View style={Style.modalBackground}>
