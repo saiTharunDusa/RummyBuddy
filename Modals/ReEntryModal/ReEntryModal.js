@@ -9,6 +9,8 @@ import {
   setDangerPlayers,
   setOutPlayers,
   setReEntryRounds,
+  setDealerId,
+  setOffSet,
 } from "../../redux/reducers/gameState";
 
 const ReEntryModal = () => {
@@ -20,77 +22,103 @@ const ReEntryModal = () => {
   const totalScore = useSelector((store) => store.gameState.totalScore || {});
   const totalGameScore = useSelector((store) => store.gameState.totalGameScore || 0);
   const dropScore = useSelector((store) => store.gameState.dropScore || 0);
-  const rounds = useSelector((store) => store.gameState.rounds);
+  const rounds = useSelector((store) => store.gameState.rounds || []);
+  
+  const dealerId = useSelector((store) => store.gameState.dealerId);
+  const offSet = useSelector((store) => store.gameState.offSet || []);
 
   const [showReentryModal, setShowReentryModal] = useState(false);
   const [reEntryScores, setReEntryScores] = useState([]);
 
-  const outPlayerIds = useMemo(() => new Set(inGamePlayersOut.map((p) => p.id)), [inGamePlayersOut]);
-
-  const dangerPlayerIds = useMemo(() => new Set(inGamePlayersDanger.map((p) => p.id)), [inGamePlayersDanger]);
-  
-  console.log(dangerPlayerIds);
+  const outPlayerIds = useMemo(
+    () => new Set(inGamePlayersOut.map((p) => p.id)),
+    [inGamePlayersOut]
+  );
+  const dangerPlayerIds = useMemo(
+    () => new Set(inGamePlayersDanger.map((p) => p.id)),
+    [inGamePlayersDanger]
+  );
 
   const handleReentry = () => {
-    const newRound = {};
-    const totals = {...totalScore};
-    let reEnteredPlayerIds = [];
+    const outPlayersBefore = [...inGamePlayersOut];
+    const outIdsBefore = new Set(outPlayersBefore.map((p) => p.id));
 
+    const newRound = {};
+    const totals = { ...totalScore };
+
+   
     inGamePlayers.forEach((p) => {
-      if(outPlayerIds.has(p.id))
-      {
+      if (outPlayerIds.has(p.id)) {
         newRound[p.id] = totalScore[p.id] || 0;
       }
-    })
+    });
 
+    let reEnteredPlayerIds = [];
     inGamePlayers.forEach((p) => {
       if (outPlayerIds.has(p.id) && reEntryScores[p.id] !== undefined) {
         reEnteredPlayerIds.push(p.id);
       }
     });
-    
-    
-
-    const validPlayers = inGamePlayers.filter((p) => !outPlayerIds.has(p.id));
 
     let maxScore = 0;
+    const validPlayers = inGamePlayers.filter((p) => !outPlayerIds.has(p.id));
     validPlayers.forEach((p) => {
-      const score = totalScore[p.id] || 0;
+      const score = totals[p.id] || 0;
       newRound[p.id] = score;
       maxScore = Math.max(maxScore, score);
     });
 
+  
     reEnteredPlayerIds.forEach((id) => {
       newRound[id] = maxScore + 1;
-      totals[id] = newRound[id]; 
+      totals[id] = maxScore + 1;
     });
-    
 
     dispatch(addRounds(newRound));
     dispatch(addTotals(totals));
 
-    const outPlayers = inGamePlayers.filter((p) => newRound[p.id] >= totalGameScore);
+    const outPlayers = inGamePlayers.filter((p) => totals[p.id] >= totalGameScore);
     const dangerPlayers = inGamePlayers.filter((p) => {
-      const score = newRound[p.id];
-      const lower = totalGameScore - dropScore;
-      const isDanger = score >= lower && score < totalGameScore;
-      return isDanger;
+      const s = totals[p.id];
+      return s >= (totalGameScore - dropScore) && s < totalGameScore;
     });
     dispatch(setOutPlayers(outPlayers));
     dispatch(setDangerPlayers(dangerPlayers));
 
-    dispatch(setReEntryRounds({
-      roundIndex: rounds.length, 
-      players: reEnteredPlayerIds, 
-    }));
-    
+    dispatch(
+      setReEntryRounds({
+        roundIndex: rounds.length,
+        players: reEnteredPlayerIds,
+      })
+    );
+
+    const outIdsAfter = new Set(outPlayers.map((p) => p.id));
+    const reenteredNowIn = [...outIdsBefore].filter((id) => !outIdsAfter.has(id));
+    const somebodyCameBack = reenteredNowIn.length > 0;
+
+    if (somebodyCameBack) {
+      
+      const newOffSet = [...offSet];
+      newOffSet[dealerId] = 1;
+
+      const offsetValue = newOffSet[dealerId]; 
+      const nextDealerId = (dealerId + offsetValue) % inGamePlayers.length;
+
+      if (outIdsAfter.has(inGamePlayers[nextDealerId].id)) {
+        newOffSet[dealerId] = offsetValue + 1;
+        dispatch(setOffSet(newOffSet));
+      } else {
+        dispatch(setOffSet(newOffSet));
+        dispatch(setDealerId(dealerId));
+      }
+    }
 
     setShowReentryModal(false);
   };
 
   const handleCancel = () => {
-	setShowReentryModal(false);
-  }
+    setShowReentryModal(false);
+  };
 
   return (
     <SafeAreaView>
@@ -118,10 +146,17 @@ const ReEntryModal = () => {
                     });
                   }}
                 >
-                  <View style={[Style.checkbox, { backgroundColor: isSelected ? "#3498db" : "#fff" }]}>
+                  <View
+                    style={[
+                      Style.checkbox,
+                      { backgroundColor: isSelected ? "#3498db" : "#fff" },
+                    ]}
+                  >
                     {isSelected && <Text style={Style.checkboxTick}>✓</Text>}
                   </View>
-                  <Text style={Style.checkboxLabel}>{index + 1}. {p.name}</Text>
+                  <Text style={Style.checkboxLabel}>
+                    {index + 1}. {p.name}
+                  </Text>
                 </TouchableOpacity>
               );
             })}
@@ -131,13 +166,13 @@ const ReEntryModal = () => {
                 <TouchableOpacity style={Style.modalClose} onPress={handleReentry}>
                   <Text style={{ color: "#fff" }}>Re-entry</Text>
                 </TouchableOpacity>
-				  <TouchableOpacity style={Style.modalClose} onPress={handleCancel}>
+                <TouchableOpacity style={Style.modalClose} onPress={handleCancel}>
                   <Text style={{ color: "#fff" }}>Cancel</Text>
                 </TouchableOpacity>
               </View>
             ) : (
               <View>
-                <TouchableOpacity style={Style.modalClose} onPress={() => setShowReentryModal(false)}>
+                <TouchableOpacity style={Style.modalClose} onPress={handleCancel}>
                   <Text style={{ color: "#fff" }}>No Re-entry Available!</Text>
                 </TouchableOpacity>
               </View>

@@ -8,13 +8,13 @@ const PlayersRow = () => {
     const inGamePlayers = useSelector((store) => store.gameState.players || []);
     const inGamePlayersOut = useSelector((store) => store.gameState.inGameOutPlayers || []);
     const inGamePlayersDanger = useSelector((store) => store.gameState.inGameDangerPlayers || []);
+    const dealerId = useSelector((store) => store.gameState.dealerId || 0);
     
 
     const outPlayerIds = useMemo(() => new Set(inGamePlayersOut.map((p) => p.id)), [inGamePlayersOut]);
     const dangerPlayerIds = useMemo(() => new Set(inGamePlayersDanger.map((p) => p.id)), [inGamePlayersDanger]);
 
     
-
 
 
     return (
@@ -24,12 +24,7 @@ const PlayersRow = () => {
                 {inGamePlayers.map((player, index) => {
                     const isDanger = dangerPlayerIds.has(player.id);
                     const isOut = outPlayerIds.has(player.id);
-
-                    // const currentDistributorId = getCurrentDistributorId();
-
-                    // const isDistributor = currentDistributorId == player.id;
-
-                    const isDistributor = false;
+                    const isDistributor = index === dealerId;
                 
                     return (
                     <Text
