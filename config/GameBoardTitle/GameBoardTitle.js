@@ -1,12 +1,61 @@
-import {React, useState} from "react";
+import {React, use, useState} from "react";
 import { SafeAreaView, View, TouchableOpacity, Text } from "react-native";
 import { useGoToHome } from "../../navigation/GoToHome";
 import Style from "./Style";
 import BackButton from "../../components/BackButton/BackButton";
+import auth from '@react-native-firebase/auth';
+import firestore from '@react-native-firebase/firestore';
+import { useSelector } from "react-redux";
+
 
 const GameBoardTitle = () => {
     const goToHome = useGoToHome();
     const [showInfo, setShowInfo] = useState(false);
+    const gameState = useSelector((store) => store.gameState);
+    console.log(gameState);
+
+    const gameId = useSelector((store) => store.gameState.gameId);
+    const userId = auth().currentUser?.uid;
+
+
+    const handleBackPress = async () => {
+        try{
+            const roundsRef = firestore()
+                              .collection("users")
+                              .doc(userId)
+                              .collection("games")
+                              .doc(gameId)
+                              .collection("rounds");
+
+            const batch = firestore().batch();
+
+            gameState.rounds.forEach((round, index) => {
+            const docRef = roundsRef.doc(index.toString()); 
+            batch.set(docRef, {
+                ...round,
+                createdAt: firestore.FieldValue.serverTimestamp(),
+                updatedAt: firestore.FieldValue.serverTimestamp(),
+            });
+            });
+
+            await batch.commit();
+
+            await firestore()
+                  .collection("users")
+                  .doc(userId)
+                  .collection("games")
+                  .doc(gameId)
+                  .update({
+                    ...gameState,
+                    updatedAt : firestore.FieldValue.serverTimestamp(),
+                  })
+                  console.log(gameState);
+        }
+        catch(err){
+            console.log("ERROR : ", err);
+        }
+        goToHome();
+    }
     return(
         <SafeAreaView>
         {/* Title and Game Info Toggle */}
@@ -14,7 +63,7 @@ const GameBoardTitle = () => {
                 {/* Top Row: Back + Title */}
                 <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'center' }}>
                     <View style={{ position: 'absolute', left: 0 }}>
-                        <BackButton onPress={goToHome} />
+                        <BackButton onPress={()=>handleBackPress()} />
                     </View>
                     <Text style={[Style.mainHeading, { textAlign: 'center' }]}>Rummy Scoreboard</Text>
                 </View>

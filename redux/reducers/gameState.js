@@ -2,6 +2,7 @@ import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
     gameId: null,
+    status : null,
     drop: 0,
     middleDrop: 0,
     fullCount: 0,
@@ -15,8 +16,8 @@ const initialState = {
     inGameDangerPlayers : [],
     reEntryRounds : [],
     dealerId : 0,
-    offSet : [],
-    outPlayersCount : {},
+    previousDealerId : -1,
+    playersLifeCycle : [],
 }
 
 const gameState = createSlice({
@@ -25,6 +26,9 @@ const gameState = createSlice({
     reducers : {
         initializeGame : (state, action) => {
             Object.assign(state, action.payload);
+        },
+        setStatus : (state, action) => {
+            state.status = action.payload;
         },
         setRounds : (state, action) => {
             state.rounds = action.payload
@@ -50,21 +54,19 @@ const gameState = createSlice({
         setDealerId : (state, action) => {
             state.dealerId = action.payload;
         },
-        setOffSet : (state, action) => {
-            state.offSet = action.payload;
+        setPreviousDealerId : (state, action) => {
+            state.previousDealerId = action.payload;
         },
-        setOutPlayersCount : (state, action) =>
-        {
-            state.outPlayersCount = action.payload;
+        setPlayersLifeCycle : (state, action) => {
+            state.playersLifeCycle = action.payload;
         },
-         
         resetGameBoard: (state) => {
             Object.assign(state, initialState);
         }
-          
+        
     }
 })
 
-export const {initializeGame, addRounds, addTotals, resetGameBoard, setRounds, setOutPlayers, setDangerPlayers, setReEntryRounds, setDealerId, setOffSet, setOutPlayersCount } = gameState.actions;
+export const {initializeGame, setStatus, addRounds, addTotals, resetGameBoard, setRounds, setOutPlayers, setDangerPlayers, setReEntryRounds, setDealerId, setPlayersLifeCycle, setPreviousDealerId } = gameState.actions;
 
 export default gameState.reducer;

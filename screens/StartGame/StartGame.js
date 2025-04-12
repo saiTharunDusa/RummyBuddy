@@ -34,7 +34,6 @@ const StartGame = ({navigation}) => {
           } else if (selectedPlayersList.length <= 1) {
             return Alert.alert("Please select at least 2 players!");
           }
-          const offSetArr = selectedPlayersList.map(() => 1);
 
           const userId = auth().currentUser?.uid;
           const gameRef = await firestore()
@@ -55,12 +54,13 @@ const StartGame = ({navigation}) => {
               inGameDangerPlayers : [],
               reEntryRounds : [],
               dealerId : 0,
-              offSet : offSetArr,
+              previousDealerId : -1,
+              playersLifeCycle : [],
               createdAt: firestore.FieldValue.serverTimestamp()
             });
-            dispatch(resetGameBoard());
             dispatch(initializeGame({
                 gameId : gameRef.id,
+                status : 'continue',
                 drop : dropScore,
                 middleDrop: middleDropScore,
                 fullCount: fullCountScore,
@@ -74,7 +74,8 @@ const StartGame = ({navigation}) => {
                 inGameDangerPlayers : [],
                 reEntryRounds : [],
                 dealerId : 0,
-                offSet : offSetArr,
+                previousDealerId : -1,
+                playersLifeCycle : [],
             }))
             dispatch(resetAllSelectedPlayers());
             navigation.navigate('GameBoardTemp');

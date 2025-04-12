@@ -12,7 +12,7 @@ const rootReducer = combineReducers({
     allPlayers : allPlayers,
     user : user,
     selectedPlayers : selectedPlayers,
-    gameState : gameState
+    gameState : gameState,
 })
 
 const configuration = {

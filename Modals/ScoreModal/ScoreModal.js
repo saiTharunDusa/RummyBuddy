@@ -1,21 +1,21 @@
-import React, { useMemo, useState } from "react";
+import React, { act, useMemo, useState } from "react";
 import { SafeAreaView, TouchableOpacity, View, Text, TextInput, Modal } from "react-native";
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 import { faPlus } from "@fortawesome/free-solid-svg-icons";
 import Style from "./Style";
 import { useDispatch, useSelector } from "react-redux";
-import { addRounds, addTotals, setDangerPlayers, setDealerId, setOffSet, setOutPlayers, setOutPlayersCount } from "../../redux/reducers/gameState";
+import { addRounds, addTotals, setDangerPlayers, setDealerId, setOutPlayers, setPreviousDealerId, setPlayersLifeCycle, setStatus,  } from "../../redux/reducers/gameState";
 
 const ScoreModal = () => {
   const dispatch = useDispatch();
-
   const inGamePlayers = useSelector((store) => store.gameState.players || []);
   const totalScore = useSelector((store) => store.gameState.totalScore || {});
   const totalGameScore = useSelector((store) => store.gameState.totalGameScore || 0);
   const dropScore = useSelector((store) => store.gameState.drop || 0);
   const inGameOutPlayers = useSelector((store) => store.gameState.inGameOutPlayers || []);
   const dealerId = useSelector((store) => store.gameState.dealerId || 0);
-  const offSet = useSelector((store) => store.gameState.offSet || []);
+  const playersLifeCycle = useSelector((store) => store.gameState.playersLifeCycle || []);
+  const rounds = useSelector((store) => store.gameState.rounds || []);
 
   const [showScoreModal, setShowScoreModal] = useState(false);
   const [currentScores, setCurrentScores] = useState({});
@@ -53,51 +53,63 @@ const ScoreModal = () => {
     dispatch(setOutPlayers(outPlayers));
     dispatch(setDangerPlayers(dangerPlayers));
 
-    const tempSetOutPlayerIds = new Set(outPlayers.map(p => p.id));
-    const offsetValue = offSet[dealerId] ?? 1;
+    const newPlayersLifeCycle = [...playersLifeCycle];
+    for(let i = 0; i < inGamePlayers.length; i++)
+    {
+      if(newPlayersLifeCycle[i] === undefined)
+      {
+        newPlayersLifeCycle[i] = 0;
+      }
+    }
     
-    const nextDealerId = (dealerId + offsetValue) % inGamePlayers.length;
+    for (let i = 0; i < inGamePlayers.length; i++) {
+      if (
+        newPlayersLifeCycle[i] === 0 && 
+        totals[inGamePlayers[i].id] >= totalGameScore
+      ) {
+        newPlayersLifeCycle[i] = rounds.length + 1;
+      }
+    }
 
-    if (tempSetOutPlayerIds.has(inGamePlayers[nextDealerId].id)) {
-      const newOffSet = [...offSet];
-      
-      
-      let consecutiveOutCount = 0;
-      let checkPos = nextDealerId;
-      
-      while (tempSetOutPlayerIds.has(inGamePlayers[checkPos].id)) {
-        consecutiveOutCount++;
-        checkPos = (checkPos + 1) % inGamePlayers.length;
-        
-        if (consecutiveOutCount >= inGamePlayers.length) break;
+    let idx = (dealerId + 1) % inGamePlayers.length;
+
+    // normal flow and flow when immediate next person is out.
+    if (!newPlayersLifeCycle[dealerId]) {
+      while (idx !== dealerId) {
+        if (newPlayersLifeCycle[idx] === rounds.length + 1) {
+          idx = dealerId;
+          break;
+        } else if (!newPlayersLifeCycle[idx]) {
+          break;
+        }
+        idx = (idx + 1) % inGamePlayers.length;
       }
-      
-      newOffSet[dealerId] = offsetValue + consecutiveOutCount;
-    
-      dispatch(setOffSet(newOffSet));
-      dispatch(setDealerId(dealerId));
     } else {
-      const newOffSet = [...offSet];
-      newOffSet[dealerId] = 1;
-    
-      for (let i = 0; i < inGamePlayers.length; i++) {
-        let consecutiveOutCount = 0;
-        let nextPos = (i + 1) % inGamePlayers.length;
-        
-        while (tempSetOutPlayerIds.has(inGamePlayers[nextPos].id)) {
-          consecutiveOutCount++;
-          nextPos = (nextPos + 1) % inGamePlayers.length;
+      while (idx !== dealerId) {
+        if (!newPlayersLifeCycle[idx]) {
+          break;
         }
-        
-        if (consecutiveOutCount > 0) {
-          newOffSet[i] = consecutiveOutCount + 1; 
-        } else {
-          newOffSet[i] = 1; 
-        }
+        idx = (idx + 1) % inGamePlayers.length;
       }
+    }
     
-      dispatch(setOffSet(newOffSet));
-      dispatch(setDealerId(nextDealerId));
+    dispatch(setPreviousDealerId(dealerId));
+
+    dispatch(setDealerId(idx));
+    dispatch(setPlayersLifeCycle(newPlayersLifeCycle));
+
+    const alivePlayers = inGamePlayers.filter((p) => totals[p.id] < totalGameScore);
+    console.log(alivePlayers);
+    if(alivePlayers.length == 1)
+    {
+
+      dispatch(setStatus("completed"));
+      console.log("completed!");
+    }
+    else
+    {
+      console.log("conintue");
+      dispatch(setStatus("continue"));
     }
     
     setShowScoreModal(false);

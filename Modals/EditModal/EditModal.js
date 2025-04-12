@@ -17,7 +17,8 @@ import {
   setOutPlayers,
   setDangerPlayers,
   setDealerId,
-  setOffSet,
+  setPlayersLifeCycle,
+  setStatus,
 } from "../../redux/reducers/gameState";
 
 const EditModal = () => {
@@ -27,14 +28,15 @@ const EditModal = () => {
   const totalGameScore = useSelector((store) => store.gameState.totalGameScore);
   const dropScore = useSelector((store) => store.gameState.drop);
   const dealerId = useSelector((store) => store.gameState.dealerId || 0);
-  const offSet = useSelector((store) => store.gameState.offSet || []);
+  const previousDealerId = useSelector((store) => store.gameState.previousDealerId || 0);
+  const playersLifeCycle = useSelector((store) => store.gameState.playersLifeCycle);
+  const rounds = useSelector((store) => store.gameState.rounds || [])
+  
 
   const [showEditModal, setShowEditModal] = useState(false);
   const [lastRoundScores, setLastRoundScores] = useState({});
 
   const handleEditLastRound = () => {
-    const outPlayersBefore = currentGame.inGameOutPlayers || [];
-    const outIdsBefore = new Set(outPlayersBefore.map((p) => p.id));
 
     const updatedRounds = [...currentGame.rounds];
     const prevLastRound = updatedRounds[updatedRounds.length - 1] || {};
@@ -61,31 +63,54 @@ const EditModal = () => {
     dispatch(setOutPlayers(outPlayersAfter));
     dispatch(setDangerPlayers(dangerPlayers));
 
-    const outIdsAfter = new Set(outPlayersAfter.map((p) => p.id));
 
-   
-    const cameBackIn = [...outIdsBefore].filter(
-      (id) => !outIdsAfter.has(id)
-    );
-    const somebodyCameBack = cameBackIn.length > 0;
+    const newPlayersLifeCycle = [...playersLifeCycle];
+    let newDealerId = dealerId; 
 
-    
-    if (somebodyCameBack) {
-      const newOffSet = [...offSet];
-      newOffSet[dealerId] = 1;
+    // check for players who were out but are now in because of editing.
+    for (let i = 0; i < inGamePlayers.length; i++) {
+      if (newPlayersLifeCycle[i] === rounds.length && 
+          newTotals[inGamePlayers[i].id] < totalGameScore) {
 
-      const offsetValue = newOffSet[dealerId]; 
-      const nextDealerId = (dealerId + offsetValue) % inGamePlayers.length;
-
-      if (outIdsAfter.has(inGamePlayers[nextDealerId].id)) {
-        newOffSet[dealerId] = offsetValue + 1;
-        dispatch(setOffSet(newOffSet));
-        dispatch(setDealerId(dealerId));
-      } else {
-        dispatch(setOffSet(newOffSet));
-        dispatch(setDealerId(dealerId));
+        const prevPlayerIdx = (i === 0) ? inGamePlayers.length - 1 : i - 1;
+        console.log(prevPlayerIdx);
+        if (prevPlayerIdx === previousDealerId) {
+          newDealerId = i;
+        }
+        
+        newPlayersLifeCycle[i] = 0;
       }
     }
+    
+    // check for players who were in but are now out because of editing.
+    for (let i = 0; i < inGamePlayers.length; i++) {
+      if (newPlayersLifeCycle[i] === 0 && 
+          newTotals[inGamePlayers[i].id] >= totalGameScore) {
+        
+        const prevPlayerIdx = (i === 0) ? inGamePlayers.length - 1 : i - 1;
+        
+        if (prevPlayerIdx === previousDealerId) {
+          newDealerId = previousDealerId;
+        }
+        
+        newPlayersLifeCycle[i] = rounds.length;
+      }
+    }
+
+    dispatch(setPlayersLifeCycle(newPlayersLifeCycle));
+    dispatch(setDealerId(newDealerId));
+
+    const alivePlayers = inGamePlayers.filter((p) => totals[p.id] < totalGameScore);
+    if(alivePlayers.length == 1)
+    {
+      dispatch(setStatus('completed'));
+    }
+    else
+    {
+      dispatch(setStatus('continue'));
+    }
+    
+        
 
     setShowEditModal(false);
   };

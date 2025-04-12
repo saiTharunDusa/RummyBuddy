@@ -56,18 +56,25 @@ const CompletedGames = () => {
                                     .get();
             const currentGameRounds = roundsSnap.docs.map(doc=>({...doc.data()}))
 
-            const scoresArray = currentGameRounds.map(round=>round.scores);
         
             dispatch(initializeGame({
-                gameId: item.id,
-                drop: item.drop,
+                gameId : item.id,
+                status : item.status,
+                drop : item.drop,
                 middleDrop: item.middleDrop,
                 fullCount: item.fullCount,
                 totalGameScore: item.totalGameScore,
                 totalGameAmount: item.totalGameAmount,
+                totalGameAmountFixed : item.totalGameAmount,
                 players: item.players,
-                rounds: scoresArray,
-                totalScore : item.totalScore
+                rounds: currentGameRounds,
+                totalScore : item.totalScore,
+                inGameOutPlayers : item.inGameOutPlayers,
+                inGameDangerPlayers : item.inGameDangerPlayers,
+                reEntryRounds : item.reEntryRounds,
+                dealerId : item.dealerId,
+                previousDealerId : item.previousDealerId,
+                playersLifeCycle : item.playersLifeCycle,
             }));
             dispatch(selectPlayer(item.players));
             navigation.navigate('GameBoardTemp');

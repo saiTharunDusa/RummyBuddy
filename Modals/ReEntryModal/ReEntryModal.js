@@ -10,7 +10,7 @@ import {
   setOutPlayers,
   setReEntryRounds,
   setDealerId,
-  setOffSet,
+  setPlayersLifeCycle,
 } from "../../redux/reducers/gameState";
 
 const ReEntryModal = () => {
@@ -25,7 +25,9 @@ const ReEntryModal = () => {
   const rounds = useSelector((store) => store.gameState.rounds || []);
   
   const dealerId = useSelector((store) => store.gameState.dealerId);
-  const offSet = useSelector((store) => store.gameState.offSet || []);
+  const previousDealerId = useSelector((store) => store.gameState.previousDealerId);
+  const playersLifeCycle = useSelector((store) => store.gameState.playersLifeCycle || []);
+  
 
   const [showReentryModal, setShowReentryModal] = useState(false);
   const [reEntryScores, setReEntryScores] = useState([]);
@@ -91,28 +93,25 @@ const ReEntryModal = () => {
         players: reEnteredPlayerIds,
       })
     );
+    const newPlayersLifeCycle = [...playersLifeCycle];
+    let newDealerId = dealerId; 
 
-    const outIdsAfter = new Set(outPlayers.map((p) => p.id));
-    const reenteredNowIn = [...outIdsBefore].filter((id) => !outIdsAfter.has(id));
-    const somebodyCameBack = reenteredNowIn.length > 0;
+    // check for players who were out but are now in because of re-entry.
+    for (let i = 0; i < inGamePlayers.length; i++) {
+      if (newPlayersLifeCycle[i] === rounds.length && 
+          totals[inGamePlayers[i].id] < totalGameScore) {
 
-    if (somebodyCameBack) {
-      
-      const newOffSet = [...offSet];
-      newOffSet[dealerId] = 1;
-
-      const offsetValue = newOffSet[dealerId]; 
-      const nextDealerId = (dealerId + offsetValue) % inGamePlayers.length;
-
-      if (outIdsAfter.has(inGamePlayers[nextDealerId].id)) {
-        newOffSet[dealerId] = offsetValue + 1;
-        dispatch(setOffSet(newOffSet));
-      } else {
-        dispatch(setOffSet(newOffSet));
-        dispatch(setDealerId(dealerId));
+        const prevPlayerIdx = (i === 0) ? inGamePlayers.length - 1 : i - 1;
+        
+        if (prevPlayerIdx === previousDealerId) {
+          newDealerId = i;
+        }
+        
+        newPlayersLifeCycle[i] = 0;
       }
     }
-
+    dispatch(setPlayersLifeCycle(newPlayersLifeCycle));
+    dispatch(setDealerId(newDealerId));
     setShowReentryModal(false);
   };
 
