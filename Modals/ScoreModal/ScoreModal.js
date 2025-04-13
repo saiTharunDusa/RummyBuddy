@@ -6,9 +6,11 @@ import Style from "./Style";
 import { useDispatch, useSelector } from "react-redux";
 import { addRounds, addTotals, setDangerPlayers, setDealerId, setOutPlayers, setPreviousDealerId, setPlayersLifeCycle, setStatus,  } from "../../redux/reducers/gameState";
 import { scaleFontSize } from "../../assets/Scaling";
+import { useNavigation } from "@react-navigation/native";
 
 const ScoreModal = () => {
   const dispatch = useDispatch();
+  const navigation = useNavigation();
   const inGamePlayers = useSelector((store) => store.gameState.players || []);
   const totalScore = useSelector((store) => store.gameState.totalScore || {});
   const totalGameScore = useSelector((store) => store.gameState.totalGameScore || 0);

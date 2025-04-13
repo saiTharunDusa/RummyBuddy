@@ -14,9 +14,11 @@ import {
   setStatus
 } from "../../redux/reducers/gameState";
 import { scaleFontSize } from "../../assets/Scaling";
+import { useNavigation } from "@react-navigation/native";
 
 const ReEntryModal = () => {
   const dispatch = useDispatch();
+  const navigation = useNavigation();
 
   const inGamePlayers = useSelector((store) => store.gameState.players || []);
   const inGamePlayersOut = useSelector((store) => store.gameState.inGameOutPlayers || []);

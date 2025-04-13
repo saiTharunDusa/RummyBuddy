@@ -21,9 +21,12 @@ import {
   setStatus,
 } from "../../redux/reducers/gameState";
 import { scaleFontSize } from "../../assets/Scaling";
+import { useNavigation } from "@react-navigation/native";
 
 const EditModal = () => {
   const dispatch = useDispatch();
+  const navigation = useNavigation();
+
   const currentGame = useSelector((store) => store.gameState);
   const inGamePlayers = useSelector((store) => store.gameState.players || []);
   const totalGameScore = useSelector((store) => store.gameState.totalGameScore);
