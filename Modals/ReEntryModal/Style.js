@@ -1,12 +1,13 @@
 import { StyleSheet } from "react-native";
+import { horizontalScale, scaleFontSize, verticalScale } from "../../assets/Scaling";
 
 const Style = StyleSheet.create({
     fab: {
         backgroundColor: '#2980b9',
         padding: 14,
         borderRadius: 30,
-        width: 50,
-        height: 50,
+        width: horizontalScale(50),
+        height: verticalScale(50),
         justifyContent: 'center',
         alignItems: 'center',
     },
@@ -24,12 +25,13 @@ const Style = StyleSheet.create({
       },
       modalTitle: {
         fontWeight: 'bold',
-        fontSize: 16,
-        marginBottom: 12,
+        fontSize: scaleFontSize(20),
+        marginBottom: verticalScale(12),
         textAlign: 'center',
+
       },
       modalClose: {
-        marginTop: 12,
+        marginTop: verticalScale(12),
         backgroundColor: '#3498db',
         padding: 10,
         borderRadius: 6,
@@ -38,30 +40,31 @@ const Style = StyleSheet.create({
       checkboxRow: {
         flexDirection: 'row',
         alignItems: 'center',
-        marginVertical: 8,
+        marginVertical: verticalScale(8),
       },
       
       checkbox: {
-        width: 22,
-        height: 22,
+        width: horizontalScale(22),
+        height: verticalScale(22),
         borderRadius: 5,
         borderWidth: 2,
         borderColor: '#3498db',
         alignItems: 'center',
         justifyContent: 'center',
-        marginRight: 12,
+        marginRight: horizontalScale(12),
       },
       
       checkboxTick: {
         color: '#fff',
-        fontSize: 14,
+        fontSize: scaleFontSize(14),
         fontWeight: 'bold',
       },
       
       checkboxLabel: {
-        fontSize: 16,
+        fontSize: scaleFontSize(14),
         color: '#333',
         fontWeight: '600',
+        fontSize : scaleFontSize(20)
       },
 });
 

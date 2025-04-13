@@ -77,7 +77,7 @@ const CompletedGames = () => {
                 playersLifeCycle : item.playersLifeCycle,
             }));
             dispatch(selectPlayer(item.players));
-            navigation.navigate('GameBoardTemp');
+            navigation.navigate('GameBoard');
         }
         catch(err)
         {

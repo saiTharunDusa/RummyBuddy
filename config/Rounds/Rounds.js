@@ -1,15 +1,30 @@
 import {React, useEffect, useState} from "react"
-import { SafeAreaView, ScrollView, View, Text } from "react-native";
+import { SafeAreaView, Modal, View, Text, TouchableOpacity } from "react-native";
 import { useSelector } from "react-redux";
 import Style from "./Style";
+import { useNavigation } from "@react-navigation/native";
+import { Routes } from "../../navigation/Routes";
+import { horizontalScale, verticalScale } from "../../assets/Scaling";
 
 const Rounds = () => {
-    
+    const navigation = useNavigation();
     const totals = useSelector((store) => store.gameState.totalScore || {});
     const inGameRounds = useSelector((store) => store.gameState.rounds || []);
     const inGamePlayers = useSelector((store) => store.gameState.players || []);
     const reEntryRounds = useSelector((store) => store.gameState.reEntryRounds || []);
+    const totalGameScore = useSelector((store) => store.gameState.totalGameScore);
 
+    const [showWinnerModal, setShowWinnerModal] = useState(false);
+    const [showWinnerName, setShowWinnerName] = useState(false);
+
+    useEffect(() => {
+        const alivePlayers = inGamePlayers.filter((p) => totals[p.id] < totalGameScore);
+        if(alivePlayers.length == 1)
+        {
+            setShowWinnerModal(true);
+            setShowWinnerName(alivePlayers[0].name);
+        }
+    },[totals]);
 
     return (
         <SafeAreaView>
@@ -75,8 +90,8 @@ const Rounds = () => {
                             borderColor: '#3498db',
                             textAlign: 'center',
                             color: '#FFFFFF',
-                            paddingVertical: 6,
-                            marginHorizontal: 6,
+                            paddingVertical: verticalScale(6),
+                            marginHorizontal: horizontalScale(6),
                             backgroundColor: '#3498db',
                             flex: 1,
                             fontWeight: 'bold',
@@ -87,6 +102,30 @@ const Rounds = () => {
                         );
                     })}
                 </View>
+
+                {/** Winner Name Displaying */}
+                <Modal visible={showWinnerModal} transparent animationType="fade">
+                <View style={Style.modalBackground}>
+                    <View style={Style.modalBox}>
+                    <Text style={Style.modalTitle}>🎉 Congratulations!</Text>
+                    <Text style={{ textAlign: 'center', fontSize: 18, marginVertical: 10 }}>
+                        {showWinnerName} is the winner!
+                    </Text>
+                    <TouchableOpacity style={Style.modalClose} onPress={() =>
+                    {
+                        navigation.navigate(Routes.Compromise),
+                        setShowWinnerModal(false)
+                    } }>
+                    <Text style={{ color: '#fff' }}>Amount Won</Text>
+                    </TouchableOpacity>
+                    <TouchableOpacity style={Style.modalClose} onPress={() => setShowWinnerModal(false)}>
+                        <Text style={{ color: '#fff' }}>Close</Text>
+                    </TouchableOpacity>
+                    </View>
+                </View>
+                </Modal>
+
+
         </SafeAreaView>
     )
 }

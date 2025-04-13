@@ -1,5 +1,5 @@
 import { StyleSheet } from "react-native";
-import { scaleFontSize, verticalScale } from "../../assets/Scaling";
+import { horizontalScale, scaleFontSize, verticalScale } from "../../assets/Scaling";
 
 const Style = StyleSheet.create({
     titleContainer : {
@@ -25,8 +25,8 @@ const Style = StyleSheet.create({
         flexDirection: 'row',
         alignItems: 'center',
         backgroundColor: '#ffffff44',
-        paddingVertical: 4,
-        paddingHorizontal: 10,
+        paddingVertical: verticalScale(4),
+        paddingHorizontal: horizontalScale(10),
         borderRadius: 8,
       },
       

@@ -62,6 +62,7 @@ const SelectPlayers = ({ navigation }) => {
         keyExtractor={(item) => item.id}
         renderItem={renderItem}
         contentContainerStyle={{ paddingHorizontal: 16 }}
+        showsVerticalScrollIndicator={false}
       />
 
       <TouchableOpacity

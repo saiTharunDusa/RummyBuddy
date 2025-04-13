@@ -89,18 +89,18 @@ const GameBoardTitle = () => {
                 {showInfo && (
                 <View
                     style={{
-                    backgroundColor: '#AED6F1',
-                    marginTop: 6,
-                    padding: 12,
-                    borderRadius: 10,
+                        backgroundColor: '#AED6F1',
+                        marginTop: 6,
+                        padding: 12,
+                        borderRadius: 10,
                     }}
                 >
                     <Text style={{ lineHeight: 20 }}>
-                    🟧 – Tells that the player has no drops left.{"\n"}
-                    🔴 – Tells that the player is out of the game.{"\n"}
-                    🔷 – Reentry round.
-                    
-                    
+                    <Text style={{ color: '#ff8f00' }}>● </Text> – Tells that the player has no drops left.{"\n"}
+                        <Text style={{ color: '#ff0505' }}>● </Text> – Tells that the player is out of the game.{"\n"}
+                        <Text style={{ color: '#008000' }}>● </Text> – Tells that the player has re-entered.{"\n"}
+                        <Text style={{ color: '#B3E5FC' }}>● </Text> – Reentry round.{"\n"}
+                        <Text style={{ color: '#00BFFF' }}>● </Text> – Total Row.
                     </Text>
                 </View>
                 )}

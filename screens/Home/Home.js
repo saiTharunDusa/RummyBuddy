@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { faPersonCirclePlus, faPlus, faPlay } from '@fortawesome/free-solid-svg-icons';
+import { faPersonCirclePlus, faPlus, faPlay, faPause, faCheck } from '@fortawesome/free-solid-svg-icons';
 import Button from "../../components/Button/Button";
 import Title from "../../components/Title/Title";
 import { SafeAreaView } from "react-native-safe-area-context";
@@ -67,7 +67,7 @@ const Home = ({navigation})=>{
                   navigation.navigate(Routes.ContinueGame)
                 }}
             />
-            <Button icon={faPlay} text={"Completed Games"}
+            <Button icon={faCheck} text={"Completed Games"}
                 onPress={()=>{
                   navigation.navigate(Routes.CompletedGames)
                 }}

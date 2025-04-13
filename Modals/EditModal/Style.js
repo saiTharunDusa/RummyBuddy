@@ -1,12 +1,13 @@
 import { StyleSheet } from "react-native";
+import { horizontalScale, scaleFontSize, verticalScale } from "../../assets/Scaling";
 
 const Style = StyleSheet.create({
     fab: {
         backgroundColor: '#2980b9',
         padding: 14,
         borderRadius: 30,
-        width: 50,
-        height: 50,
+        width: horizontalScale(50),
+        height: verticalScale(50),
         justifyContent: 'center',
         alignItems: 'center',
     },
@@ -24,25 +25,27 @@ const Style = StyleSheet.create({
       },
       modalTitle: {
         fontWeight: 'bold',
-        fontSize: 16,
-        marginBottom: 12,
+        fontSize: scaleFontSize(20),
+        marginBottom: verticalScale(12),
         textAlign: 'center',
       },
       scoreInputRow: {
         flexDirection: 'row',
         alignItems: 'center',
-        marginBottom: 10,
+        marginBottom: verticalScale(10),
       },
       playerLabel: {
-        width: 20,
+        width: horizontalScale(20),
         textAlign: 'center',
         fontWeight: 'bold',
+        fontSize : scaleFontSize(20)
       },
       playerName: {
         flex: 2,
+        fontSize : scaleFontSize(20)
       },
       modalClose: {
-        marginTop: 12,
+        marginTop: verticalScale(12),
         backgroundColor: '#3498db',
         padding: 10,
         borderRadius: 6,
@@ -54,9 +57,9 @@ const Style = StyleSheet.create({
         borderColor: '#3498db',
         borderRadius: 6,
         textAlign : 'center',
-        paddingHorizontal: 10,
-        marginLeft: 10,
-        height: 40,
+        paddingHorizontal: horizontalScale(10),
+        marginLeft: horizontalScale(10),
+        height: verticalScale(40),
       },
     
 });

@@ -61,12 +61,12 @@ const StartGame = ({navigation}) => {
             dispatch(initializeGame({
                 gameId : gameRef.id,
                 status : 'continue',
-                drop : dropScore,
-                middleDrop: middleDropScore,
-                fullCount: fullCountScore,
-                totalGameScore: totalGameScore,
-                totalGameAmount: totalGameAmount,
-                totalGameAmountFixed : totalGameAmount,
+                drop: Number(dropScore),
+                middleDrop: Number(middleDropScore),
+                fullCount: Number(fullCountScore),
+                totalGameScore: Number(totalGameScore),
+                totalGameAmountFixed: Number(totalGameAmount),
+                totalGameAmount: Number(totalGameAmount),
                 players: selectedPlayersList,
                 rounds: [],
                 totalScore : [],
@@ -78,7 +78,7 @@ const StartGame = ({navigation}) => {
                 playersLifeCycle : [],
             }))
             dispatch(resetAllSelectedPlayers());
-            navigation.navigate('GameBoardTemp');
+            navigation.navigate('GameBoard');
         } catch (error) {
             console.log(error);
         }

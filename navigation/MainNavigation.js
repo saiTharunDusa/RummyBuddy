@@ -10,7 +10,7 @@ import { Routes } from "./Routes";
 import { createStackNavigator } from "@react-navigation/stack";
 import CompletedGames from "../screens/CompletedGames/CompletedGames";
 import Compromise from "../screens/Compromise/Compromise"
-import GameBoardTemp from "../screens/GameBoard/GameBoardTemp";
+
 const Stack = createStackNavigator();
 
 
@@ -30,7 +30,7 @@ export const Authenticated = () => {
             <Stack.Screen name={Routes.AllPlayers} component={AllPlayers}/>
             <Stack.Screen name={Routes.StartGame} component={StartGame}/>
             <Stack.Screen name={Routes.selectPlayers} component={SelectPlayers} />
-            <Stack.Screen name={Routes.GameBoardTemp} component={GameBoardTemp}/>
+            <Stack.Screen name={Routes.GameBoard} component={GameBoard}/>
             <Stack.Screen name={Routes.ContinueGame} component={ContinueGame} />
             <Stack.Screen name={Routes.CompletedGames} component={CompletedGames}  />
             <Stack.Screen name={Routes.Compromise} component={Compromise} />

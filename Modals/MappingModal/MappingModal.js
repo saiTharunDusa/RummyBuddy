@@ -4,12 +4,13 @@ import Style from "./Style";
 import { useSelector } from "react-redux";
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 import { faUsers } from "@fortawesome/free-solid-svg-icons";
+import { scaleFontSize } from "../../assets/Scaling";
 
 
 const MappingModal = () => {
 
     const [showMapping, setShowMapping] = useState(false);
-    const inGamePlayers = useSelector((store) => store.gameState.inGamePlayers || []);
+    const inGamePlayers = useSelector((store) => store.gameState.players || []);
 
    
     return(
@@ -29,7 +30,7 @@ const MappingModal = () => {
                         ))
                     }
                     <TouchableOpacity style={Style.modalClose} onPress={() => setShowMapping(false)}>
-                        <Text style={{ color: '#fff' }}>Close</Text>
+                        <Text style={{ color: '#fff', fontSize : scaleFontSize(20), }}>Close</Text>
                     </TouchableOpacity>
                 </View>
                 </View>

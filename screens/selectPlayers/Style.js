@@ -1,10 +1,11 @@
 import { StyleSheet } from "react-native";
+import { horizontalScale, scaleFontSize, verticalScale } from "../../assets/Scaling";
 
 const Style = StyleSheet.create({
     container: {
         flex: 1,
         backgroundColor: '#EAF6FF',
-        paddingVertical: 20,
+        paddingVertical: verticalScale(20),
       },
       
       title: {
@@ -12,7 +13,7 @@ const Style = StyleSheet.create({
         fontWeight: 'bold',
         color: '#3498db',
         textAlign: 'center',
-        marginBottom: 20,
+        marginBottom: verticalScale(20),
       },
       
       playerItem: {
@@ -21,19 +22,19 @@ const Style = StyleSheet.create({
         alignItems: 'center',
         backgroundColor: '#87CEEB',
         padding: 16,
-        marginBottom: 10,
+        marginBottom: verticalScale(10),
         borderRadius: 10,
       },
       
       playerName: {
-        fontSize: 16,
+        fontSize: scaleFontSize(16),
         fontWeight: '600',
         color: '#003f5c',
       },
       
       checkbox: {
-        width: 24,
-        height: 24,
+        width: horizontalScale(24),
+        height: verticalScale(24),
         borderWidth: 2,
         borderColor: '#3498db',
         borderRadius: 4,
@@ -56,28 +57,28 @@ const Style = StyleSheet.create({
       buttonText: {
         color: '#fff',
         fontWeight: 'bold',
-        fontSize: 16,
+        fontSize: scaleFontSize(16),
       },
 
       orderText: {
         color: '#fff',
         fontWeight: 'bold',
-        fontSize: 14,
+        fontSize: scaleFontSize(14),
       },
 
       headerRow: {
         flexDirection: 'row',
         alignItems: 'center',
-        marginBottom: 16,
-        paddingHorizontal: 16,
+        marginBottom: verticalScale(16),
+        paddingHorizontal: horizontalScale(16),
       },
       
       back: {
-        marginRight: 12,
+        marginRight: horizontalScale(12),
       },
       
       title: {
-        fontSize: 20,
+        fontSize: scaleFontSize(20),
         fontWeight: 'bold',
         color: '#3498db',
       },

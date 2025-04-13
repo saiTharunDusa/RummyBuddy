@@ -1,4 +1,5 @@
 import { StyleSheet } from "react-native";
+import { horizontalScale, scaleFontSize, verticalScale } from "../../assets/Scaling";
 
 const Style = StyleSheet.create({
     modalBackground: {
@@ -15,17 +16,17 @@ const Style = StyleSheet.create({
       },
       modalTitle: {
         fontWeight: 'bold',
-        fontSize: 16,
-        marginBottom: 12,
+        fontSize: scaleFontSize(20),
+        marginBottom: verticalScale(12),
         textAlign: 'center',
       },
       mappingText: {
         textAlign : 'center',
-        fontSize: 15,
-        marginBottom: 6,
+        fontSize: scaleFontSize(16),
+        marginBottom: verticalScale(6),
       },
       modalClose: {
-        marginTop: 12,
+        marginTop: verticalScale(12),
         backgroundColor: '#3498db',
         padding: 10,
         borderRadius: 6,
@@ -35,23 +36,23 @@ const Style = StyleSheet.create({
         backgroundColor: '#2980b9',
         padding: 14,
         borderRadius: 30,
-        width: 50,
-        height: 50,
+        width: horizontalScale(50),
+        height: verticalScale(50),
         justifyContent: 'center',
         alignItems: 'center',
     },
     settingsRow: {
       flexDirection: 'row',
       justifyContent: 'space-between',
-      marginBottom: 10,
+      marginBottom: verticalScale(10),
     },
     settingsLabel: {
-      fontSize: 16,
+      fontSize: scaleFontSize(20),
       color: '#333',
       fontWeight: '500',
     },
     settingsValue: {
-      fontSize: 16,
+      fontSize: scaleFontSize(20),
       color: '#555',
     },
 });

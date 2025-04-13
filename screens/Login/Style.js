@@ -1,4 +1,5 @@
 import { StyleSheet } from "react-native";
+import { horizontalScale, scaleFontSize, verticalScale } from "../../assets/Scaling";
 const Style = StyleSheet.create({
   container: {
     flex: 1,
@@ -7,20 +8,20 @@ const Style = StyleSheet.create({
     justifyContent: 'center',
   },
   title: {
-    fontSize: 32,
+    fontSize: scaleFontSize(32),
     fontWeight: 'bold',
     color: '#3498db',
     textAlign: 'center',
-    marginBottom: 32,
+    marginBottom: verticalScale(32),
   },
   input: {
     borderWidth: 1,
     borderColor: '#3498db',
     padding: 12,
     borderRadius: 20,
-    marginHorizontal : 16,
-    marginBottom: 16,
-    fontSize: 16,
+    marginHorizontal : horizontalScale(16),
+    marginBottom: verticalScale(16),
+    fontSize: scaleFontSize(16),
     color: '#000',
   },
   button: {
@@ -28,19 +29,19 @@ const Style = StyleSheet.create({
     padding: 14,
     borderRadius: 20,
     alignItems: 'center',
-    marginHorizontal : 16,
-    marginBottom: 16,
+    marginHorizontal : horizontalScale(16),
+    marginBottom: verticalScale(16),
   },
   buttonText: {
     color: '#fff',
     fontWeight: 'bold',
-    fontSize: 16,
+    fontSize: scaleFontSize(16),
   },
   link: {
     textAlign: 'center',
     color: '#3498db',
-    marginTop: 10,
-    fontSize: 14,
+    marginTop: verticalScale(10),
+    fontSize: scaleFontSize(14),
   },
 });
 

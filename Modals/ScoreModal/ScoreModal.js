@@ -5,6 +5,7 @@ import { faPlus } from "@fortawesome/free-solid-svg-icons";
 import Style from "./Style";
 import { useDispatch, useSelector } from "react-redux";
 import { addRounds, addTotals, setDangerPlayers, setDealerId, setOutPlayers, setPreviousDealerId, setPlayersLifeCycle, setStatus,  } from "../../redux/reducers/gameState";
+import { scaleFontSize } from "../../assets/Scaling";
 
 const ScoreModal = () => {
   const dispatch = useDispatch();
@@ -137,7 +138,7 @@ const ScoreModal = () => {
                 if (hasOutPlayersIds.has(p.id)) return null;
                 return (
                   <View key={p.id} style={Style.scoreInputRow}>
-                    <Text style={Style.playerLabel}>{index + 1}</Text>
+                    <Text style={Style.playerLabel}>{index + 1 + "."}</Text>
                     <Text style={Style.playerName}>{p.name}</Text>
                     <TextInput
                       style={Style.input}
@@ -153,11 +154,11 @@ const ScoreModal = () => {
 
 
             <TouchableOpacity style={Style.modalClose} onPress={handleAddRound}>
-              <Text style={{ color: "#fff" }}>Add Round</Text>
+              <Text style={{ color: "#fff", fontSize : scaleFontSize(20) }}>Add Round</Text>
             </TouchableOpacity>
 
             <TouchableOpacity style={Style.modalClose} onPress={handleCancel}>
-              <Text style={{ color: "#fff" }}>Cancel</Text>
+              <Text style={{ color: "#fff", fontSize : scaleFontSize(20), }}>Cancel</Text>
             </TouchableOpacity>
           </View>
         </View>

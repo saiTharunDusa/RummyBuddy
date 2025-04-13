@@ -1,10 +1,11 @@
 import { StyleSheet } from "react-native";
+import { horizontalScale, scaleFontSize } from "../../assets/Scaling";
 
 const Style = StyleSheet.create({
     mainHeading: {
         color: '#3498db',
-        fontSize: 30,
-        marginLeft : 30,
+        fontSize: scaleFontSize(30),
+        marginLeft : horizontalScale(30),
         fontWeight: 'bold',
         textAlign: 'center',
         justifyContent : 'center',

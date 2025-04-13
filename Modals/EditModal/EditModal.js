@@ -20,6 +20,7 @@ import {
   setPlayersLifeCycle,
   setStatus,
 } from "../../redux/reducers/gameState";
+import { scaleFontSize } from "../../assets/Scaling";
 
 const EditModal = () => {
   const dispatch = useDispatch();
@@ -134,7 +135,7 @@ const EditModal = () => {
             <Text style={Style.modalTitle}>Edit Last Round</Text>
             {inGamePlayers.map((p, index) => (
               <View key={p.id} style={Style.scoreInputRow}>
-                <Text style={Style.playerLabel}>{index + 1}</Text>
+                <Text style={Style.playerLabel}>{index + 1 + "."}</Text>
                 <Text style={Style.playerName}>{p.name}</Text>
                 <TextInput
                   style={Style.input}
@@ -153,13 +154,13 @@ const EditModal = () => {
               style={Style.modalClose}
               onPress={handleEditLastRound}
             >
-              <Text style={{ color: "#fff" }}>Edit Round</Text>
+              <Text style={{ color: "#fff", fontSize : scaleFontSize(20) }}>Edit Round</Text>
             </TouchableOpacity>
             <TouchableOpacity
               style={Style.modalClose}
               onPress={() => setShowEditModal(false)}
             >
-              <Text style={{ color: "#fff" }}>Cancel</Text>
+              <Text style={{ color: "#fff", fontSize : scaleFontSize(20) }}>Cancel</Text>
             </TouchableOpacity>
           </View>
         </View>

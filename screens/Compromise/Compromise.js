@@ -75,7 +75,7 @@ const Compromise = () => {
         }
       }>No mercy. No refunds. Just math.
 And yes — your drops were counted.</Text>
-      <ScrollView contentContainerStyle={Style.scroll}>
+      <ScrollView contentContainerStyle={Style.scroll} showsVerticalScrollIndicator={false}>
         {players.map((player, index) => (
           <View key={player.id} style={Style.card}>
             <Text style={Style.name}>

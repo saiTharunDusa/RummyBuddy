@@ -6,6 +6,7 @@ import { useSelector } from "react-redux";
 import { Routes } from "../../navigation/Routes";
 import { useNavigation } from "@react-navigation/native";
 import Style from "./Style";
+import { scaleFontSize } from "../../assets/Scaling";
 
 const GameSettingModal = () => {
 
@@ -42,16 +43,17 @@ const GameSettingModal = () => {
                         <Text style={Style.settingsValue}>{item.value}</Text>
                     </View>
                     ))}
-                    <TouchableOpacity style={Style.modalClose} onPress={() => setShowSettings(false)}>
-                        <Text style={{ color: '#fff' }}>Close</Text>
-                    </TouchableOpacity>
                     <TouchableOpacity style={Style.modalClose} onPress={() =>
                     {
                         navigation.navigate(Routes.Compromise),
                         setShowSettings(false)
                     } }>
-                    <Text style={{ color: '#fff' }}>Compromise</Text>
+                    <Text style={{ color: '#fff', fontSize : scaleFontSize(20) }}>Compromise</Text>
                     </TouchableOpacity>
+                    <TouchableOpacity style={Style.modalClose} onPress={() => setShowSettings(false)}>
+                        <Text style={{ color: '#fff', fontSize : scaleFontSize(20) }}>Close</Text>
+                    </TouchableOpacity>
+                    
                 </View>
                 </View>
             </Modal>

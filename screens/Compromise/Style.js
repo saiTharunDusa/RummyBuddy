@@ -1,10 +1,11 @@
 import { StyleSheet } from "react-native";
+import { horizontalScale, scaleFontSize, verticalScale } from "../../assets/Scaling";
 
 const Style = StyleSheet.create({
     container: {
       flex: 1,
-      paddingHorizontal: 16,
-      paddingTop: 20,
+      paddingHorizontal: horizontalScale(16),
+      paddingTop: verticalScale(20),
       backgroundColor: '#f0f8ff',
       margin : 10
     },
@@ -16,33 +17,33 @@ const Style = StyleSheet.create({
       padding: 10,
     },
     title: {
-      fontSize: 22,
+      fontSize: scaleFontSize(22),
       fontWeight: 'bold',
       color: '#3498db',
       textAlign: 'center',
       flex:1,
     },
     scroll: {
-      paddingBottom: 40,
+      paddingBottom: verticalScale(40),
     },
     card: {
       backgroundColor: '#3498db',
-      paddingVertical: 14,
-      paddingHorizontal: 20,
+      paddingVertical: verticalScale(14),
+      paddingHorizontal: horizontalScale(20),
       borderRadius: 10,
-      marginVertical: 8,
+      marginVertical: verticalScale(8),
       flexDirection: 'row',
       justifyContent: 'space-between',
       alignItems: 'center',
       elevation: 2,
     },
     name: {
-      fontSize: 16,
+      fontSize: scaleFontSize(16),
       color: '#fff',
       fontWeight: '600',
     },
     amount: {
-      fontSize: 16,
+      fontSize: scaleFontSize(16),
       color: '#fff',
       fontWeight: 'bold',
     },

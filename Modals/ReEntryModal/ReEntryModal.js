@@ -12,6 +12,7 @@ import {
   setDealerId,
   setPlayersLifeCycle,
 } from "../../redux/reducers/gameState";
+import { scaleFontSize } from "../../assets/Scaling";
 
 const ReEntryModal = () => {
   const dispatch = useDispatch();
@@ -163,16 +164,16 @@ const ReEntryModal = () => {
             {inGamePlayersOut.length > 0 && dangerPlayerIds.size === 0 ? (
               <View>
                 <TouchableOpacity style={Style.modalClose} onPress={handleReentry}>
-                  <Text style={{ color: "#fff" }}>Re-entry</Text>
+                  <Text style={{ color: "#fff", fontSize : scaleFontSize(20) }}>Re-entry</Text>
                 </TouchableOpacity>
                 <TouchableOpacity style={Style.modalClose} onPress={handleCancel}>
-                  <Text style={{ color: "#fff" }}>Cancel</Text>
+                  <Text style={{ color: "#fff", fontSize : scaleFontSize(20) }}>Cancel</Text>
                 </TouchableOpacity>
               </View>
             ) : (
               <View>
                 <TouchableOpacity style={Style.modalClose} onPress={handleCancel}>
-                  <Text style={{ color: "#fff" }}>No Re-entry Available!</Text>
+                  <Text style={{ color: "#fff", fontSize : scaleFontSize(20) }}>No Re-entry Available!</Text>
                 </TouchableOpacity>
               </View>
             )}

@@ -13,78 +13,74 @@ import auth from '@react-native-firebase/auth';
 import { addPlayer, removePlayer, editPlayer } from '../../redux/reducers/allPlayers';
 import Style from './Style';
 import BackButton from '../../components/BackButton/BackButton';
+import { InteractionManager } from 'react-native';
 
-const AllPlayers = ({navigation}) => {
+
+const AllPlayers = ({ navigation }) => {
   const [playerName, setPlayerName] = useState('');
   const [editingId, setEditingId] = useState(null);
   const [editingName, setEditingName] = useState('');
   const dispatch = useDispatch();
   const playersData = useSelector((store) => store.allPlayers.list);
 
-  
+  const handleAddPlayer = () => {
+    if (!playerName.trim()) return;
 
-  const handleAddPlayer = async () => {
-    const userId = auth().currentUser?.uid;
-    if (!userId || !playerName.trim()) return;
+    // Avoid duplicate names
+    if (playersData.some(player => player.name === playerName.trim())) {
+      console.log('Player already exists');
+      return;
+    }
 
+    const tempId = Date.now().toString(); // temporary ID
+    dispatch(addPlayer({ id: tempId, name: playerName.trim() }));
+    setPlayerName('');
+  };
+
+  const handleRemovePlayer = (id) => {
+    dispatch(removePlayer(id));
+  };
+
+  const handleEditPlayer = () => {
+    if (!editingId || !editingName.trim()) return;
+    dispatch(editPlayer({ id: editingId, newName: editingName.trim() }));
+    setEditingId(null);
+    setEditingName('');
+  };
+
+
+const handleBackBtn = () => {
+  const userId = auth().currentUser?.uid;
+  if (!userId) return;
+
+  navigation.goBack();
+
+  InteractionManager.runAfterInteractions(async () => {
     try {
       const playersRef = firestore()
         .collection('users')
         .doc(userId)
         .collection('allPlayers');
 
-      const snapshot = await playersRef.where('name', '==', playerName.trim()).get();
-      if (!snapshot.empty) {
-        console.log('Player with this name already exists.');
-        return;
-      }
+      const existingDocs = await playersRef.get();
+      const deleteBatch = firestore().batch();
+      existingDocs.forEach((doc) => deleteBatch.delete(doc.ref));
+      await deleteBatch.commit();
 
-      const newDoc = await playersRef.add({ name: playerName.trim() });
-      dispatch(addPlayer({ id: newDoc.id, name: playerName.trim() }));
-      setPlayerName('');
+      const addBatch = firestore().batch();
+      playersData.forEach((player) => {
+        const newRef = playersRef.doc();
+        addBatch.set(newRef, { name: player.name });
+      });
+      await addBatch.commit();
     } catch (err) {
-      console.log('Error:', err);
+      console.log('Error while saving players:', err);
     }
-  };
+  });
+};
 
-  const handleRemovePlayer = async (id) => {
-    const userId = auth().currentUser?.uid;
-    if (!userId) return;
 
-    try {
-      await firestore()
-        .collection('users')
-        .doc(userId)
-        .collection('allPlayers')
-        .doc(id)
-        .delete();
-      dispatch(removePlayer(id));
-    } catch (err) {
-      console.log('ERROR:', err);
-    }
-  };
-
-  const handleEditPlayer = async () => {
-    const userId = auth().currentUser?.uid;
-    if (!userId || !editingId || !editingName.trim()) return;
-
-    try {
-      await firestore()
-        .collection('users')
-        .doc(userId)
-        .collection('allPlayers')
-        .doc(editingId)
-        .update({ name: editingName });
-
-      dispatch(editPlayer({ id: editingId, newName: editingName }));
-      setEditingId(null);
-      setEditingName('');
-    } catch (err) {
-      console.log('ERROR:', err);
-    }
-  };
-
-  const renderItem =useCallback(({ item }) => {
+  const renderItem = useCallback(({ item }) => {
     const isEditing = editingId === item.id;
 
     return (
@@ -96,10 +92,16 @@ const AllPlayers = ({navigation}) => {
               value={editingName}
               onChangeText={setEditingName}
             />
-            <TouchableOpacity style={[Style.button, Style.saveButton]} onPress={handleEditPlayer}>
+            <TouchableOpacity
+              style={[Style.button, Style.saveButton]}
+              onPress={handleEditPlayer}
+            >
               <Text style={Style.buttonText}>Save</Text>
             </TouchableOpacity>
-            <TouchableOpacity style={[Style.button, Style.cancelButton]} onPress={() => setEditingId(null)}>
+            <TouchableOpacity
+              style={[Style.button, Style.cancelButton]}
+              onPress={() => setEditingId(null)}
+            >
               <Text style={Style.buttonText}>Cancel</Text>
             </TouchableOpacity>
           </>
@@ -130,7 +132,7 @@ const AllPlayers = ({navigation}) => {
   return (
     <SafeAreaView style={Style.container}>
       <View>
-        <BackButton onPress={() => navigation.goBack()} />
+        <BackButton onPress={handleBackBtn} />
       </View>
       <View style={Style.inputContainer}>
         <TextInput
