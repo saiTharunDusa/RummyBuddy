@@ -20,6 +20,8 @@ const ScoreModal = () => {
 
   const [showScoreModal, setShowScoreModal] = useState(false);
   const [currentScores, setCurrentScores] = useState({});
+  const [showWinnerModal, setShowWinnerModal] = useState(false);
+  const [showWinnerName, setShowWinnerName] = useState();
 
   const activePlayers = useMemo(() => {
     return inGamePlayers.filter((p) => (totalScore[p.id] || 0) < totalGameScore);
@@ -28,8 +30,8 @@ const ScoreModal = () => {
   const hasOutPlayersIds = useMemo(() => {
     return new Set(inGameOutPlayers.map((p) => p.id));
   }, [inGameOutPlayers]);
-  
 
+  
   const handleAddRound = () => {
     const newRound = {};
     const totals = { ...totalScore }; 
@@ -101,16 +103,18 @@ const ScoreModal = () => {
 
     const alivePlayers = inGamePlayers.filter((p) => totals[p.id] < totalGameScore);
     console.log(alivePlayers);
-    if(alivePlayers.length == 1)
+    if(alivePlayers.length === 1)
     {
 
       dispatch(setStatus("completed"));
-      console.log("completed!");
+      setShowWinnerModal(true);
+      setShowWinnerName(alivePlayers[0].name);
     }
     else
     {
-      console.log("conintue");
       dispatch(setStatus("continue"));
+      setShowWinnerModal(false);
+      setShowWinnerName('');
     }
     
     setShowScoreModal(false);
@@ -163,6 +167,28 @@ const ScoreModal = () => {
           </View>
         </View>
       </Modal>
+
+      <Modal visible={showWinnerModal} transparent animationType="fade">
+                <View style={Style.modalBackground}>
+                    <View style={Style.modalBox}>
+                    <Text style={Style.modalTitle}>🎉 Congratulations!</Text>
+                    <Text style={{ textAlign: 'center', fontSize: 18, marginVertical: 10 }}>
+                        {showWinnerName} is the winner!
+                    </Text>
+                    <TouchableOpacity style={Style.modalClose} onPress={() =>
+                    {
+                        navigation.navigate(Routes.Compromise),
+                        setShowWinnerModal(false)
+                    } }>
+                    <Text style={{ color: '#fff' }}>Amount Won</Text>
+                    </TouchableOpacity>
+                    <TouchableOpacity style={Style.modalClose} onPress={() => setShowWinnerModal(false)}>
+                        <Text style={{ color: '#fff' }}>Close</Text>
+                    </TouchableOpacity>
+                    </View>
+                </View>
+                </Modal>
+
     </SafeAreaView>
   );
 };

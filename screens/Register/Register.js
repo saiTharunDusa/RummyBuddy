@@ -7,11 +7,15 @@ import {
   TouchableOpacity,
   StyleSheet,
   Alert,
+  Image
 } from 'react-native';
 import { createUser } from '../../api/createUser';
 import { useDispatch } from 'react-redux';
 import { logIn } from '../../redux/reducers/user';
 import Style from './Style';
+import { horizontalScale, verticalScale } from '../../assets/Scaling';
+
+
 const Register = ({ navigation }) => {
   const [fullName, setFullName] = useState('');
   const [email, setEmail] = useState('');
@@ -49,6 +53,13 @@ const Register = ({ navigation }) => {
   
   return (
     <SafeAreaView style={Style.container}>
+      <View style={{alignItems : 'center'}}>
+                <Image
+                    source={require("../../assets/rummyCard.jpg")}
+                    style={{ width: horizontalScale(80), height: verticalScale(80), marginBottom: verticalScale(10) }}
+                    resizeMode="contain"
+                />
+            </View>
       <Text style={Style.title}>Create Account</Text>
 
       <TextInput

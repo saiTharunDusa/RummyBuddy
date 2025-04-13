@@ -16,7 +16,7 @@ const StartGame = ({navigation}) => {
     const [dropScore, setDropScore] = useState('25');
     const [middleDropScore, setMiddleDropScore] = useState('40');
     const [fullCountScore, setFullCountScore] = useState('80');
-    const [totalGameAmount, setTotalGameAmount] = useState('');
+    const [perPlayerAmount, setPerPlayerAmount] = useState('');
 
     const selectedPlayersList = useSelector((store) => store.selectedPlayers.list);
     const dispatch = useDispatch();
@@ -28,7 +28,7 @@ const StartGame = ({navigation}) => {
             dropScore <= 0 ||
             middleDropScore <= 0 ||
             fullCountScore <= 0 ||
-            totalGameAmount <= 0
+            (parseInt(perPlayerAmount) || 0) <= 0
           ) {
             return Alert.alert("Please check the game scores and total amount!");
           } else if (selectedPlayersList.length <= 1) {
@@ -45,8 +45,8 @@ const StartGame = ({navigation}) => {
               middleDrop: middleDropScore,
               fullCount: fullCountScore,
               totalGameScore: totalGameScore,
-              totalGameAmountFixed: totalGameAmount,
-              totalGameAmount : totalGameAmount,
+              totalGameAmountFixed: (parseInt(perPlayerAmount) || 0) * selectedPlayersList.length,
+              totalGameAmount : (parseInt(perPlayerAmount) || 0) * selectedPlayersList.length,
               players: selectedPlayersList,
               status: 'continue',
               totalScore : [],
@@ -65,8 +65,8 @@ const StartGame = ({navigation}) => {
                 middleDrop: Number(middleDropScore),
                 fullCount: Number(fullCountScore),
                 totalGameScore: Number(totalGameScore),
-                totalGameAmountFixed: Number(totalGameAmount),
-                totalGameAmount: Number(totalGameAmount),
+                totalGameAmountFixed: (parseInt(perPlayerAmount) || 0) * selectedPlayersList.length,
+                totalGameAmount: (parseInt(perPlayerAmount) || 0) * selectedPlayersList.length,
                 players: selectedPlayersList,
                 rounds: [],
                 totalScore : [],
@@ -155,11 +155,11 @@ const StartGame = ({navigation}) => {
              * Total Game Amount Container.
              */
             }
-            <Text style={Style.text1}>Total Game Amount</Text>
+            <Text style={Style.text1}>Game Amount Per Player</Text>
             <View style={Style.totalGameAmountContainer}>
                 <TextInput keyboardType='numeric'
-                    value={totalGameAmount}
-                    onChangeText={setTotalGameAmount}
+                    value={perPlayerAmount}
+                    onChangeText={setPerPlayerAmount}
                 style={Style.gameAmountText}/>
             </View>
             {/**

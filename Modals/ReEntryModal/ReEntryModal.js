@@ -11,6 +11,7 @@ import {
   setReEntryRounds,
   setDealerId,
   setPlayersLifeCycle,
+  setStatus
 } from "../../redux/reducers/gameState";
 import { scaleFontSize } from "../../assets/Scaling";
 
@@ -33,6 +34,10 @@ const ReEntryModal = () => {
   const [showReentryModal, setShowReentryModal] = useState(false);
   const [reEntryScores, setReEntryScores] = useState([]);
 
+  const [showWinnerModal, setShowWinnerModal] = useState(false);
+  const [showWinnerName, setShowWinnerName] = useState();
+
+
   const outPlayerIds = useMemo(
     () => new Set(inGamePlayersOut.map((p) => p.id)),
     [inGamePlayersOut]
@@ -41,6 +46,9 @@ const ReEntryModal = () => {
     () => new Set(inGamePlayersDanger.map((p) => p.id)),
     [inGamePlayersDanger]
   );
+
+  
+  
 
   const handleReentry = () => {
     const outPlayersBefore = [...inGamePlayersOut];
@@ -94,6 +102,21 @@ const ReEntryModal = () => {
         players: reEnteredPlayerIds,
       })
     );
+
+    const alivePlayers = inGamePlayers.filter((p) => totals[p.id] < totalGameScore);
+    console.log(alivePlayers);
+    if(alivePlayers.length === 1)
+    {
+      dispatch(setStatus('completed'));
+      setShowWinnerModal(true);
+      setShowWinnerName(alivePlayers[0].name);
+    }
+    else
+    {
+      dispatch(setStatus('continue'));
+      setShowWinnerModal(false);
+    }
+
     const newPlayersLifeCycle = [...playersLifeCycle];
     let newDealerId = dealerId; 
 
@@ -113,6 +136,10 @@ const ReEntryModal = () => {
     }
     dispatch(setPlayersLifeCycle(newPlayersLifeCycle));
     dispatch(setDealerId(newDealerId));
+
+   
+    
+        
     setShowReentryModal(false);
   };
 
@@ -180,6 +207,28 @@ const ReEntryModal = () => {
           </View>
         </View>
       </Modal>
+
+      <Modal visible={showWinnerModal} transparent animationType="fade">
+                <View style={Style.modalBackground}>
+                    <View style={Style.modalBox}>
+                    <Text style={Style.modalTitle}>🎉 Congratulations!</Text>
+                    <Text style={{ textAlign: 'center', fontSize: 18, marginVertical: 10 }}>
+                        {showWinnerName} is the winner!
+                    </Text>
+                    <TouchableOpacity style={Style.modalClose} onPress={() =>
+                    {
+                        navigation.navigate(Routes.Compromise),
+                        setShowWinnerModal(false)
+                    } }>
+                    <Text style={{ color: '#fff' }}>Amount Won</Text>
+                    </TouchableOpacity>
+                    <TouchableOpacity style={Style.modalClose} onPress={() => setShowWinnerModal(false)}>
+                        <Text style={{ color: '#fff' }}>Close</Text>
+                    </TouchableOpacity>
+                    </View>
+                </View>
+                </Modal>
+
     </SafeAreaView>
   );
 };

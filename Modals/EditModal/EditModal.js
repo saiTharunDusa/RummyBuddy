@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useMemo } from "react";
 import {
   SafeAreaView,
   TouchableOpacity,
@@ -36,6 +36,10 @@ const EditModal = () => {
 
   const [showEditModal, setShowEditModal] = useState(false);
   const [lastRoundScores, setLastRoundScores] = useState({});
+
+  const [showWinnerModal, setShowWinnerModal] = useState(false);
+  const [showWinnerName, setShowWinnerName] = useState();
+
 
   const handleEditLastRound = () => {
 
@@ -101,14 +105,17 @@ const EditModal = () => {
     dispatch(setPlayersLifeCycle(newPlayersLifeCycle));
     dispatch(setDealerId(newDealerId));
 
-    const alivePlayers = inGamePlayers.filter((p) => totals[p.id] < totalGameScore);
-    if(alivePlayers.length == 1)
+    const alivePlayers = inGamePlayers.filter((p) => newTotals[p.id] < totalGameScore);
+    if(alivePlayers.length === 1)
     {
       dispatch(setStatus('completed'));
+      setShowWinnerModal(true);
+      setShowWinnerName(alivePlayers[0].name);
     }
     else
     {
       dispatch(setStatus('continue'));
+      setShowWinnerModal(false);
     }
     
         
@@ -165,6 +172,28 @@ const EditModal = () => {
           </View>
         </View>
       </Modal>
+
+      <Modal visible={showWinnerModal} transparent animationType="fade">
+                <View style={Style.modalBackground}>
+                    <View style={Style.modalBox}>
+                    <Text style={Style.modalTitle}>🎉 Congratulations!</Text>
+                    <Text style={{ textAlign: 'center', fontSize: 18, marginVertical: 10 }}>
+                        {showWinnerName} is the winner!
+                    </Text>
+                    <TouchableOpacity style={Style.modalClose} onPress={() =>
+                    {
+                        navigation.navigate(Routes.Compromise),
+                        setShowWinnerModal(false)
+                    } }>
+                    <Text style={{ color: '#fff' }}>Amount Won</Text>
+                    </TouchableOpacity>
+                    <TouchableOpacity style={Style.modalClose} onPress={() => setShowWinnerModal(false)}>
+                        <Text style={{ color: '#fff' }}>Close</Text>
+                    </TouchableOpacity>
+                    </View>
+                </View>
+                </Modal>
+
     </SafeAreaView>
   );
 };

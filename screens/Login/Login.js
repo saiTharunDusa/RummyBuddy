@@ -1,11 +1,12 @@
 import { useState } from "react";
 import Style from "./Style";
-import { SafeAreaView } from "react-native";
+import { Image, SafeAreaView,View } from "react-native";
 import { TouchableOpacity, Text } from "react-native";
 import { Alert, TextInput } from "react-native";
 import { logInUser } from "../../api/createUser";
 import { useDispatch } from "react-redux";
 import { logIn } from "../../redux/reducers/user";
+import { horizontalScale, verticalScale } from "../../assets/Scaling";
 
 const Login = ({navigation}) => {
     const [email, setEmail] = useState('');
@@ -30,6 +31,14 @@ const Login = ({navigation}) => {
     }
     return (
         <SafeAreaView style ={Style.container}>
+            <View style={{alignItems : 'center'}}>
+                <Image
+                    source={require("../../assets/rummyCard.jpg")}
+                    style={{ width: horizontalScale(80), height: verticalScale(80), marginBottom: verticalScale(10) }}
+                    resizeMode="contain"
+                />
+            </View>
+            
             <Text style={Style.title}>Rummy Buddy</Text>
             <TextInput
                 style={Style.input}

@@ -13,17 +13,23 @@ const Rounds = () => {
     const inGamePlayers = useSelector((store) => store.gameState.players || []);
     const reEntryRounds = useSelector((store) => store.gameState.reEntryRounds || []);
     const totalGameScore = useSelector((store) => store.gameState.totalGameScore);
+    const status = useSelector((store) => store.gameState.status);
 
     const [showWinnerModal, setShowWinnerModal] = useState(false);
-    const [showWinnerName, setShowWinnerName] = useState(false);
+    const [showWinnerName, setShowWinnerName] = useState();
 
     useEffect(() => {
-        const alivePlayers = inGamePlayers.filter((p) => totals[p.id] < totalGameScore);
-        if(alivePlayers.length == 1)
+        if(status === 'completed')
         {
-            setShowWinnerModal(true);
-            setShowWinnerName(alivePlayers[0].name);
+            const alivePlayers = inGamePlayers.filter((p) => totals[p.id] < totalGameScore);
+            console.log(alivePlayers);
+            if(alivePlayers.length === 1)
+            {
+                setShowWinnerModal(true);
+                setShowWinnerName(alivePlayers[0].name);
+            }
         }
+        
     },[totals]);
 
     return (
