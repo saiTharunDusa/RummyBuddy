@@ -8,6 +8,7 @@ import { initializeGame } from "../../redux/reducers/gameState";
 import { useNavigation } from '@react-navigation/native';
 import { selectPlayer } from "../../redux/reducers/selectedPlayers";
 import BackButton from "../../components/BackButton/BackButton";
+import Style from "./Style";
 
 const CompletedGames = () => {
     const userId = auth().currentUser?.uid;
@@ -120,7 +121,7 @@ const CompletedGames = () => {
 
 
     return(
-        <SafeAreaView>
+        <SafeAreaView style={Style.container}>
             
             <View style={{
                 flexDirection: 'row',

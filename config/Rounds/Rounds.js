@@ -53,7 +53,7 @@ const Rounds = () => {
                             {
                             backgroundColor: isReentryRound ? '#B3E5FC' : 'transparent',
                             borderRadius: 10,
-                            paddingVertical: 4,
+                            paddingVertical: verticalScale(2),
                             },
                           ]}
                 >

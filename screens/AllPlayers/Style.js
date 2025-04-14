@@ -4,10 +4,10 @@ import { verticalScale, horizontalScale } from "../../assets/Scaling";
 const Style = StyleSheet.create({
     container: {
         flex: 1,
-        paddingVertical: verticalScale(16),
-        paddingHorizontal: horizontalScale(16),
-        marginHorizontal : horizontalScale(16),
-        marginVertical: verticalScale(16)
+        paddingVertical: verticalScale(8),
+        paddingHorizontal: horizontalScale(8),
+        marginHorizontal : horizontalScale(8),
+        marginVertical: verticalScale(8)
       },
       inputContainer: {
         flexDirection: 'row',

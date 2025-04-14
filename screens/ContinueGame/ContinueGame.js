@@ -7,6 +7,7 @@ import { useDispatch } from "react-redux";
 import { initializeGame, resetGameBoard } from "../../redux/reducers/gameState";
 import { useNavigation } from '@react-navigation/native';
 import { selectPlayer } from "../../redux/reducers/selectedPlayers";
+import Style from "./Style";
 import BackButton from "../../components/BackButton/BackButton";
 
 const ContinueGame = () => {
@@ -91,6 +92,9 @@ const ContinueGame = () => {
           ? moment(createdAt).format('MMM DD, YYYY hh:mm A')
           : 'Unknown time';
         return (
+            <SafeAreaView>
+
+            
           <View style={{
             backgroundColor: '#3498db',
             marginHorizontal: 16,
@@ -113,19 +117,19 @@ const ContinueGame = () => {
                 </Text>
             </TouchableOpacity>
           </View>
+          </SafeAreaView>
         );
       }, []);
 
 
 
     return(
-        <SafeAreaView>
+        <SafeAreaView style={Style.container}>
             
             <View style={{
                 flexDirection: 'row',
                 alignItems: 'center',
                 justifyContent: 'center',
-                position: 'relative',
                 padding: 10,
                 }} >
                 <BackButton onPress={() => navigation.goBack()} />

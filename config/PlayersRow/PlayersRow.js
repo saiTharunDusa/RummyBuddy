@@ -2,6 +2,7 @@ import {React, useEffect, useState, useMemo, act} from "react";
 import { SafeAreaView, View, Text} from "react-native";
 import Style from "./Style";
 import { useSelector } from "react-redux";
+import { horizontalScale, verticalScale } from "../../assets/Scaling";
 
 const PlayersRow = () => {
 
@@ -37,8 +38,8 @@ const PlayersRow = () => {
                         textAlign: 'center',
                         justifyContent : 'center',
                         color: '#FFFFFF',
-                        paddingVertical: 6,
-                        marginHorizontal: 6,
+                        paddingVertical: verticalScale(6),
+                        marginHorizontal: horizontalScale(6),
                         backgroundColor: isOut ? '#ff0505' : isDanger ? '#ff8f00' : '#3498db',
                         flex: 1,
                         fontWeight: 'bold',

@@ -4,6 +4,8 @@ import { horizontalScale, scaleFontSize, verticalScale } from "../../assets/Scal
 const Style = StyleSheet.create({
     container : {
         flex : 1,
+        paddingVertical: verticalScale(8),
+        paddingHorizontal: horizontalScale(8),
         alignItems : 'center',
         backgroundColor: '#fff'
     },

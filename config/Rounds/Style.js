@@ -4,7 +4,7 @@ import { horizontalScale, scaleFontSize, verticalScale } from "../../assets/Scal
 const Style = StyleSheet.create({
     row: {
         flexDirection: 'row',
-        marginBottom: verticalScale(6),
+        marginBottom: verticalScale(3),
     },
     roundLabel: {
         width: horizontalScale(30),

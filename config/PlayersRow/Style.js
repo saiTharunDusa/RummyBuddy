@@ -5,7 +5,7 @@ const Style = StyleSheet.create({
     headerRow: {
         flexDirection: 'row',
         alignItems: 'center',
-        marginBottom: verticalScale(8),
+        marginBottom: verticalScale(4),
       },
       roundLabel: {
         width: horizontalScale(30),

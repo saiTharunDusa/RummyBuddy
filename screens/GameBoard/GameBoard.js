@@ -13,7 +13,7 @@ import ReEntryModal from "../../Modals/ReEntryModal/ReEntryModal";
 import auth from '@react-native-firebase/auth';
 import firestore from '@react-native-firebase/firestore';
 import { useSelector } from "react-redux";
-
+import { verticalScale } from '../../assets/Scaling';
 const GameBoard = () => {
     const navigation = useNavigation();
     const gameState = useSelector((store) => store.gameState);
@@ -70,7 +70,7 @@ const GameBoard = () => {
     }, [navigation, saveGameData]);
 
     return (
-      <SafeAreaView style={{ flex: 1 }}>
+      <SafeAreaView style={{ flex: 1, paddingVertical: verticalScale(20),}}>
         {/* Title Row */}
         <GameBoardTitle />
 

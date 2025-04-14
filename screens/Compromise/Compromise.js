@@ -7,47 +7,73 @@ import BackButton from "../../components/BackButton/BackButton";
 
 const Compromise = () => {
   const currentGame = useSelector((store) => store.gameState);
-
   const navigation = useNavigation();
-  let totalGameAmount = Number(currentGame.totalGameAmount);
-  const totalGameAmountFixed = Number(currentGame.totalGameAmountFixed);
+
+  // Extract and parse numbers
+  const totalGameAmount = Number(currentGame.totalGameAmount) || 0;
+  const totalGameAmountFixed = Number(currentGame.totalGameAmountFixed) || 0;
   const totalScore = currentGame.totalScore || {};
   const players = currentGame.players || [];
-  const dropValue = Number(currentGame.drop); 
-  const totalGameScore = currentGame.totalGameScore || 0;
+  const dropValue = Number(currentGame.drop) || 1;
+  const totalGameScore = Number(currentGame.totalGameScore) || 0;
 
+  // Filter players
   const validPlayers = players.filter(p => totalScore[p.id] < totalGameScore);
   const outPlayers = players.filter(p => totalScore[p.id] >= totalGameScore);
   const eligibleProfitPlayers = players.filter(p => totalScore[p.id] < (totalGameScore - dropValue));
+
+  // Base amount per player
   const singlePlayerAmount = totalGameAmountFixed / players.length;
 
+  // Result map
   const playerReturns = {};
 
+  // Out players get nothing
   outPlayers.forEach(p => {
     playerReturns[p.id] = 0;
   });
 
+  // Build drop map
   const playerDropMap = {};
-
-
-  validPlayers.forEach(player=>{
-    playerReturns[player.id] = singlePlayerAmount;
-    totalGameAmount = totalGameAmount - singlePlayerAmount;
-    playerDropMap[player.id] = 0;
-  })
-
   let totalDrops = 0;
-  eligibleProfitPlayers.forEach(player => {
-    const noOfDrops = Math.floor((totalGameScore - totalScore[player.id] - 1) / dropValue);
-    playerDropMap[player.id] += noOfDrops;
-    totalDrops += noOfDrops;
+
+  validPlayers.forEach(player => {
+    const score = totalScore[player.id] || 0;
+    const noOfDrops = Math.floor((totalGameScore - score - 1) / dropValue);
+    const drops = noOfDrops + 1;
+
+    playerDropMap[player.id] = drops;
+    totalDrops += drops;
+  });
+
+  // Profit distribution (initialize first to avoid NaN)
+  validPlayers.forEach(player => {
+    if (!playerReturns[player.id]) playerReturns[player.id] = 0;
+
+    const share = (playerDropMap[player.id] / totalDrops) * totalGameAmount;
+    playerReturns[player.id] += Number(share.toFixed(2)); // optional rounding
   });
 
 
-  eligibleProfitPlayers.forEach(p => {
-    const drops = playerDropMap[p.id];
-    playerReturns[p.id] += Math.floor((drops / totalDrops) * totalGameAmount);
-  });
+
+  // validPlayers.forEach(player=>{
+  //   playerReturns[player.id] = singlePlayerAmount;
+  //   totalGameAmount = totalGameAmount - singlePlayerAmount;
+  //   playerDropMap[player.id] = 0;
+  // })
+
+  // let totalDrops = 0;
+  // eligibleProfitPlayers.forEach(player => {
+  //   const noOfDrops = Math.floor((totalGameScore - totalScore[player.id] - 1) / dropValue);
+  //   playerDropMap[player.id] += noOfDrops;
+  //   totalDrops += noOfDrops;
+  // });
+
+
+  // eligibleProfitPlayers.forEach(p => {
+  //   const drops = playerDropMap[p.id];
+  //   playerReturns[p.id] += Math.floor((drops / totalDrops) * totalGameAmount);
+  // });
 
   return (
     <SafeAreaView style={Style.container}>
