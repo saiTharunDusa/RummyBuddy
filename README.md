@@ -98,48 +98,48 @@ npx react-native run-ios
 ## Screens
 
 ### Login Screen  
-<img src="assets/screenshots/home.png" alt="Login Screen" width="100" height="100" />
+<img src="assets/screenshots/home.png" alt="Login Screen" width="400" height="400" />
 
 ### Register Screen  
-<img src="assets/screenshots/register.png" alt="Register Screen" width="100" height="100" />
+<img src="assets/screenshots/register.png" alt="Register Screen" width="400" height="400" />
 
 ### Home Screen  
-<img src="assets/screenshots/home.png" alt="Home Screen" width="100" height="100" />
+<img src="assets/screenshots/home.png" alt="Home Screen" width="400" height="400" />
 
 ### AllPlayers Screen  
-<img src="assets/screenshots/allPlayers.png" alt="AllPlayers Screen" width="100" height="100" />
+<img src="assets/screenshots/allPlayers.png" alt="AllPlayers Screen" width="400" height="400" />
 
 ### Start Game Screen  
-<img src="assets/screenshots/startGame.png" alt="StartGame Screen" width="100" height="100" />
+<img src="assets/screenshots/startGame.png" alt="StartGame Screen" width="400" height="400" />
 
 ### Continue Game Screen  
-<img src="assets/screenshots/continueGames.png" alt="Continue Game Screen" width="100" height="100" />
+<img src="assets/screenshots/continueGames.png" alt="Continue Game Screen" width="400" height="400" />
 
 ### Compromise Screen  
-<img src="assets/screenshots/compromise.png" alt="Compromise Screen" width="100" height="100" />
+<img src="assets/screenshots/compromise.png" alt="Compromise Screen" width="400" height="400" />
 
 ### GameBoard Screen  
-<img src="assets/screenshots/gameBoard.png" alt="GameBoard Screen" width="100" height="100" />
+<img src="assets/screenshots/gameBoard.png" alt="GameBoard Screen" width="400" height="400" />
 
 ### GameBoard with Info Screen  
-<img src="assets/screenshots/gameBoard1.png" alt="GameBoard Info Screen" width="100" height="100" />
+<img src="assets/screenshots/gameBoard1.png" alt="GameBoard Info Screen" width="400" height="400" />
 
 ## Modals
 
 ### Edit Modal  
-<img src="assets/screenshots/edit.png" alt="Edit Modal" width="100" height="100" />
+<img src="assets/screenshots/edit.png" alt="Edit Modal" width="400" height="400" />
 
 ### Enter Modal  
-<img src="assets/screenshots/enter.png" alt="Enter Modal" width="100" height="100" />
+<img src="assets/screenshots/enter.png" alt="Enter Modal" width="400" height="400" />
 
 ### Gamesettings Modal  
-<img src="assets/screenshots/gameSettings.png" alt="Gamesettings Modal" width="100" height="100" />
+<img src="assets/screenshots/gameSettings.png" alt="Gamesettings Modal" width="400" height="400" />
 
 ### Players Mapping Modal  
-<img src="assets/screenshots/playerMapping.png" alt="Players Mapping Modal" width="100" height="100" />
+<img src="assets/screenshots/playerMapping.png" alt="Players Mapping Modal" width="400" height="400" />
 
 ### Re-Entry Modal  
-<img src="assets/screenshots/reEntry.png" alt="Re-Entry Modal" width="100" height="100" />
+<img src="assets/screenshots/reEntry.png" alt="Re-Entry Modal" width="400" height="400" />
 
 ### Winner Modal  
-<img src="assets/screenshots/winner.png" alt="Winner Modal" width="100" height="100" />
+<img src="assets/screenshots/winner.png" alt="Winner Modal" width="400" height="400" />
