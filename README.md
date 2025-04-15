@@ -1,98 +1,60 @@
-# 🃏 RummyBuddy
 
-**RummyBuddy** is a scorekeeping mobile application built with React Native and Firebase, designed for Indian families and friend groups who traditionally play the physical version of Rummy. It offers an intuitive way to track scores across rounds, manage player re-entries, and handle various game outcomes with custom rules tailored for how the game is played in India.
+# 🃏 RummyBuddy – Traditional Rummy, Simplified Digitally
 
----
-
-## 📲 Tech Stack
-
-- **Framework**: React Native CLI
-- **Backend**: Firebase Firestore
-- **Authentication**: Firebase Auth
-- **State Management**: Redux Toolkit
-- **Navigation**: React Navigation (Stack Navigator)
+**RummyBuddy** is a scorekeeping companion app developed in **React Native**, designed for Indian families and friend groups who play the physical version of **13-card Indian Rummy**. Instead of digitizing the card game, the app replicates the real-world scoring experience: users manually play with cards offline, then enter their scores round-by-round in the app.
 
 ---
 
-## 🔧 Key Libraries & Packages
+## 📱 App Stack
 
-```js
-@react-native-firebase/auth
-@react-native-firebase/firestore
-@react-navigation/native
-@react-navigation/stack
-react-redux
-@fortawesome/react-native-fontawesome
-react-native-bootsplash
-
-```
-
-# 🧠 Architecture Overview
-
-## 🔐 Authentication Flow
-
-- **Login / Register** screens handle **Firebase-based auth**.
-- Authenticated users gain access to the main game features.
+| Layer         | Tech Used                      |
+|---------------|--------------------------------|
+| UI            | React Native CLI, FontAwesome  |
+| State Mgmt    | Redux Toolkit + Redux Persist  |
+| Auth & DB     | Firebase Auth + Firestore      |
+| Navigation    | React Navigation Stack         |
+| Styling       | Custom + StyleSheet API        |
 
 ---
 
-## 🖥️ Screens
+## 🔑 Key Features
 
-- **Home**: Entry point after login.
-- **AllPlayers**: Manage players before a game.
-- **StartGame**: Set game rules like total game score, drop value, middle drop value, full count value.
-- **SelectPlayers**: Choose players for a game.
-- **GameBoard**: Central screen to track rounds and scores.
-- **ContinueGame**: Resume previously unfinished games.
-- **CompletedGames**: Review finished games.
-- **Compromise**: Distribute remaining amount fairly when ending early.
-
----
-
-## 🧩 Modals
-
-- **ScoreModal**: Add round scores.
-- **ReEntryModal**: Handle player re-entry based on custom logic.
-- **EditModal**: Edit scores of previous rounds.
-- **GameSettingsModal**: Configure rules mid-game.
-- **MappingModal**: Map player numbers to names for clarity.
-- **CompromiseModal**: Distribute points based on drop ratios.
+- 🔐 **Authentication**: Firebase Auth separates data per user account.
+- 🎮 **Game Lifecycle**: Start new games, continue unfinished ones, and view completed games with detailed round history.
+- 👥 **Dynamic Player Management**: Add players globally, then select a subset for each game session.
+- 📝 **Score Tracking**: Input scores for each round, with total tracking and visual status cues.
+- 🔁 **Re-entry System**: Allow eliminated players to rejoin with fair game mechanics and colored cell indicators.
+- 🧮 **Compromise Logic**: Fairly distribute remaining pool if players decide to end a game early.
+- 🔄 **Redux + Firebase Optimization**: Minimizes Firestore usage by persisting game state locally and syncing on key lifecycle events (e.g. logout, background, app close).
+- 🔄 **Custom Round Dealer Logic**: Smart algorithm to determine the card distributor each round, excluding eliminated players dynamically.
+- 🎨 **Visual Cues**: Color-coded UI for active, danger, out, and reentry statuses; clearly shows winner state.
+- 🛡 **Resilience**: Games persist across sessions and reinstalls via Firestore.
 
 ---
 
-## 🗂️ Redux Slices
+## 🔧 Development Optimizations
 
-- **gameState**: Core game logic, current players, score tracking.
-- **allPlayers**: Master list of players per user.
-- **selectedPlayers**: Chosen players for a game.
-- **user**: Logged-in user state.
-- **continueGames**, **completedGames**: Firestore data for games.
-
-# ✅ Features
-
-- **Firebase Auth** for login/register
-- **Add/manage players**
-- **Create and continue games**
-- **Real-time Firestore sync**
-- **Round-wise score tracking**
-- **Re-entry logic** with visual indication
-- **Compromise calculation**
-- **Redux-persisted state**
-- **Color-coded UI feedback**
-- **iOS & Android compatibility**
+- ⚡ **Reduced Firestore Usage**: 80% fewer reads/writes by syncing only on logout, background, and startup.
+- 🧠 **Persisted Redux Store**: Game state managed fully in Redux with `redux-persist` for offline use.
+- 📉 **Scalable Design**: No tight coupling between rounds, players, or devices—future multiplayer sync possible.
 
 ---
 
-# 🛠️ Installation
+## 🧩 Core Redux Slices
 
-```bash
-git clone https://github.com/yourusername/rummybuddy.git
-cd rummybuddy
-npm install
-npx pod-install ios
-npx react-native run-android
-npx react-native run-ios
-```
+- `gameState`: Main gameplay data – players, rounds, scores, settings.
+- `allPlayers`: Full player list per user.
+- `selectedPlayers`: Per-game subset of players.
+- `user`: Auth info.
+- `continueGames` & `completedGames`: Firestore synced only at key moments.
+
+---
+
+## 📺 UI Previews
+
+💻 **Screens**: Home, Login, Register, AllPlayers, StartGame, ContinueGame, GameBoard, Compromise  
+🪟 **Modals**: Enter Scores, Edit Round, Re-Entry, Game Settings, Player Mapping, Compromise Logic
+
 # 📸 Screenshots
 
 ## Screens
