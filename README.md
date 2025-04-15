@@ -1,97 +1,157 @@
-This is a new [**React Native**](https://reactnative.dev) project, bootstrapped using [`@react-native-community/cli`](https://github.com/react-native-community/cli).
+# 🃏 RummyBuddy
 
-# Getting Started
+**RummyBuddy** is a scorekeeping mobile application built with React Native and Firebase, designed for Indian families and friend groups who traditionally play the physical version of Rummy. It offers an intuitive way to track scores across rounds, manage player re-entries, and handle various game outcomes with custom rules tailored for how the game is played in India.
 
-> **Note**: Make sure you have completed the [Set Up Your Environment](https://reactnative.dev/docs/set-up-your-environment) guide before proceeding.
+---
 
-## Step 1: Start Metro
+## 📲 Tech Stack
 
-First, you will need to run **Metro**, the JavaScript build tool for React Native.
+- **Framework**: React Native CLI
+- **Backend**: Firebase Firestore
+- **Authentication**: Firebase Auth
+- **State Management**: Redux Toolkit
+- **Navigation**: React Navigation (Stack Navigator)
 
-To start the Metro dev server, run the following command from the root of your React Native project:
+---
 
-```sh
-# Using npm
-npm start
+## 🔧 Key Libraries & Packages
 
-# OR using Yarn
-yarn start
+```js
+@react-native-firebase/auth
+@react-native-firebase/firestore
+@react-navigation/native
+@react-navigation/stack
+react-redux
+@fortawesome/react-native-fontawesome
+react-native-bootsplash
+
 ```
 
-## Step 2: Build and run your app
+# 🧠 Architecture Overview
 
-With Metro running, open a new terminal window/pane from the root of your React Native project, and use one of the following commands to build and run your Android or iOS app:
+## 🔐 Authentication Flow
 
-### Android
+- **Login / Register** screens handle **Firebase-based auth**.
+- Authenticated users gain access to the main game features.
 
-```sh
-# Using npm
-npm run android
+---
 
-# OR using Yarn
-yarn android
+## 🖥️ Screens
+
+- **Home**: Entry point after login.
+- **AllPlayers**: Manage players before a game.
+- **StartGame**: Set game rules like total game score, drop value, middle drop value, full count value.
+- **SelectPlayers**: Choose players for a game.
+- **GameBoard**: Central screen to track rounds and scores.
+- **ContinueGame**: Resume previously unfinished games.
+- **CompletedGames**: Review finished games.
+- **Compromise**: Distribute remaining amount fairly when ending early.
+
+---
+
+## 🧩 Modals
+
+- **ScoreModal**: Add round scores.
+- **ReEntryModal**: Handle player re-entry based on custom logic.
+- **EditModal**: Edit scores of previous rounds.
+- **GameSettingsModal**: Configure rules mid-game.
+- **MappingModal**: Map player numbers to names for clarity.
+- **CompromiseModal**: Distribute points based on drop ratios.
+
+---
+
+## 🗂️ Redux Slices
+
+- **gameState**: Core game logic, current players, score tracking.
+- **allPlayers**: Master list of players per user.
+- **selectedPlayers**: Chosen players for a game.
+- **user**: Logged-in user state.
+- **continueGames**, **completedGames**: Firestore data for games.
+
+# ✅ Features
+
+- **Firebase Auth** for login/register
+- **Add/manage players**
+- **Create and continue games**
+- **Real-time Firestore sync**
+- **Round-wise score tracking**
+- **Re-entry logic** with visual indication
+- **Compromise calculation**
+- **Redux-persisted state**
+- **Color-coded UI feedback**
+- **iOS & Android compatibility**
+
+---
+
+# 🛠️ Installation
+
+```bash
+git clone https://github.com/yourusername/rummybuddy.git
+cd rummybuddy
+npm install
+npx pod-install ios
+npx react-native run-android
+npx react-native run-ios
 ```
+# 📸 Screenshots
 
-### iOS
+## Screens
 
-For iOS, remember to install CocoaPods dependencies (this only needs to be run on first clone or after updating native deps).
+### Login Screen
+![Login Screen](assets/screenshots/login.png)
 
-The first time you create a new project, run the Ruby bundler to install CocoaPods itself:
+### Register Screen
+![Register Screen](assets/screenshots/register.png)
 
-```sh
-bundle install
-```
+### Home Screen
+![Home Screen](assets/screenshots/home.png)
 
-Then, and every time you update your native dependencies, run:
+### AllPlayers Screen
+![AllPlayers Screen](assets/screenshots/allPlayers.png)
 
-```sh
-bundle exec pod install
-```
+### Start Game Screen
+![StartGame Screen](assets/screenshots/startGame.png)
 
-For more information, please visit [CocoaPods Getting Started guide](https://guides.cocoapods.org/using/getting-started.html).
+### Continue Game Screen
+![Continue Game Screen](assets/screenshots/continueGames.png)
 
-```sh
-# Using npm
-npm run ios
+### Compromise Screen
+![Compromise Screen](assets/screenshots/compromise.png)
 
-# OR using Yarn
-yarn ios
-```
+### GameBoard Screen
+![GameBoard Screen](assets/screenshots/gameBoard.png)
 
-If everything is set up correctly, you should see your new app running in the Android Emulator, iOS Simulator, or your connected device.
+### GameBoard with info screen
+![GameBoard Screen](assets/screenshots/gameBoard1.png)
 
-This is one way to run your app — you can also build it directly from Android Studio or Xcode.
+## Modals
 
-## Step 3: Modify your app
+### Edit Modal
+![Edit Modal](assets/screenshots/edit.png)
 
-Now that you have successfully run the app, let's make changes!
+### Enter Modal
+![Enter Modal](assets/screenshots/enter.png)
 
-Open `App.tsx` in your text editor of choice and make some changes. When you save, your app will automatically update and reflect these changes — this is powered by [Fast Refresh](https://reactnative.dev/docs/fast-refresh).
+### Gamesettings Modal
+![Gamesettings Modal](assets/screenshots/gameSettings.png)
 
-When you want to forcefully reload, for example to reset the state of your app, you can perform a full reload:
+### Players Mapping Modal
+![Players Modal](assets/screenshots/playerMapping.png)
 
-- **Android**: Press the <kbd>R</kbd> key twice or select **"Reload"** from the **Dev Menu**, accessed via <kbd>Ctrl</kbd> + <kbd>M</kbd> (Windows/Linux) or <kbd>Cmd ⌘</kbd> + <kbd>M</kbd> (macOS).
-- **iOS**: Press <kbd>R</kbd> in iOS Simulator.
+### Re-Entry Modal
+![Reentry Screen](assets/screenshots/reEntry.png)
 
-## Congratulations! :tada:
+### winner Modal
+![Winner Screen](assets/screenshots/winner.png)
 
-You've successfully run and modified your React Native App. :partying_face:
 
-### Now what?
 
-- If you want to add this new React Native code to an existing application, check out the [Integration guide](https://reactnative.dev/docs/integration-with-existing-apps).
-- If you're curious to learn more about React Native, check out the [docs](https://reactnative.dev/docs/getting-started).
 
-# Troubleshooting
 
-If you're having issues getting the above steps to work, see the [Troubleshooting](https://reactnative.dev/docs/troubleshooting) page.
 
-# Learn More
 
-To learn more about React Native, take a look at the following resources:
 
-- [React Native Website](https://reactnative.dev) - learn more about React Native.
-- [Getting Started](https://reactnative.dev/docs/environment-setup) - an **overview** of React Native and how setup your environment.
-- [Learn the Basics](https://reactnative.dev/docs/getting-started) - a **guided tour** of the React Native **basics**.
-- [Blog](https://reactnative.dev/blog) - read the latest official React Native **Blog** posts.
-- [`@facebook/react-native`](https://github.com/facebook/react-native) - the Open Source; GitHub **repository** for React Native.
+
+
+
+
