@@ -15,8 +15,6 @@ import { setPlayers } from "../../redux/reducers/allPlayers";
 const Home = ({navigation})=>{
 
     const dispatch = useDispatch();
-
-
     useEffect(() => {
         const unsubscribe = auth().onAuthStateChanged(async (user) => {
           if (user) {

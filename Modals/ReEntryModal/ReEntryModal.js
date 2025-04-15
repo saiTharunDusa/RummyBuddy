@@ -39,6 +39,9 @@ const ReEntryModal = () => {
   const [showWinnerModal, setShowWinnerModal] = useState(false);
   const [showWinnerName, setShowWinnerName] = useState();
 
+  const [isPlusOneSelected, setIsPlusOneSelected] = useState(false);
+
+
 
   const outPlayerIds = useMemo(
     () => new Set(inGamePlayersOut.map((p) => p.id)),
@@ -83,8 +86,16 @@ const ReEntryModal = () => {
 
   
     reEnteredPlayerIds.forEach((id) => {
-      newRound[id] = maxScore + 1;
-      totals[id] = maxScore + 1;
+      if(isPlusOneSelected === true)
+      {
+        newRound[id] = maxScore + 1;
+        totals[id] = maxScore + 1;
+      }
+      else
+      {
+        newRound[id] = maxScore;
+        totals[id] = maxScore;
+      }
     });
 
     dispatch(addRounds(newRound));
@@ -156,59 +167,82 @@ const ReEntryModal = () => {
       </TouchableOpacity>
 
       <Modal visible={showReentryModal} transparent animationType="fade">
-        <View style={Style.modalBackground}>
-          <View style={Style.modalBox}>
-            <Text style={Style.modalTitle}>Re Entry</Text>
+  <View style={Style.modalBackground}>
+    <View style={Style.modalBox}>
+      <Text style={Style.modalTitle}>Re Entry</Text>
 
-            {inGamePlayersOut.map((p, index) => {
-              const isSelected = reEntryScores[p.id] !== undefined;
-              return (
-                <TouchableOpacity
-                  key={p.id}
-                  style={Style.checkboxRow}
-                  onPress={() => {
-                    setReEntryScores((prev) => {
-                      const updated = { ...prev };
-                      if (isSelected) delete updated[p.id];
-                      else updated[p.id] = 0;
-                      return updated;
-                    });
-                  }}
-                >
-                  <View
-                    style={[
-                      Style.checkbox,
-                      { backgroundColor: isSelected ? "#3498db" : "#fff" },
-                    ]}
-                  >
-                    {isSelected && <Text style={Style.checkboxTick}>✓</Text>}
-                  </View>
-                  <Text style={Style.checkboxLabel}>
-                    {index + 1}. {p.name}
-                  </Text>
-                </TouchableOpacity>
-              );
-            })}
+      {inGamePlayersOut.map((p, index) => {
+        const isSelected = reEntryScores[p.id] !== undefined;
+        return (
+          <TouchableOpacity
+            key={p.id}
+            style={Style.checkboxRow}
+            onPress={() => {
+              setReEntryScores((prev) => {
+                const updated = { ...prev };
+                if (isSelected) delete updated[p.id];
+                else updated[p.id] = 0;
+                return updated;
+              });
+            }}
+          >
+            <View
+              style={[
+                Style.checkbox,
+                { backgroundColor: isSelected ? "#3498db" : "#fff" },
+              ]}
+            >
+              {isSelected && <Text style={Style.checkboxTick}>✓</Text>}
+            </View>
+            <Text style={Style.checkboxLabel}>
+              {index + 1}. {p.name}
+            </Text>
+          </TouchableOpacity>
+        );
+      })}
 
-            {inGamePlayersOut.length > 0 && dangerPlayerIds.size === 0 ? (
-              <View>
-                <TouchableOpacity style={Style.modalClose} onPress={handleReentry}>
-                  <Text style={{ color: "#fff", fontSize : scaleFontSize(20) }}>Re-entry</Text>
-                </TouchableOpacity>
-                <TouchableOpacity style={Style.modalClose} onPress={handleCancel}>
-                  <Text style={{ color: "#fff", fontSize : scaleFontSize(20) }}>Cancel</Text>
-                </TouchableOpacity>
-              </View>
-            ) : (
-              <View>
-                <TouchableOpacity style={Style.modalClose} onPress={handleCancel}>
-                  <Text style={{ color: "#fff", fontSize : scaleFontSize(20) }}>No Re-entry Available!</Text>
-                </TouchableOpacity>
-              </View>
-            )}
-          </View>
+      {/* +1 for Re-entry Option */}
+      <TouchableOpacity
+        style={[Style.checkboxRow, { marginTop: 10 }]}
+        onPress={() => setIsPlusOneSelected(prev => !prev)}
+      >
+        <View
+          style={[
+            Style.checkbox,
+            { backgroundColor: isPlusOneSelected ? "#27ae60" : "#fff" },
+          ]}
+        >
+          {isPlusOneSelected && <Text style={Style.checkboxTick}>✓</Text>}
         </View>
-      </Modal>
+        <Text style={Style.checkboxLabel}>+1 for Re Entry</Text>
+      </TouchableOpacity>
+
+      {inGamePlayersOut.length > 0 && dangerPlayerIds.size === 0 ? (
+        <View>
+          <TouchableOpacity style={Style.modalClose} onPress={handleReentry}>
+            <Text style={{ color: "#fff", fontSize: scaleFontSize(20) }}>
+              Re-entry
+            </Text>
+          </TouchableOpacity>
+          <TouchableOpacity style={Style.modalClose} onPress={handleCancel}>
+            <Text style={{ color: "#fff", fontSize: scaleFontSize(20) }}>
+              Cancel
+            </Text>
+          </TouchableOpacity>
+        </View>
+      ) : (
+        <View>
+          <TouchableOpacity style={Style.modalClose} onPress={handleCancel}>
+            <Text style={{ color: "#fff", fontSize: scaleFontSize(20) }}>
+              No Re-entry Available!
+            </Text>
+          </TouchableOpacity>
+        </View>
+      )}
+    </View>
+  </View>
+</Modal>
+
 
       <Modal visible={showWinnerModal} transparent animationType="fade">
                 <View style={Style.modalBackground}>
