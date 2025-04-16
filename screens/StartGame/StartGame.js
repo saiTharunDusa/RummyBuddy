@@ -140,8 +140,8 @@ const StartGame = ({ navigation }) => {
         </View>
       </View>
 
-      {/* Total Game Amount Container */}
-      <Text style={Style.text1}>Game Amount Per Player</Text>
+      {/* Total Game Points Container */}
+      <Text style={Style.text1}>Game Points Per Player</Text>
       <View style={Style.totalGameAmountContainer}>
         <TextInput
           keyboardType="numeric"

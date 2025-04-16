@@ -28,25 +28,36 @@ const PlayersRow = () => {
                     const isDistributor = index === dealerId;
                 
                     return (
-                    <Text
-                        key={index}
+                        <Text
+                        key={player.id}
+                        numberOfLines={1}
+                        ellipsizeMode="tail"
                         style={{
-                        borderWidth: 1,
-                        borderRadius: 10,
-                        borderWidth : isDistributor ? 5 : 2,
-                        borderColor: isDistributor ? '#00BFFF' : isOut ? '#ff0505' : isDanger ? '#ff8f00' : '#3498db',
-                        textAlign: 'center',
-                        justifyContent : 'center',
-                        color: '#FFFFFF',
-                        paddingVertical: verticalScale(6),
-                        marginHorizontal: horizontalScale(6),
-                        backgroundColor: isOut ? '#ff0505' : isDanger ? '#ff8f00' : '#3498db',
-                        flex: 1,
-                        fontWeight: 'bold',
+                          borderWidth: isDistributor ? 5 : 2,
+                          borderRadius: 10,
+                          borderColor: isDistributor
+                            ? '#00BFFF'
+                            : isOut
+                            ? '#ff0505'
+                            : isDanger
+                            ? '#ff8f00'
+                            : '#3498db',
+                          textAlign: 'center',
+                          color: '#FFFFFF',
+                          paddingVertical: verticalScale(6),
+                          marginHorizontal: horizontalScale(6),
+                          backgroundColor: isOut
+                            ? '#ff0505'
+                            : isDanger
+                            ? '#ff8f00'
+                            : '#3498db',
+                          flex: 1,
+                          fontWeight: 'bold',
                         }}
-                    >
-                        {index + 1}
-                    </Text>
+                      >
+                        {player.name}
+                      </Text>
+                      
                     );
                 })}
 		    </View>

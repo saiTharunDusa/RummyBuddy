@@ -55,26 +55,6 @@ const Compromise = () => {
   });
 
 
-
-  // validPlayers.forEach(player=>{
-  //   playerReturns[player.id] = singlePlayerAmount;
-  //   totalGameAmount = totalGameAmount - singlePlayerAmount;
-  //   playerDropMap[player.id] = 0;
-  // })
-
-  // let totalDrops = 0;
-  // eligibleProfitPlayers.forEach(player => {
-  //   const noOfDrops = Math.floor((totalGameScore - totalScore[player.id] - 1) / dropValue);
-  //   playerDropMap[player.id] += noOfDrops;
-  //   totalDrops += noOfDrops;
-  // });
-
-
-  // eligibleProfitPlayers.forEach(p => {
-  //   const drops = playerDropMap[p.id];
-  //   playerReturns[p.id] += Math.floor((drops / totalDrops) * totalGameAmount);
-  // });
-
   return (
     <SafeAreaView style={Style.container}>
       <View style={Style.back} >
@@ -90,7 +70,7 @@ const Compromise = () => {
       textAlign: 'center',
       marginBottom: 16,
         }
-      }>Compromise is never an option — unless cash is involved 😉</Text>
+      }>Compromise is never an option — unless cash points are involved 😉</Text>
       <Text style={
         {
             fontSize: 15,
@@ -107,7 +87,7 @@ And yes — your drops were counted.</Text>
             <Text style={Style.name}>
               {index + 1}. {player.name}
             </Text>
-            <Text style={Style.amount}>₹ {playerReturns[player.id] ?? 0}</Text>
+            <Text style={Style.amount}> {playerReturns[player.id] ?? 0}</Text>
           </View>
         ))}
       </ScrollView>
