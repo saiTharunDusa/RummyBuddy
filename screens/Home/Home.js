@@ -1,11 +1,10 @@
 import React, { useEffect } from "react";
-import { faPersonCirclePlus, faPlus, faPlay, faPause, faCheck } from '@fortawesome/free-solid-svg-icons';
+import { faPersonCirclePlus, faPlus, faPlay, faPause, faCheck, faash } from '@fortawesome/free-solid-svg-icons';
 import Button from "../../components/Button/Button";
 import Title from "../../components/Title/Title";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { Routes } from "../../navigation/Routes";
-import { ScrollView } from "react-native";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { resetAllSelectedPlayers } from "../../redux/reducers/selectedPlayers";
 import firestore from '@react-native-firebase/firestore';
 import auth from '@react-native-firebase/auth';
@@ -70,6 +69,8 @@ const Home = ({navigation})=>{
                   navigation.navigate(Routes.CompletedGames)
                 }}
             />
+            
+          
         </SafeAreaView>
     )
 }

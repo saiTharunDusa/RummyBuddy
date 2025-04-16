@@ -10,6 +10,7 @@ import { Routes } from "./Routes";
 import { createStackNavigator } from "@react-navigation/stack";
 import CompletedGames from "../screens/CompletedGames/CompletedGames";
 import Compromise from "../screens/Compromise/Compromise"
+import DeleteAccount from "../screens/DeleteAccount/DeleteAccount";
 
 const Stack = createStackNavigator();
 
@@ -34,6 +35,7 @@ export const Authenticated = () => {
             <Stack.Screen name={Routes.ContinueGame} component={ContinueGame} />
             <Stack.Screen name={Routes.CompletedGames} component={CompletedGames}  />
             <Stack.Screen name={Routes.Compromise} component={Compromise} />
+            <Stack.Screen name={Routes.deleteAccount} component={DeleteAccount} />
         </Stack.Navigator>
     )
 }

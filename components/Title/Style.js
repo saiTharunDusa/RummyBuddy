@@ -6,7 +6,7 @@ const Style = StyleSheet.create({
         height : verticalScale(100),
         alignItems : "center",
         justifyContent : "center",
-        backgroundColor: "#3498db" , // Background color
+        backgroundColor: "#3498db" ,
     },
     mainHeading : {
         color : "#FFFFFF",
@@ -18,17 +18,21 @@ const Style = StyleSheet.create({
         color : "#FFFFFF",
         fontSize : scaleFontSize(15),
     },
-    logoutButton: {
-        position: 'absolute',
-        top: 10,
-        right: 16,
+    deleteButton: {
         flexDirection: 'row',
         alignItems: 'center',
         backgroundColor: '#ffffff44',
-        paddingVertical: verticalScale(4),
-        paddingHorizontal: horizontalScale(10),
-        borderRadius: 8,
+        padding: 8,
+        borderRadius: 6,
       },
+      logoutButton: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        backgroundColor: '#ffffff44',
+        padding: 8,
+        borderRadius: 6,
+      },
+      
       
       logoutText: {
         color: '#fff',

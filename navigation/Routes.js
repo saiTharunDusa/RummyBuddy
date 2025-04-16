@@ -9,4 +9,5 @@ export const Routes = {
     ContinueGame : 'ContinueGame',
     CompletedGames : 'CompletedGames',
     Compromise : 'Compromise',
+    deleteAccount : 'deleteAccount',
 }

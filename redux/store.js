@@ -18,6 +18,7 @@ const rootReducer = combineReducers({
 const configuration = {
     key : 'root',
     storage : AsyncStorage,
+    timeout: 10000,
     version : 1
 }
 
