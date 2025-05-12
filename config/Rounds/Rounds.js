@@ -53,7 +53,7 @@ const Rounds = () => {
                             {
                             backgroundColor: isReentryRound ? '#B3E5FC' : 'transparent',
                             borderRadius: 10,
-                            paddingVertical: verticalScale(2),
+                            paddingVertical: verticalScale(),
                             },
                           ]}
                 >
@@ -113,23 +113,42 @@ const Rounds = () => {
                 <Modal visible={showWinnerModal} transparent animationType="fade">
                 <View style={Style.modalBackground}>
                     <View style={Style.modalBox}>
-                    <Text style={Style.modalTitle}>🎉 Congratulations!</Text>
-                    <Text style={{ textAlign: 'center', fontSize: 18, marginVertical: 10 }}>
+                    <Text
+                    adjustsFontSizeToFit
+                    numberOfLines={1}
+                    style={Style.modalTitle}>🎉 Congratulations!</Text>
+                    <Text
+                    adjustsFontSizeToFit
+                    numberOfLines={1}
+                    style={{ textAlign: 'center', fontSize: 18, marginVertical: 10 }}>
                         {showWinnerName} is the winner!
                     </Text>
-                    <TouchableOpacity style={Style.modalClose} onPress={() =>
-                    {
-                        navigation.navigate(Routes.Compromise),
-                        setShowWinnerModal(false)
-                    } }>
-                    <Text style={{ color: '#fff' }}>Amount Won</Text>
-                    </TouchableOpacity>
-                    <TouchableOpacity style={Style.modalClose} onPress={() => setShowWinnerModal(false)}>
-                        <Text style={{ color: '#fff' }}>Close</Text>
-                    </TouchableOpacity>
+                    <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginTop: 10 }}>
+  <TouchableOpacity
+    style={[Style.modalClose, { flex: 1, marginRight: 5 }]}
+    onPress={() => {
+      setShowWinnerModal(false);
+      navigation.navigate(Routes.Compromise);
+    }}
+  >
+    <Text adjustsFontSizeToFit numberOfLines={1} style={{ color: '#fff', textAlign: 'center' }}>
+      Amount Won
+    </Text>
+  </TouchableOpacity>
+
+  <TouchableOpacity
+    style={[Style.modalClose, { flex: 1, marginLeft: 5 }]}
+    onPress={() => setShowWinnerModal(false)}
+  >
+    <Text adjustsFontSizeToFit numberOfLines={1} style={{ color: '#fff', textAlign: 'center' }}>
+      Close
+    </Text>
+  </TouchableOpacity>
+</View>
+
                     </View>
                 </View>
-                </Modal>
+      </Modal>
 
 
         </SafeAreaView>

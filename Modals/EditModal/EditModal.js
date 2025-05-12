@@ -22,6 +22,7 @@ import {
 } from "../../redux/reducers/gameState";
 import { scaleFontSize } from "../../assets/Scaling";
 import { useNavigation } from "@react-navigation/native";
+import { Routes } from "../../navigation/Routes";
 
 const EditModal = () => {
   const dispatch = useDispatch();
@@ -142,11 +143,20 @@ const EditModal = () => {
       <Modal visible={showEditModal} transparent animationType="fade">
         <View style={Style.modalBackground}>
           <View style={Style.modalBox}>
-            <Text style={Style.modalTitle}>Edit Last Round</Text>
+            <Text
+            adjustsFontSizeToFit
+            numberOfLines={1}
+            style={Style.modalTitle}>Edit Last Round</Text>
             {inGamePlayers.map((p, index) => (
               <View key={p.id} style={Style.scoreInputRow}>
-                <Text style={Style.playerLabel}>{index + 1 + "."}</Text>
-                <Text style={Style.playerName}>{p.name}</Text>
+                <Text
+                adjustsFontSizeToFit
+                numberOfLines={1}
+                style={Style.playerLabel}>{index + 1 + "."}</Text>
+                <Text
+                adjustsFontSizeToFit
+                numberOfLines={1}
+                style={Style.playerName}>{p.name}</Text>
                 <TextInput
                   style={Style.input}
                   keyboardType="numeric"
@@ -164,38 +174,64 @@ const EditModal = () => {
               style={Style.modalClose}
               onPress={handleEditLastRound}
             >
-              <Text style={{ color: "#fff", fontSize : scaleFontSize(20) }}>Edit Round</Text>
+              <Text
+              adjustsFontSizeToFit
+              numberOfLines={1}
+              style={{ color: "#fff", fontSize : scaleFontSize(20) }}>Edit Round</Text>
             </TouchableOpacity>
             <TouchableOpacity
               style={Style.modalClose}
               onPress={() => setShowEditModal(false)}
             >
-              <Text style={{ color: "#fff", fontSize : scaleFontSize(20) }}>Cancel</Text>
+              <Text
+              adjustsFontSizeToFit
+              numberOfLines={1}
+              style={{ color: "#fff", fontSize : scaleFontSize(20) }}>Cancel</Text>
             </TouchableOpacity>
           </View>
         </View>
       </Modal>
 
+      
       <Modal visible={showWinnerModal} transparent animationType="fade">
                 <View style={Style.modalBackground}>
                     <View style={Style.modalBox}>
-                    <Text style={Style.modalTitle}>🎉 Congratulations!</Text>
-                    <Text style={{ textAlign: 'center', fontSize: 18, marginVertical: 10 }}>
+                    <Text
+                    adjustsFontSizeToFit
+                    numberOfLines={1}
+                    style={Style.modalTitle}>🎉 Congratulations!</Text>
+                    <Text
+                    adjustsFontSizeToFit
+                    numberOfLines={1}
+                    style={{ textAlign: 'center', fontSize: 18, marginVertical: 10 }}>
                         {showWinnerName} is the winner!
                     </Text>
-                    <TouchableOpacity style={Style.modalClose} onPress={() =>
-                    {
-                        navigation.navigate(Routes.Compromise),
-                        setShowWinnerModal(false)
-                    } }>
-                    <Text style={{ color: '#fff' }}>Amount Won</Text>
-                    </TouchableOpacity>
-                    <TouchableOpacity style={Style.modalClose} onPress={() => setShowWinnerModal(false)}>
-                        <Text style={{ color: '#fff' }}>Close</Text>
-                    </TouchableOpacity>
+                    <View style={{ flexDirection: 'row', justifyContent: 'space-between', marginTop: 10 }}>
+  <TouchableOpacity
+    style={[Style.modalClose, { flex: 1, marginRight: 5 }]}
+    onPress={() => {
+      setShowWinnerModal(false);
+      navigation.navigate(Routes.Compromise);
+    }}
+  >
+    <Text adjustsFontSizeToFit numberOfLines={1} style={{ color: '#fff', textAlign: 'center' }}>
+      Amount Won
+    </Text>
+  </TouchableOpacity>
+
+  <TouchableOpacity
+    style={[Style.modalClose, { flex: 1, marginLeft: 5 }]}
+    onPress={() => setShowWinnerModal(false)}
+  >
+    <Text adjustsFontSizeToFit numberOfLines={1} style={{ color: '#fff', textAlign: 'center' }}>
+      Close
+    </Text>
+  </TouchableOpacity>
+</View>
+
                     </View>
                 </View>
-                </Modal>
+      </Modal>
 
     </SafeAreaView>
   );

@@ -39,19 +39,31 @@ const GameSettingModal = () => {
                     { label: 'Total Amount', value: totalGameAmount },
                     ].map((item, index) => (
                     <View key={index} style={Style.settingsRow}>
-                        <Text style={Style.settingsLabel}>{item.label}</Text>
-                        <Text style={Style.settingsValue}>{item.value}</Text>
+                        <Text
+                        adjustsFontSizeToFit
+                        numberOfLines={1}
+                        style={Style.settingsLabel}>{item.label}</Text>
+                        <Text
+                        adjustsFontSizeToFit
+                        numberOfLines={1}
+                        style={Style.settingsValue}>{item.value}</Text>
                     </View>
                     ))}
                     <TouchableOpacity style={Style.modalClose} onPress={() =>
                     {
-                        navigation.navigate(Routes.Compromise),
                         setShowSettings(false)
+                        navigation.navigate(Routes.Compromise);
                     } }>
-                    <Text style={{ color: '#fff', fontSize : scaleFontSize(20) }}>Compromise</Text>
+                    <Text
+                    adjustsFontSizeToFit
+                    numberOfLines={1}
+                    style={{ color: '#fff', fontSize : scaleFontSize(20) }}>Compromise</Text>
                     </TouchableOpacity>
                     <TouchableOpacity style={Style.modalClose} onPress={() => setShowSettings(false)}>
-                        <Text style={{ color: '#fff', fontSize : scaleFontSize(20) }}>Close</Text>
+                        <Text
+                        adjustsFontSizeToFit
+                        numberOfLines={1}
+                        style={{ color: '#fff', fontSize : scaleFontSize(20) }}>Close</Text>
                     </TouchableOpacity>
                     
                 </View>

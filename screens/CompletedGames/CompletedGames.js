@@ -90,61 +90,31 @@ const CompletedGames = () => {
     const renderItem = useCallback(({ item, index }) => {
         const createdAt = item.createdAt?.toDate?.(); 
         const formattedTime = createdAt
-          ? moment(createdAt).format('MMM DD, YYYY hh:mm A')
-          : 'Unknown time';
+            ? moment(createdAt).format('MMM DD, YYYY hh:mm A')
+            : 'Unknown time';
         return (
-          <View style={{
-            backgroundColor: '#3498db',
-            marginHorizontal: 16,
-            marginVertical: 8,
-            borderRadius: 10,
-            padding: 16,
-            shadowColor: '#000',
-            shadowOpacity: 0.1,
-            shadowOffset: { width: 0, height: 2 },
-            shadowRadius: 6,
-            elevation: 4,
-          }}>
-
-            <TouchableOpacity onPress={()=>handleContinueGame(item)} >
-                <Text style={{ fontSize: 18, color: '#fff', fontWeight: 'bold' }}>
-                Game {index + 1}
-                </Text>
-                <Text style={{ fontSize: 14, color: '#ecf0f1', marginTop: 4 }}>
-                Created at: {formattedTime}
-                </Text>
-            </TouchableOpacity>
-          </View>
+            <View style={Style.gameCard}>
+                <TouchableOpacity onPress={() => handleContinueGame(item)}>
+                    <Text style={Style.gameTitle}>
+                        Game {index + 1}
+                    </Text>
+                    <Text style={Style.gameDate}>
+                        Created at: {formattedTime}
+                    </Text>
+                </TouchableOpacity>
+            </View>
         );
-      }, []);
+    }, []);
 
-
-
-    return(
+    return (
         <SafeAreaView style={Style.container}>
-            
-            <View style={{
-                flexDirection: 'row',
-                alignItems: 'center',
-                justifyContent: 'center',
-                position: 'relative',
-                padding: 10,
-                }} >
+            <View style={Style.headerContainer}>
                 <BackButton onPress={() => navigation.goBack()} />
-                <Text
-                style={{
-                    color: '#3498db',
-                    fontSize: 30,
-                    fontWeight: 'bold',
-                    textAlign: 'center',
-                    flex: 1,
-
-                }}
-            >Completed Games</Text>
+                <Text style={Style.headerTitle}>Completed Games</Text>
             </View>
             <FlatList
-                data= {completedGames}
-                key={(item) => item.id.toString()}
+                data={completedGames}
+                keyExtractor={(item) => item.id.toString()}
                 renderItem={renderItem}
             />
         </SafeAreaView>

@@ -33,10 +33,16 @@ const Title = () => {
                 </TouchableOpacity>
             </View>
 
-            <Text style={Style.mainHeading}>
+            <Text
+            adjustsFontSizeToFit
+            numberOfLines={1}
+            style={Style.mainHeading}>
                 Rummy Scoreboard
             </Text>
-            <Text style={Style.tagLine}>
+            <Text 
+            adjustsFontSizeToFit
+            numberOfLines={1}
+            style={Style.tagLine}>
                 Track your game scores with style!
             </Text>
         </View>

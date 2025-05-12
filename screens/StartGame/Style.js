@@ -2,108 +2,116 @@ import { StyleSheet } from "react-native";
 import { horizontalScale, scaleFontSize, verticalScale } from "../../assets/Scaling";
 
 const Style = StyleSheet.create({
-    container : {
-        flex : 1,
-        paddingVertical: verticalScale(8),
-        paddingHorizontal: horizontalScale(8),
-        alignItems : 'center',
-        backgroundColor: '#fff'
-    },
-    topContainer : {
-      flexDirection : 'row',
-      width : '90%',
-      alignItems : 'center',
-      justifyContent: 'flex-start',
-      marginTop: verticalScale(20),
-    },
-    back : {
-      marginRight: horizontalScale(20),
-    },
-    text1 : {
-        fontWeight : '900',
-        fontSize: scaleFontSize(18),
-        color: '#3498db'
-    },
-    addPlayers : {
-        alignItems : 'center',
-        backgroundColor : "#87CEEB",
-        width : '90%',
-        borderRadius : 10,
-        marginBottom : verticalScale(15),
-    },
-    addPlayersButton : {
-        backgroundColor: '#3498db',
-        padding: 14,
-        borderRadius: 10,
-        alignItems: 'center',
-        marginHorizontal : horizontalScale(16),
-        marginVertical: verticalScale(16),
-        fontWeight : '400',
-    },
-    groupContainer: {
-        width: '90%',
-        padding: 16,
-        backgroundColor : '#87CEEB',
-        borderRadius : 10,
-        marginBottom : verticalScale(15),
-    },
-    
-    row: {
-        flexDirection: 'row',
-        justifyContent: 'space-between',
-        alignItems: 'center',
-        marginBottom: verticalScale(12),
-    },
-    
-    label: {
-        fontSize: scaleFontSize(16),
-        backgroundColor: '#BEE4F4',
-        padding: 14,
-        borderRadius: 10,
-        textAlign: 'center',
-        width : horizontalScale(120),
-        fontWeight : '400',
-    },
-    
-    textInput: {
-        borderWidth: 2,
-        borderColor: '#3498db',
-        borderRadius: 10,
-        paddingHorizontal: horizontalScale(10),
-        paddingVertical: verticalScale(6),
-        width: '40%', 
-        fontSize : scaleFontSize(16),
-    },
-
-    gameAmountText : {
-        borderWidth : horizontalScale(3),
-        borderColor : '#3498db',
-        borderRadius : 10,
-        paddingVertical : verticalScale(8),
-        width : '50%',
-        fontSize : scaleFontSize(20),
-        textAlign : 'center'
-    },
-
-    totalGameAmountContainer : {
-        width: '90%',
-        padding: 16,
-        backgroundColor : '#87CEEB',
-        borderRadius : 10,
-        alignItems : 'center',
-        marginBottom : verticalScale(5),
-    },
-
-    startGameButton : {
-        backgroundColor: '#3498db',
-        padding: 14,
-        borderRadius: 10,
-        alignItems: 'center',
-        marginHorizontal : horizontalScale(16),
-        marginVertical: verticalScale(16),
-        fontWeight : '400',
-        textAlign: 'center'
-    }
+  container: {
+    flex: 1,
+    color: '#3498db',
+    paddingVertical: verticalScale(8),
+    paddingHorizontal: horizontalScale(8),
+    alignItems: 'center',
+    backgroundColor: '#fff'
+  },
+  topContainer: {
+    flexDirection: 'row',
+    width: '90%',
+    alignItems: 'center',
+    justifyContent: 'flex-start',
+    marginTop: verticalScale(20),
+  },
+  back: {
+    marginRight: horizontalScale(20),
+  },
+  text1: {
+    fontWeight: '900',
+    fontSize: scaleFontSize(18),
+    color: '#3498db',
+    textAlign: 'center',
+    includeFontPadding: false,
+    textAlignVertical: 'center',
+  },
+  addPlayersButton: {
+    backgroundColor: '#3498db',
+    padding: 14,
+    borderRadius: 10,
+    marginHorizontal: horizontalScale(16),
+    marginVertical: verticalScale(16),
+    fontWeight: '400',
+    textAlign: 'center',
+    color: '#fff',
+    textAlignVertical: 'center',
+    includeFontPadding: false,
+  },
+  groupContainer: {
+    width: '90%',
+    padding: 16,
+    backgroundColor: '#87CEEB',
+    borderRadius: 10,
+    marginBottom: verticalScale(15),
+  },
+  row: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    marginBottom: verticalScale(12),
+  },
+  label: {
+    fontSize: scaleFontSize(16),
+    backgroundColor: '#BEE4F4',
+    padding: 14,
+    borderRadius: 10,
+    textAlign: 'center',
+    width: horizontalScale(120),
+    fontWeight: '400',
+    includeFontPadding: false,
+    textAlignVertical: 'center',
+  },
+  textInput: {
+    borderWidth: 2,
+    borderColor: '#3498db',
+    borderRadius: 10,
+    paddingHorizontal: horizontalScale(10),
+    paddingVertical: verticalScale(6),
+    width: '40%',
+    fontSize: scaleFontSize(16),
+    textAlign: 'center',
+    includeFontPadding: false,
+    textAlignVertical: 'center',
+  },
+  gameAmountText: {
+    borderWidth: horizontalScale(3),
+    borderColor: '#3498db',
+    borderRadius: 10,
+    paddingVertical: verticalScale(8),
+    width: '50%',
+    fontSize: scaleFontSize(20),
+    textAlign: 'center',
+    includeFontPadding: false,
+    textAlignVertical: 'center',
+  },
+  totalGameAmountContainer: {
+    width: '90%',
+    padding: 16,
+    backgroundColor: '#87CEEB',
+    borderRadius: 10,
+    alignItems: 'center',
+    marginBottom: verticalScale(5),
+  },
+  startGameButton: {
+    backgroundColor: '#3498db',
+    padding: 14,
+    borderRadius: 10,
+    marginHorizontal: horizontalScale(16),
+    marginVertical: verticalScale(16),
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  startGameButtonText: {
+    color: '#fff',
+    fontWeight: '600',
+    fontSize: scaleFontSize(16),
+    textAlign: 'center',
+    includeFontPadding: false,
+    textAlignVertical: 'center',
+  },
 });
 
-export default Style
+export default Style;

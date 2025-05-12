@@ -50,7 +50,7 @@ const StartGame = ({ navigation }) => {
           inGameOutPlayers: [],
           inGameDangerPlayers: [],
           reEntryRounds: [],
-          dealerId: 0,
+          dealerId: selectedPlayersList.length - 1,
           previousDealerId: -1,
           playersLifeCycle: [],
           createdAt: firestore.FieldValue.serverTimestamp(),
@@ -70,7 +70,7 @@ const StartGame = ({ navigation }) => {
         inGameOutPlayers: [],
         inGameDangerPlayers: [],
         reEntryRounds: [],
-        dealerId: 0,
+        dealerId: selectedPlayersList.length - 1,
         previousDealerId: -1,
         playersLifeCycle: [],
       }));
@@ -89,21 +89,24 @@ const StartGame = ({ navigation }) => {
         <View style={Style.back}>
           <BackButton onPress={() => navigation.goBack()} />
         </View>
-        <Text style={Style.text1}>Add Players to the game!</Text>
+        <Text
+        style={Style.text1}>Add Players to the game!</Text>
       </View>
 
       {/* Add Players Container */}
-      <View style={Style.addPlayers}>
-        <TouchableOpacity onPress={() => navigation.navigate("selectPlayers")}>
-          <Text style={Style.addPlayersButton}>Add Players</Text>
-        </TouchableOpacity>
-      </View>
+      <View>
+  <TouchableOpacity onPress={() => navigation.navigate("selectPlayers")}>
+    <Text style={Style.addPlayersButton}>Add Players</Text>
+  </TouchableOpacity>
+</View>
 
       {/* Game Score Container */}
-      <Text style={Style.text1}>Game Scores</Text>
+      <Text
+      style={Style.text1}>Game Scores</Text>
       <View style={Style.groupContainer}>
         <View style={Style.row}>
-          <Text style={Style.label}>Total</Text>
+          <Text 
+          style={Style.label}>Total</Text>
           <TextInput
             keyboardType="numeric"
             value={totalGameScore}
@@ -112,7 +115,8 @@ const StartGame = ({ navigation }) => {
           />
         </View>
         <View style={Style.row}>
-          <Text style={Style.label}>Drop</Text>
+          <Text
+          style={Style.label}>Drop</Text>
           <TextInput
             keyboardType="numeric"
             value={dropScore}
@@ -121,7 +125,8 @@ const StartGame = ({ navigation }) => {
           />
         </View>
         <View style={Style.row}>
-          <Text style={Style.label}>Middle Drop</Text>
+          <Text
+          style={Style.label}>Middle Drop</Text>
           <TextInput
             keyboardType="numeric"
             value={middleDropScore}
@@ -130,7 +135,8 @@ const StartGame = ({ navigation }) => {
           />
         </View>
         <View style={Style.row}>
-          <Text style={Style.label}>Full Count</Text>
+          <Text
+          style={Style.label}>Full Count</Text>
           <TextInput
             keyboardType="numeric"
             value={fullCountScore}
@@ -141,7 +147,8 @@ const StartGame = ({ navigation }) => {
       </View>
 
       {/* Total Game Points Container */}
-      <Text style={Style.text1}>Game Points Per Player</Text>
+      <Text 
+      style={Style.text1}>Game Cash Points Per Player</Text>
       <View style={Style.totalGameAmountContainer}>
         <TextInput
           keyboardType="numeric"
@@ -153,10 +160,10 @@ const StartGame = ({ navigation }) => {
 
       {/* Start Game Container */}
       <View>
-        <TouchableOpacity onPress={handleBtn}>
-          <Text style={Style.startGameButton}>Start Game</Text>
-        </TouchableOpacity>
-      </View>
+  <TouchableOpacity style={Style.startGameButton} onPress={handleBtn}>
+    <Text style={Style.startGameButtonText}>Start Game</Text>
+  </TouchableOpacity>
+</View>
     </SafeAreaView>
   );
 };

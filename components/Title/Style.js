@@ -9,6 +9,8 @@ const Style = StyleSheet.create({
         backgroundColor: "#3498db" ,
     },
     mainHeading : {
+      width : '100%',
+
         color : "#FFFFFF",
         fontSize: scaleFontSize(35),
         fontWeight: 'bold',

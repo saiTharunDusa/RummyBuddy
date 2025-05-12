@@ -30,7 +30,10 @@ const MappingModal = () => {
                         ))
                     }
                     <TouchableOpacity style={Style.modalClose} onPress={() => setShowMapping(false)}>
-                        <Text style={{ color: '#fff', fontSize : scaleFontSize(20), }}>Close</Text>
+                        <Text
+                        adjustsFontSizeToFit
+                        numberOfLines={1}
+                        style={{ color: '#fff', fontSize : scaleFontSize(20), }}>Close</Text>
                     </TouchableOpacity>
                 </View>
                 </View>

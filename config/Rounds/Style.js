@@ -23,7 +23,7 @@ const Style = StyleSheet.create({
         backgroundColor: '#AED6F1',
     },
     totalRow: {
-    backgroundColor: '#00BFFF',
+    backgroundColor: '#E1D5FF',
     paddingVertical : verticalScale(4),
     },
     modalClose: {
@@ -47,8 +47,8 @@ const Style = StyleSheet.create({
       },
       modalTitle: {
         fontWeight: 'bold',
-        fontSize: scaleFontSize(16),
-        marginBottom: 12,
+        fontSize: scaleFontSize(20),
+        marginBottom: verticalScale(16),
         textAlign: 'center',
       },
 });
