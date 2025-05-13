@@ -60,6 +60,7 @@ const Style = StyleSheet.create({
         paddingHorizontal: horizontalScale(10),
         marginLeft: horizontalScale(10),
         height: verticalScale(40),
+        fontSize : scaleFontSize(20),
       },
     
 });

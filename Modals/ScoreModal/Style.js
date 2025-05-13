@@ -31,9 +31,21 @@ const Style = StyleSheet.create({
       },
       scoreInputRow: {
         flexDirection: 'row',
-        alignItems: 'center',
+        justifyContent : 'space-around',
         marginBottom: verticalScale(10),
       },
+      smallButton: {
+        paddingVertical: 4,
+        paddingHorizontal: 10,
+        backgroundColor: '#cce5ff', 
+        borderRadius: 8,
+        elevation: 1,
+      },
+      buttonText: {
+        fontSize: 12,
+        color: '#004085', 
+        fontWeight: '600',
+      },    
       playerLabel: {
         width: horizontalScale(20),
         textAlign: 'center',
@@ -41,7 +53,6 @@ const Style = StyleSheet.create({
         fontSize : scaleFontSize(20)
       },
       playerName: {
-        flex: 2,
         fontSize : scaleFontSize(20)
       },
       modalClose: {
@@ -52,17 +63,58 @@ const Style = StyleSheet.create({
         alignItems: 'center',
       },
       input: {
-        flex: 1,
+        flex : 1,
         borderWidth: 1,
         borderColor: '#3498db',
         borderRadius: 6,
         textAlign : 'center',
-        paddingHorizontal: horizontalScale(10),
-        marginLeft: horizontalScale(10),
+        paddingHorizontal: horizontalScale(20),
         height: verticalScale(40),
         fontSize : scaleFontSize(20),
       },
-    
+      smallButton1: {
+        backgroundColor: '#3498db',
+        paddingVertical: 4,
+        paddingHorizontal: 10,
+        borderRadius: 6,
+        marginTop: verticalScale(4),
+        marginLeft : horizontalScale(4),
+        alignSelf: 'flex-start',
+      },
+      smallButton2: {
+        backgroundColor: '#ff8f00',
+        paddingVertical: 4,
+        paddingHorizontal: 10,
+        borderRadius: 6,
+        marginTop: verticalScale(4),
+        marginLeft : horizontalScale(4),
+        alignSelf: 'flex-start',
+      },
+      smallButton3: {
+        backgroundColor: '#FF0066',
+        paddingVertical: 4,
+        paddingHorizontal: 10,
+        borderRadius: 6,
+        marginTop: verticalScale(4),
+        marginLeft : horizontalScale(4),
+        alignSelf: 'flex-start',
+      },
+      smallButton4: {
+        backgroundColor: '#ff0000',
+        paddingVertical: 4,
+        paddingHorizontal: 10,
+        borderRadius: 6,
+        marginTop: verticalScale(4),
+        marginLeft : horizontalScale(4),
+        alignSelf: 'flex-start',
+      },
+
+      buttonText: {
+        fontSize: scaleFontSize(12),
+        color: '#ffffff',
+        fontWeight: '600',
+      },
+      
 });
 
 export default Style;

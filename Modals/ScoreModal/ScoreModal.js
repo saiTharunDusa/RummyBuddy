@@ -5,7 +5,7 @@ import { faPlus } from "@fortawesome/free-solid-svg-icons";
 import Style from "./Style";
 import { useDispatch, useSelector } from "react-redux";
 import { addRounds, addTotals, setDangerPlayers, setDealerId, setOutPlayers, setPreviousDealerId, setPlayersLifeCycle, setStatus,  } from "../../redux/reducers/gameState";
-import { scaleFontSize } from "../../assets/Scaling";
+import { horizontalScale, scaleFontSize } from "../../assets/Scaling";
 import { useNavigation } from "@react-navigation/native";
 import { Routes } from "../../navigation/Routes";
 
@@ -16,6 +16,9 @@ const ScoreModal = () => {
   const totalScore = useSelector((store) => store.gameState.totalScore || {});
   const totalGameScore = useSelector((store) => store.gameState.totalGameScore || 0);
   const dropScore = useSelector((store) => store.gameState.drop || 0);
+  const middleDropScore = useSelector((store) => store.gameState.middleDrop || 0);
+  const fullCountScore = useSelector((store) => store.gameState.fullCount || 0);
+  const outScore = useSelector((store) => store.gameState.totalGameScore || 0);
   const inGameOutPlayers = useSelector((store) => store.gameState.inGameOutPlayers || []);
   const dealerId = useSelector((store) => store.gameState.dealerId || 0);
   const playersLifeCycle = useSelector((store) => store.gameState.playersLifeCycle || []);
@@ -140,24 +143,67 @@ const ScoreModal = () => {
         <View style={Style.modalBackground}>
           <View style={Style.modalBox}>
             <Text style={Style.modalTitle}>Enter Scores</Text>
-
+           
             {inGamePlayers.map((p, index) => {
-                if (hasOutPlayersIds.has(p.id)) return null;
-                return (
-                  <View key={p.id} style={Style.scoreInputRow}>
+            if (hasOutPlayersIds.has(p.id)) return null;
+
+            return (
+              <View key={p.id} style={Style.scoreInputRow}>
+                
+                {/* div1: Label + Name + Button (flex 2) */}
+                <View style={{ flex: 2 }}>
+                  <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                     <Text style={Style.playerLabel}>{index + 1 + "."}</Text>
                     <Text style={Style.playerName}>{p.name}</Text>
-                    <TextInput
-                      style={Style.input}
-                      keyboardType="numeric"
-                      value={currentScores[p.id]?.toString() || ""}
-                      onChangeText={(val) =>
-                        setCurrentScores((prev) => ({ ...prev, [p.id]: val }))
-                      }
-                    />
                   </View>
-                );
-            })}
+                  <View style={{flexDirection : 'row'}}>
+                  <TouchableOpacity style={Style.smallButton1}
+                    onPress={() => {
+                      setCurrentScores((prev) => ({ ...prev, [p.id]: dropScore }))
+                    }}
+                  >
+                    <Text style={Style.buttonText}>D</Text>
+                  </TouchableOpacity>
+                  <TouchableOpacity style={Style.smallButton2}
+                    onPress={() => {
+                      setCurrentScores((prev) => ({ ...prev, [p.id]: middleDropScore }))
+                    }}
+                  >
+                    <Text style={Style.buttonText}>MD</Text>
+                  </TouchableOpacity>
+                  <TouchableOpacity style={Style.smallButton3}
+                    onPress={() => {
+                      setCurrentScores((prev) => ({ ...prev, [p.id]: fullCountScore }))
+                    }}
+                  >
+                    <Text style={Style.buttonText}>FC</Text>
+                  </TouchableOpacity>
+                  <TouchableOpacity style={Style.smallButton4}
+                    onPress={() => {
+                      setCurrentScores((prev) => ({ ...prev, [p.id]: outScore }))
+                    }}
+                  >
+                    <Text style={Style.buttonText}>Out</Text>
+                  </TouchableOpacity>
+                  </View>
+                </View>
+
+                {/* div2: TextInput (flex 1) */}
+                <View style={{ flex: 1, alignItems : 'flex-end' }}>
+                  <TextInput
+                    style={Style.input}
+                    keyboardType="numeric"
+                    value={currentScores[p.id]?.toString() || ""}
+                    onChangeText={(val) =>
+                      setCurrentScores((prev) => ({ ...prev, [p.id]: val }))
+                    }
+                  />
+                </View>
+
+              </View>
+            );
+      })}
+
 
 
             <TouchableOpacity style={Style.modalClose} onPress={handleAddRound}>
