@@ -104,7 +104,7 @@ const ContinueGame = () => {
         <SafeAreaView style={Style.container}>
             <View style={Style.headerContainer}>
                 <BackButton onPress={() => navigation.goBack()} />
-                <Text style={Style.headerTitle}>Continue Game</Text>
+                <Text style={Style.headerTitle}>Incompleted Games</Text>
             </View>
             <FlatList
                 data={continueGames}

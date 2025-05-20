@@ -72,7 +72,7 @@ const Home = ({navigation}) => {
                 />
                 <Button
                     icon={faPlay}
-                    text={"Continue Game"}
+                    text={"Incompleted Games"}
                     onPress={() => {
                         navigation.navigate(Routes.ContinueGame)
                     }}

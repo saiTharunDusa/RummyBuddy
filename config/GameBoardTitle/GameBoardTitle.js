@@ -8,6 +8,7 @@ import { useSelector } from "react-redux";
 import { scaleFontSize, horizontalScale, verticalScale } from "../../assets/Scaling";
 import { FontAwesomeIcon } from "@fortawesome/react-native-fontawesome";
 import { faCircle } from "@fortawesome/free-solid-svg-icons";
+import Style from "./Style";
 
 const GameBoardTitle = () => {
   const goToHome = useGoToHome();
@@ -108,7 +109,7 @@ const GameBoardTitle = () => {
                 textAlign: "center",
               }}
             >
-              {showInfo ? "Hide Game Info ▲" : "Show Game Info ▼"}
+              {showInfo ? "Hide ScoreBoard Info ▲" : "Show ScoreBoard Info ▼"}
             </Text>
           </TouchableOpacity>
         </View>
@@ -128,6 +129,16 @@ const GameBoardTitle = () => {
       borderRadius: 10,
     }}
   >
+    <View style={{
+      flexDirection : 'row',
+      justifyContent : 'space-evenly',
+      margin : verticalScale(5),
+    }}>
+      <Text style={Style.smallButton1}>D-Drop</Text>
+      <Text style={Style.smallButton2}>MD-MiddleDrop</Text>
+      <Text style={Style.smallButton3}>FC-FullCount</Text>
+      <Text style={Style.smallButton4}>Out</Text>
+    </View>
     <View style={{ flexDirection: "row", alignItems: "center", marginBottom: 4 }}>
       <FontAwesomeIcon icon={faCircle} size={10} color="#ff8f00" style={{ marginRight: 8 }} />
       <View style={{ flex: 1 }}>
@@ -172,6 +183,8 @@ const GameBoardTitle = () => {
         </Text>
       </View>
     </View>
+    
+    
   </View>
 )}
 
